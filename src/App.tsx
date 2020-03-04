@@ -1,5 +1,8 @@
-import React from "react";
+import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+
+/* pages */
+import { AuthPage } from "./pages/Auth";
 
 /* components */
 import { MainNavigation } from "./components/Navigation/MainNavigation";
@@ -14,8 +17,8 @@ function App() {
           <MainNavigation />
           <main>
             <Switch>
-              <Route path="/" />
-              <Route path="/auth" />
+              <Route path="/" to="/auth" exact/>
+              <Route path="/auth" component={AuthPage}/>
               <Route path="/seedlings" />
               <Route path="/seeds" />
             </Switch>
