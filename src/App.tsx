@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 /* pages */
@@ -17,7 +17,7 @@ function App() {
           <MainNavigation />
           <main>
             <Switch>
-              <Route path="/" to="/auth" exact/>
+              <Route exact={true} path="/" to="/auth"/>
               <Route path="/auth" component={AuthPage}/>
               <Route path="/seedlings" />
               <Route path="/seeds" />
