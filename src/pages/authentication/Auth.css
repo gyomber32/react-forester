@@ -1,0 +1,85 @@
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  background-image: url("../../assets/forester_auth_wallpaper.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.auth-dialog {
+  background-color: rgba(25, 25, 25, 0.9);
+  margin: auto;
+  border-radius: 20px;
+  width: 500px;
+  padding-bottom: 20px;
+}
+
+.auth-dialog_header {
+  padding-bottom: 10px;
+  padding-right: 30px;
+  padding-left: 30px;
+  text-align: right;
+}
+
+.auth-dialog_header_text {
+  color: white;
+  font-size: 30px;
+  text-align: justify;
+  text-align-last: center;
+}
+
+.auth-dialog_header_text-author {
+  color: white;
+  font-size: 20px;
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: white;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: white;
+}
+
+.auth-dialog_form_error {
+    color: white;
+    padding-bottom: 10px;
+}
+
+.auth-dialog_form {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-dialog_form_field {
+  color: white;
+  height: 25px;
+  background-color: #707070;
+  border: none;
+  border-color: transparent;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.auth-dialog_button {
+  background-color: #505050;
+  border: none;
+  border-color: transparent;
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  color: white;
+}
