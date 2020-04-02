@@ -3,11 +3,11 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 /* pages */
 import { AuthPage } from "./pages/authentication/Auth";
-import { SeedlingsPage } from "./pages/seedlings/seedlings";
-import { SeedsPage } from "./pages/seeds/seeds";
+import { SeedlingsPage } from "./pages/seedlings/Seedlings";
+import { SeedsPage } from "./pages/seeds/Seeds";
 
 /* components */
-import { MainNavigation } from "./components/Navigation/MainNavigation";
+import Navigation  from "./components/Navigation/Navigation";
 
 import "./App.css";
 
@@ -16,7 +16,7 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <React.Fragment>
-          <MainNavigation />
+          <Navigation />
           <Switch>
             <Route exact={true} path="/" to="/auth" />
             <Route path="/auth" component={AuthPage} />
