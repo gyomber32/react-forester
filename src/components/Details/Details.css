@@ -1,0 +1,35 @@
+.modal_container {
+  z-index: 2;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: rgba(25, 25, 25, 1);
+  width: 500px;
+  height: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+}
+
+.modal_title {
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+}
+
+.modal_img{
+    width: 500px;
+    height: auto;
+}
+
+.modal_content{
+   padding-left: 10px;
+}
+
+.modal_paragraph{
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
