@@ -69,14 +69,11 @@ export class SeedlingsPage extends Component<any, any> {
   openDetailsModal = (id: number) => {
     const card = this.state.cards.find((card) => card.id === id);
     this.setState({ openDetailsModal: true, selectedCard: card });
-    setTimeout(() => {
-      console.log(this.state.selectedCard);
-    }, 3000);
   };
 
   closeDetailsModal = () => {
-    this.setState({ openDetailsModal: false });
     this.setState({
+      openDetailsModal: false,
       selectedCard: {
         id: null,
         imageSource: "",
@@ -85,9 +82,6 @@ export class SeedlingsPage extends Component<any, any> {
         date: "",
       },
     });
-    setTimeout(() => {
-      console.log(this.state.selectedCard);
-    }, 3000);
   };
 
   openAddModal = () => {

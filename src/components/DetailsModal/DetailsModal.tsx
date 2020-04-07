@@ -25,7 +25,9 @@ const detailsModal = (props: Props) => {
       <div className="modal_content">
         <p className="modal_paragraph">Piece: {props.piece}</p>
         <p className="modal_paragraph">Date planted: {props.date}</p>
-        <p className="modal_paragraph">Days growing: {parseData(props.date)} days</p>
+        <p className="modal_paragraph">
+          Days growing: {parseData(props.date)} days
+        </p>
       </div>
     </div>
   );

@@ -1,15 +1,15 @@
-.main-navigation__container {
-  background-color: rgba(25, 25, 25);
-  /*border: 2px solid red;*/
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
 }
 
 .main-navigation__items {
   margin-top: 0px;
   margin-bottom: 0px;
-  /*margin: 10px;*/
   list-style: none;
   display: flex;
   flex-flow: row;
   justify-content: flex-end;
-  align-items: center;
 }

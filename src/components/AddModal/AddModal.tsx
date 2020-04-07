@@ -15,8 +15,7 @@ const seedlingsSchema = Yup.object().shape({
   piece: Yup.number()
     .min(1, "At least 1 piece must be added")
     .required("Required"),
-  date_planted: Yup.string()
-    .min(6, "Date must be added")
+  date_planted: Yup.date()
     .required("Required"),
   picture: Yup.string().required("Required")
 });
@@ -31,8 +30,10 @@ const handleSubmit = (values: {
 };
 
 const handleChange = (date: any) => {
-  console.log(date);
+  startDate = date;
 };
+
+let startDate = new Date();
 
 const AddModal = () => {
   return (
@@ -71,7 +72,7 @@ const AddModal = () => {
               name="piece"
               component="div"
             />
-            <DatePicker className="auth-dialog_form_field" popperClassName="asd" name="date_planted" minDate={new Date()} selected={new Date()} onChange={handleChange}/>
+            <DatePicker id="asd" className="auth-dialog_form_field" popperClassName="asd" name="date_planted" value={startDate.toString()} minDate={new Date()} selected={startDate} onChange={handleChange}/>
             <ErrorMessage
               className="auth-dialog_form_error"
               name="date_planted"

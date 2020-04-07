@@ -7,7 +7,6 @@ import Logout from "../Logout/Logout";
 const navigation = () => (
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   <header>
-    <div className="main-navigation__container">
       <ul className="main-navigation__items">
         <NavigationItem link="seedlings" exact>
           Seedlings
@@ -19,7 +18,6 @@ const navigation = () => (
           Logout
         </Logout>
       </ul>
-    </div>
   </header>
 );
 
