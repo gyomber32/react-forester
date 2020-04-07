@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
+import Navigation from "../../components/Navigation/Navigation";
 import Table from "../../components/Table/Table";
 
-import "./Seeds.css"
+import "./Seeds.css";
 
 export class SeedsPage extends Component {
   state = {
@@ -41,8 +42,13 @@ export class SeedsPage extends Component {
   };
 
   render() {
-    return <div className="seeds_container">
-      <Table seeds={this.state.seeds}></Table>
-    </div>;
+    return (
+      <Fragment>
+        <Navigation />
+        <div className="seeds_container">
+          <Table seeds={this.state.seeds}></Table>
+        </div>
+      </Fragment>
+    );
   }
 }

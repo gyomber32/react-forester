@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Card from "../../components/Card/Card";
 import DetailsModal from "../../components/DetailsModal/DetailsModal";
 import AddModal from "../../components/AddModal/AddModal";
 import Backdrop from "../../components/Backdrop/Backdrop";
 import Button from "../../components/Button/Button";
+import Navigation from "../../components/Navigation/Navigation";
 
 /* Every child needs to learn how to cook, needs to learn how to cultivate a garden, plant seeds, learn about sustainability, be taken to a garden, and be able to put hands in the earth. */
 
@@ -99,35 +100,38 @@ export class SeedlingsPage extends Component<any, any> {
 
   render() {
     return (
-      <div className="container">
-        <div className="cards">
-          {this.state.openDetailsModal && (
-            <Backdrop click={this.closeDetailsModal}></Backdrop>
+      <Fragment>
+        <Navigation />
+        <div className="container">
+          <div className="cards">
+            {this.state.openDetailsModal && (
+              <Backdrop click={this.closeDetailsModal}></Backdrop>
+            )}
+            {this.state.openDetailsModal && (
+              <DetailsModal
+                title={this.state.selectedCard.species}
+                img={this.state.selectedCard.imageSource}
+                piece={this.state.selectedCard.piece}
+                date={this.state.selectedCard.date}
+              ></DetailsModal>
+            )}
+            {this.state.cards.map((item: any) => (
+              <Card
+                key={item.id}
+                imageSource={item.imageSource}
+                species={item.species}
+                piece={item.piece}
+                click={() => this.openDetailsModal(item.id)}
+              />
+            ))}
+          </div>
+          {this.state.openAddModal && (
+            <Backdrop click={this.closeAddModal}></Backdrop>
           )}
-          {this.state.openDetailsModal && (
-            <DetailsModal
-              title={this.state.selectedCard.species}
-              img={this.state.selectedCard.imageSource}
-              piece={this.state.selectedCard.piece}
-              date={this.state.selectedCard.date}
-            ></DetailsModal>
-          )}
-          {this.state.cards.map((item: any) => (
-            <Card
-              key={item.id}
-              imageSource={item.imageSource}
-              species={item.species}
-              piece={item.piece}
-              click={() => this.openDetailsModal(item.id)}
-            />
-          ))}
+          {this.state.openAddModal && <AddModal></AddModal>}
+          <Button click={this.openAddModal}></Button>
         </div>
-        {this.state.openAddModal && (
-          <Backdrop click={this.closeAddModal}></Backdrop>
-        )}
-        {this.state.openAddModal && <AddModal></AddModal>}
-        <Button click={this.openAddModal}></Button>
-      </div>
+      </Fragment>
     );
   }
 }

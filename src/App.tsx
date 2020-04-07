@@ -16,7 +16,6 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <React.Fragment>
-          <Navigation />
           <Switch>
             <Route exact={true} path="/" to="/auth" />
             <Route path="/auth" component={AuthPage} />
