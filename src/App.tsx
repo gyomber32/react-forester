@@ -6,9 +6,6 @@ import { AuthPage } from "./pages/authentication/Auth";
 import { SeedlingsPage } from "./pages/seedlings/Seedlings";
 import { SeedsPage } from "./pages/seeds/Seeds";
 
-/* components */
-import Navigation  from "./components/Navigation/Navigation";
-
 import "./App.css";
 
 const App = () => {

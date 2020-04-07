@@ -16,6 +16,13 @@ import avatar2 from "../../assets/willow_seedling.jpg";
 import avatar3 from "../../assets/aesculus_seedling.jpg";
 import avatar4 from "../../assets/ulmus-minor_seedling.jpg";
 
+interface Values {
+  species: string;
+  piece: number | "";
+  date_planted: Date;
+  picture: string;
+}
+
 export class SeedlingsPage extends Component<any, any> {
   state = {
     cards: [
@@ -92,6 +99,10 @@ export class SeedlingsPage extends Component<any, any> {
     this.setState({ openAddModal: false });
   };
 
+  onSubmit = (values: Values) => {
+    console.log(values);
+  };
+
   render() {
     return (
       <Fragment>
@@ -122,7 +133,7 @@ export class SeedlingsPage extends Component<any, any> {
           {this.state.openAddModal && (
             <Backdrop click={this.closeAddModal}></Backdrop>
           )}
-          {this.state.openAddModal && <AddModal></AddModal>}
+          {this.state.openAddModal && <AddModal onSubmit={this.onSubmit}></AddModal>}
           <Button click={this.openAddModal}></Button>
         </div>
       </Fragment>

@@ -6,55 +6,65 @@ import * as Yup from "yup";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import UniqueNumberField from "../UniqueNumberField/UniqueNumberField";
+
+interface Props {
+  onSubmit: (values: Values) => void;
+}
+
+interface Values {
+  species: string;
+  piece: number | "";
+  date_planted: Date;
+  picture: string;
+}
+
+const initialValues: Values = {
+  species: "",
+  piece: "",
+  date_planted: new Date(),
+  picture: "",
+};
 
 const seedlingsSchema = Yup.object().shape({
   species: Yup.string()
-    .min(1, "Too Short!")
-    .max(50, "Too Long!")
+    .trim()
+    .min(2, "Too short!")
+    .max(50, "Too long!")
     .required("Required"),
   piece: Yup.number()
-    .min(1, "At least 1 piece must be added")
+    .moreThan(0, "The number must be positive!")
     .required("Required"),
-  date_planted: Yup.date()
-    .required("Required"),
-  picture: Yup.string().required("Required")
+  date_planted: Yup.date().required("Required"),
+  picture: Yup.string().required("Required"),
 });
 
-const handleSubmit = (values: {
-  species: string;
-  piece: number;
-  date_planted: string;
-  picture: string;
-}) => {
-  console.log(values);
-};
-
-const handleChange = (date: any) => {
-  startDate = date;
-};
-
-let startDate = new Date();
-
-const AddModal = () => {
+const AddModal: React.FC<Props> = ({ onSubmit }) => {
   return (
     <div className="modal_container">
       <Formik
-        initialValues={{
-          species: "",
-          piece: 0,
-          date_planted: "",
-          picture: ""
-        }}
+        initialValues={initialValues}
         validationSchema={seedlingsSchema}
-        onSubmit={handleSubmit}
+        onSubmit={(values) => {
+          onSubmit(values);
+        }}
       >
-        {({ isSubmitting }) => (
+        {({
+          isSubmitting,
+          values,
+          handleChange,
+          handleBlur,
+          setFieldValue,
+        }) => (
           <Form className="auth-dialog_form">
             <Field
               className="auth-dialog_form_field"
               type="text"
               name="species"
               placeholder="Species"
+              value={values.species}
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
             <ErrorMessage
               className="auth-dialog_form_error"
@@ -63,16 +73,24 @@ const AddModal = () => {
             />
             <Field
               className="auth-dialog_form_field"
-              type="text"
               name="piece"
               placeholder="Piece"
+              value={initialValues.piece}
+              component={UniqueNumberField}
             />
             <ErrorMessage
               className="auth-dialog_form_error"
               name="piece"
               component="div"
             />
-            <DatePicker id="asd" className="auth-dialog_form_field" popperClassName="asd" name="date_planted" value={startDate.toString()} minDate={new Date()} selected={startDate} onChange={handleChange}/>
+            <DatePicker
+              className="auth-dialog_form_field"
+              popperClassName="datepicker"
+              name="date_planted"
+              dateFormat="yyyy.MM.dd"
+              selected={values.date_planted}
+              onChange={(date) => setFieldValue("date_planted", date)}
+            />
             <ErrorMessage
               className="auth-dialog_form_error"
               name="date_planted"
@@ -83,6 +101,9 @@ const AddModal = () => {
               type="text"
               name="picture"
               placeholder="Picture"
+              value={values.picture}
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
             <ErrorMessage
               className="auth-dialog_form_error"
@@ -90,7 +111,7 @@ const AddModal = () => {
               component="div"
             />
             <div>
-              <button className="" type="submit" disabled={isSubmitting}>
+              <button className="" disabled={isSubmitting}>
                 Cancel
               </button>
               <button className="" type="submit" disabled={isSubmitting}>
