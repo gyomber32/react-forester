@@ -71,13 +71,7 @@ const AddModal = () => {
               name="piece"
               component="div"
             />
-            <DatePicker name="date_planted" selected={new Date()} onChange={handleChange}/>
-            {/* <Field
-              className="auth-dialog_form_field"
-              type="text"
-              name="date_planted"
-              placeholder="Date planted"
-            /> */}
+            <DatePicker className="auth-dialog_form_field" popperClassName="asd" name="date_planted" minDate={new Date()} selected={new Date()} onChange={handleChange}/>
             <ErrorMessage
               className="auth-dialog_form_error"
               name="date_planted"
@@ -99,7 +93,7 @@ const AddModal = () => {
                 Cancel
               </button>
               <button className="" type="submit" disabled={isSubmitting}>
-                Add
+                Save
               </button>
             </div>
           </Form>

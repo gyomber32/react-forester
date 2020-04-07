@@ -1,12 +1,48 @@
 .modal_container {
-    z-index: 2;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    background-color: rgba(25, 25, 25, 1);
-    width: 500px;
-    height: auto;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 10px;
-  }
+  z-index: 2;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: rgba(25, 25, 25, 1);
+  width: 500px;
+  height: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+}
+#root > div > div > div.modal_container > form > div.react-datepicker__tab-loop > div.react-datepicker-popper.asd > div > div > div.react-datepicker__month-container > div.react-datepicker__header{
+  background-color: black;
+  background-image: linear-gradient(to bottom,black, rgba(25, 25, 25, 1));
+  border-bottom: none;
+}
+
+#root > div > div > div.modal_container > form > div.react-datepicker__tab-loop > div.react-datepicker-popper.asd > div > div > div.react-datepicker__triangle{
+  display: none;
+}
+
+#root > div > div > div.modal_container > form > div.react-datepicker__tab-loop > div.react-datepicker-popper.asd > div > div > div.react-datepicker__month-container > div.react-datepicker__header > div.react-datepicker__current-month{
+  color: white;
+}
+
+#root > div > div > div.modal_container > form > div.react-datepicker__tab-loop > div.react-datepicker-popper.asd > div > div > div.react-datepicker__month-container > div.react-datepicker__header > div.react-datepicker__day-names > div{
+  color: white;
+}
+
+#root > div > div > div.modal_container > form > div.react-datepicker__tab-loop > div.react-datepicker-popper.asd > div > div{
+  background-color: rgba(25, 25, 25, 1);
+  border: none;
+}
+
+#root > div > div > div.modal_container > form > div..react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
+  color: white;
+}
+
+#root > div > div > div.modal_container > form > div.react-datepicker__tab-loop > div.react-datepicker-popper.asd > div > div > div.react-datepicker__month-container > div.react-datepicker__month > div > div.react-datepicker__day.react-datepicker__day.react-datepicker__day--disabled.react-datepicker__day{
+  color: black;
+}
+#root > div > div > div.modal_container > form > div.react-datepicker__tab-loop > div.react-datepicker-popper.asd > div > div > div.react-datepicker__month-container > div.react-datepicker__month > div > div.react-datepicker__day.react-datepicker__day{
+color: white;
+}
+#root > div > div > div.modal_container > form > div.react-datepicker__tab-loop > div.react-datepicker-popper.asd > div > div > div.react-datepicker__month-container > div.react-datepicker__month > div > div.react-datepicker__day.react-datepicker__day.react-datepicker__day--outside-month {
+  color: black;
+}

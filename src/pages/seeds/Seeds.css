@@ -1,0 +1,15 @@
+.seeds_container {
+  background-image: url("../../assets/seedlings_background.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+Table {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

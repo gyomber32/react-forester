@@ -4,7 +4,7 @@ import "./DetailsModal.css";
 interface Props {
   title: string;
   img: string;
-  piece: number;
+  piece: number | null;
   date: string;
 }
 
