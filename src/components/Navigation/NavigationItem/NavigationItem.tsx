@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import "./NavigationItem.css";
+import styles from "./NavigationItem.module.scss";
 
 interface Props {
   link: string;
@@ -10,8 +10,8 @@ interface Props {
 }
 
 const navigationItem = (props: Props) => (
-  <li className="item_container">
-    <NavLink to={props.link} exact={props.exact} className="item_element">
+  <li className={styles.NavigationItem}>
+    <NavLink to={props.link} exact={props.exact} className={styles.NavigationItem_element}>
       {props.children}
     </NavLink>
   </li>

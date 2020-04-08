@@ -1,0 +1,28 @@
+.Card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: rgba(25, 25, 25, 0.8);
+  border-radius: 10px;
+  margin: 10px;
+  transition: transform 1s;
+}
+
+.Card:hover {
+  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.4);
+  transform: scale(1.1);
+}
+
+.Card_img {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: 300px;
+  height: 400px;
+}
+
+.Card_content {
+  padding: 2px 16px;
+}
+
+h4,
+p {
+  color: white;
+}

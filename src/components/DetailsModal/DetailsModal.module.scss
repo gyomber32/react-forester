@@ -1,7 +1,7 @@
-.modal_container {
+.DetailsModal {
   z-index: 2;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  background-color: rgba(25, 25, 25, 1);
+  background-color: rgba(25, 25, 25, 0.9);
+  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.4);
   width: 400px;
   height: auto;
   position: fixed;
@@ -11,28 +11,27 @@
   border-radius: 10px;
 }
 
-.modal_title {
+.DetailsModal_title {
   color: white;
+  text-shadow: 4px 4px 3px black;
   font-size: 30px;
   font-weight: bold;
   text-align: center;
   padding: 10px;
 }
 
-.modal_img {
+.DetailsModal_img {
   width: 100%;
   height: 500px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
   display: block;
   margin: 0 auto;
 }
 
-.modal_content {
+.DetailsModal_content {
   padding-left: 10px;
 }
 
-.modal_paragraph {
+.DetailsModal_content_paragraph {
   color: white;
   font-size: 20px;
   font-weight: bold;

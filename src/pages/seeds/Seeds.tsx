@@ -3,7 +3,7 @@ import React, { Component, Fragment } from "react";
 import Navigation from "../../components/Navigation/Navigation";
 import Table from "../../components/Table/Table";
 
-import "./Seeds.css";
+import styles from "./Seeds.module.scss";
 
 export class SeedsPage extends Component {
   state = {
@@ -45,7 +45,7 @@ export class SeedsPage extends Component {
     return (
       <Fragment>
         <Navigation />
-        <div className="seeds_container">
+        <div className={styles.Seeds}>
           <Table seeds={this.state.seeds}></Table>
         </div>
       </Fragment>

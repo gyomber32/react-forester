@@ -1,7 +1,7 @@
 import React from "react";
 import { useTable } from "react-table";
 
-import "./Table.css";
+import styles from "./Table.module.scss";
 
 const Table = (props: any) => {
   const columns = React.useMemo(
@@ -34,7 +34,7 @@ const Table = (props: any) => {
   } = useTable({ columns, data });
 
   return (
-      <table {...getTableProps()}>
+      <table {...getTableProps()} className={styles.Table}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>

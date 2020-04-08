@@ -1,23 +1,24 @@
 import React from "react";
 
-import "./Navigation.css";
 import NavigationItem from "./NavigationItem/NavigationItem";
 import Logout from "../Logout/Logout";
 
+import styles from "./Navigation.module.scss";
+
 const navigation = () => (
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  <header>
-      <ul className="main-navigation__items">
-        <NavigationItem link="seedlings" exact>
-          Seedlings
-        </NavigationItem>
-        <NavigationItem link="seeds" exact>
-          Seeds
-        </NavigationItem>
-        <Logout link="auth" exact>
-          Logout
-        </Logout>
-      </ul>
+  <header className={styles.MainNavigation}>
+    <ul className={styles.MainNavigation__items}>
+      <NavigationItem link="seedlings" exact={true}>
+        Seedlings
+      </NavigationItem>
+      <NavigationItem link="seeds" exact={true}>
+        Seeds
+      </NavigationItem>
+      <Logout link="auth" exact={true}>
+        Logout
+      </Logout>
+    </ul>
   </header>
 );
 

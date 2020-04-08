@@ -1,12 +1,12 @@
 import React from "react";
-import "./AddModal.css";
-
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import UniqueNumberField from "../UniqueNumberField/UniqueNumberField";
+
+import styles from "./AddModal.module.scss";
 
 interface Props {
   onSubmit: (values: Values) => void;
@@ -41,7 +41,8 @@ const seedlingsSchema = Yup.object().shape({
 
 const AddModal: React.FC<Props> = ({ onSubmit }) => {
   return (
-    <div className="modal_container">
+    <div className={styles.AddModal}>
+      <header className={styles.AddModal_title}>Add new seedling(s)</header>
       <Formik
         initialValues={initialValues}
         validationSchema={seedlingsSchema}
@@ -56,9 +57,9 @@ const AddModal: React.FC<Props> = ({ onSubmit }) => {
           handleBlur,
           setFieldValue,
         }) => (
-          <Form className="auth-dialog_form">
+          <Form className={styles.AddModal_form}>
             <Field
-              className="auth-dialog_form_field"
+              className={styles.AddModal_form_field}
               type="text"
               name="species"
               placeholder="Species"
@@ -67,24 +68,24 @@ const AddModal: React.FC<Props> = ({ onSubmit }) => {
               onBlur={handleBlur}
             />
             <ErrorMessage
-              className="auth-dialog_form_error"
+              className={styles.AddModal_form_error}
               name="species"
               component="div"
             />
             <Field
-              className="auth-dialog_form_field"
+              className={styles.AddModal_form_field}
               name="piece"
               placeholder="Piece"
               value={initialValues.piece}
               component={UniqueNumberField}
             />
             <ErrorMessage
-              className="auth-dialog_form_error"
+              className={styles.AddModal_form_error}
               name="piece"
               component="div"
             />
             <DatePicker
-              className="auth-dialog_form_field"
+              className={styles.AddModal_form_field}
               popperClassName="datepicker"
               name="date_planted"
               dateFormat="yyyy.MM.dd"
@@ -92,12 +93,12 @@ const AddModal: React.FC<Props> = ({ onSubmit }) => {
               onChange={(date) => setFieldValue("date_planted", date)}
             />
             <ErrorMessage
-              className="auth-dialog_form_error"
+              className={styles.AddModal_form_error}
               name="date_planted"
               component="div"
             />
             <Field
-              className="auth-dialog_form_field"
+              className={styles.AddModal_form_field}
               type="text"
               name="picture"
               placeholder="Picture"
@@ -106,15 +107,22 @@ const AddModal: React.FC<Props> = ({ onSubmit }) => {
               onBlur={handleBlur}
             />
             <ErrorMessage
-              className="auth-dialog_form_error"
+              className={styles.AddModal_form_error}
               name="picture"
               component="div"
             />
-            <div>
-              <button className="" disabled={isSubmitting}>
+            <div className={styles.AddModal_formActions}>
+              <button
+                className={styles.AddModal_formActions_button}
+                disabled={isSubmitting}
+              >
                 Cancel
               </button>
-              <button className="" type="submit" disabled={isSubmitting}>
+              <button
+                className={styles.AddModal_formActions_button}
+                type="submit"
+                disabled={isSubmitting}
+              >
                 Save
               </button>
             </div>

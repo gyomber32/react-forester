@@ -1,4 +1,4 @@
-.container {
+.Seedlings {
   background-image: url("../../assets/seedlings_background.jpg");
   height: 100%;
   background-position: center;
@@ -7,7 +7,7 @@
   background-attachment: fixed;
 }
 
-.cards {
+.Seedlings_cardsContainer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

@@ -6,11 +6,11 @@ import { AuthPage } from "./pages/authentication/Auth";
 import { SeedlingsPage } from "./pages/seedlings/Seedlings";
 import { SeedsPage } from "./pages/seeds/Seeds";
 
-import "./App.css";
+import styles from "./App.module.scss";
 
 const App = () => {
   return (
-    <div className="App">
+    <div className={styles.App}>
       <BrowserRouter>
         <React.Fragment>
           <Switch>

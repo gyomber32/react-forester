@@ -1,4 +1,4 @@
-.auth-container {
+.Auth {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +9,7 @@
   background-size: cover;
 }
 
-.auth-dialog {
+.AuthDialog {
   background-color: rgba(25, 25, 25, 0.9);
   margin: auto;
   border-radius: 20px;
@@ -17,21 +17,21 @@
   padding-bottom: 20px;
 }
 
-.auth-dialog_header {
+.AuthDialog_header {
   padding-bottom: 10px;
   padding-right: 30px;
   padding-left: 30px;
   text-align: right;
 }
 
-.auth-dialog_header_text {
+.AuthDialog_header_text {
   color: white;
   font-size: 30px;
   text-align: justify;
   text-align-last: center;
 }
 
-.auth-dialog_header_text-author {
+.AuthDialog_header_textAuthor {
   color: white;
   font-size: 20px;
 }
@@ -52,19 +52,14 @@
   color: white;
 }
 
-.auth-dialog_form_error {
-    color: white;
-    padding-bottom: 10px;
-}
-
-.auth-dialog_form {
+.AuthDialog_form {
   padding-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.auth-dialog_form_field {
+.AuthDialog_form_field {
   color: white;
   height: 25px;
   background-color: #707070;
@@ -74,7 +69,19 @@
   border-radius: 5px;
 }
 
-.auth-dialog_button {
+.AuthDialog_form_error {
+  color: white;
+  padding-bottom: 10px;
+}
+
+.AuthDialog_formActions {
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}
+
+.AuthDialog_formActions_button {
   background-color: #505050;
   border: none;
   border-color: transparent;

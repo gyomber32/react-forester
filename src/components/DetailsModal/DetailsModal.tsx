@@ -1,5 +1,5 @@
 import React from "react";
-import "./DetailsModal.css";
+import styles from "./DetailsModal.module.scss";
 
 interface Props {
   title: string;
@@ -19,13 +19,17 @@ function parseData(dateString: string): number {
 
 const detailsModal = (props: Props) => {
   return (
-    <div className="modal_container">
-      <header className="modal_title">{props.title}</header>
-      <img src={props.img} alt="" className="modal_img" />
-      <div className="modal_content">
-        <p className="modal_paragraph">Piece: {props.piece}</p>
-        <p className="modal_paragraph">Date planted: {props.date}</p>
-        <p className="modal_paragraph">
+    <div className={styles.DetailsModal}>
+      <header className={styles.DetailsModal_title}>{props.title}</header>
+      <img src={props.img} alt="" className={styles.DetailsModal_img} />
+      <div className={styles.DetailsModal_content}>
+        <p className={styles.DetailsModal_content_paragraph}>
+          Piece: {props.piece}
+        </p>
+        <p className={styles.DetailsModal_content_paragraph}>
+          Date planted: {props.date}
+        </p>
+        <p className={styles.DetailsModal_content_paragraph}>
           Days growing: {parseData(props.date)} days
         </p>
       </div>

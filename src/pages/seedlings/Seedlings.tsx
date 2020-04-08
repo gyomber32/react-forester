@@ -3,12 +3,12 @@ import Card from "../../components/Card/Card";
 import DetailsModal from "../../components/DetailsModal/DetailsModal";
 import AddModal from "../../components/AddModal/AddModal";
 import Backdrop from "../../components/Backdrop/Backdrop";
-import Button from "../../components/Button/Button";
+import AddButton from "../../components/AddButton/AddButton";
 import Navigation from "../../components/Navigation/Navigation";
 
 /* Every child needs to learn how to cook, needs to learn how to cultivate a garden, plant seeds, learn about sustainability, be taken to a garden, and be able to put hands in the earth. */
 
-import "./Seedlings.css";
+import styles from "./Seedlings.module.scss";
 
 import avatar0 from "../../assets/oak_seedling.jpg";
 import avatar1 from "../../assets/red-oak_seedling.jpg";
@@ -107,8 +107,8 @@ export class SeedlingsPage extends Component<any, any> {
     return (
       <Fragment>
         <Navigation />
-        <div className="container">
-          <div className="cards">
+        <div className={styles.Seedlings}>
+          <div className={styles.Seedlings_cardsContainer}>
             {this.state.openDetailsModal && (
               <Backdrop click={this.closeDetailsModal}></Backdrop>
             )}
@@ -133,8 +133,10 @@ export class SeedlingsPage extends Component<any, any> {
           {this.state.openAddModal && (
             <Backdrop click={this.closeAddModal}></Backdrop>
           )}
-          {this.state.openAddModal && <AddModal onSubmit={this.onSubmit}></AddModal>}
-          <Button click={this.openAddModal}></Button>
+          {this.state.openAddModal && (
+            <AddModal onSubmit={this.onSubmit}></AddModal>
+          )}
+          <AddButton click={this.openAddModal}></AddButton>
         </div>
       </Fragment>
     );

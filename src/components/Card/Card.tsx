@@ -1,5 +1,5 @@
 import React from "react";
-import "./Card.css";
+import styles from "./Card.module.scss";
 
 interface Props {
   imageSource: string | undefined;
@@ -10,9 +10,9 @@ interface Props {
 
 const card = (props: Props) => {
   return (
-    <div className="card" onClick={props.click}>
-      <img src={props.imageSource} alt="Avatar" className="img" />
-      <div className="text">
+    <div className={styles.Card} onClick={props.click}>
+      <img src={props.imageSource} alt="Avatar" className={styles.Card_img}/>
+      <div className={styles.Card_content}>
         <h4>
           <b>{props.species}</b>
         </h4>
