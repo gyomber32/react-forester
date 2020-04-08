@@ -20,12 +20,12 @@ const authSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
 });
 
-interface AuthFormValues {
+type AuthFormValues = {
   email: string;
   password: string;
 }
 
-export class AuthPage extends Component<any, any> {
+export class AuthPage extends Component<any> {
   initialValues: AuthFormValues = { email: "", password: "" };
   handleSubmit = (
     values: { email: string; password: string },

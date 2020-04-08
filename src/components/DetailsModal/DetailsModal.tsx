@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./DetailsModal.module.scss";
 
-interface Props {
+type Props = {
   title: string;
   img: string;
   piece: number | null;
@@ -17,7 +17,7 @@ function parseData(dateString: string): number {
   return days;
 }
 
-const detailsModal = (props: Props) => {
+const DetailsModal: React.FC<Props> = (props) => {
   return (
     <div className={styles.DetailsModal}>
       <header className={styles.DetailsModal_title}>{props.title}</header>
@@ -37,4 +37,4 @@ const detailsModal = (props: Props) => {
   );
 };
 
-export default detailsModal;
+export default DetailsModal;

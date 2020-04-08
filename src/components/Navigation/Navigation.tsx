@@ -5,7 +5,7 @@ import Logout from "../Logout/Logout";
 
 import styles from "./Navigation.module.scss";
 
-const navigation = () => (
+const Navigation: React.FC = () => (
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   <header className={styles.MainNavigation}>
     <ul className={styles.MainNavigation__items}>
@@ -22,4 +22,4 @@ const navigation = () => (
   </header>
 );
 
-export default navigation;
+export default Navigation;

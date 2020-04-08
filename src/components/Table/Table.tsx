@@ -3,7 +3,11 @@ import { useTable } from "react-table";
 
 import styles from "./Table.module.scss";
 
-const Table = (props: any) => {
+type Props = {
+  seeds: { id: number; species: string; piece: number; date: string }[];
+}
+
+const Table: React.FC<Props> = (props) => {
   const columns = React.useMemo(
     () => [
       {
@@ -34,31 +38,29 @@ const Table = (props: any) => {
   } = useTable({ columns, data });
 
   return (
-      <table {...getTableProps()} className={styles.Table}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-              ))}
+    <table {...getTableProps()} className={styles.Table}>
+      <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map((cell) => {
+                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+              })}
             </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          );
+        })}
+      </tbody>
+    </table>
   );
 };
 

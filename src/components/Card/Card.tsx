@@ -1,17 +1,17 @@
 import React from "react";
 import styles from "./Card.module.scss";
 
-interface Props {
+type Props = {
   imageSource: string | undefined;
   species: string;
   piece: number;
-  click: any
+  click: any;
 }
 
-const card = (props: Props) => {
+const Card: React.FC<Props> = (props) => {
   return (
     <div className={styles.Card} onClick={props.click}>
-      <img src={props.imageSource} alt="Avatar" className={styles.Card_img}/>
+      <img src={props.imageSource} alt="Avatar" className={styles.Card_img} />
       <div className={styles.Card_content}>
         <h4>
           <b>{props.species}</b>
@@ -22,4 +22,4 @@ const card = (props: Props) => {
   );
 };
 
-export default card;
+export default Card;

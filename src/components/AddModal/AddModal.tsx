@@ -8,11 +8,12 @@ import UniqueNumberField from "../UniqueNumberField/UniqueNumberField";
 
 import styles from "./AddModal.module.scss";
 
-interface Props {
+type Props = {
   onSubmit: (values: Values) => void;
+  onCancel: () => void;
 }
 
-interface Values {
+type Values = {
   species: string;
   piece: number | "";
   date_planted: Date;
@@ -39,7 +40,7 @@ const seedlingsSchema = Yup.object().shape({
   picture: Yup.string().required("Required"),
 });
 
-const AddModal: React.FC<Props> = ({ onSubmit }) => {
+const AddModal: React.FC<Props> = ({ onSubmit, onCancel }) => {
   return (
     <div className={styles.AddModal}>
       <header className={styles.AddModal_title}>Add new seedling(s)</header>
@@ -115,6 +116,8 @@ const AddModal: React.FC<Props> = ({ onSubmit }) => {
               <button
                 className={styles.AddModal_formActions_button}
                 disabled={isSubmitting}
+                type="button"
+                onClick={onCancel}
               >
                 Cancel
               </button>

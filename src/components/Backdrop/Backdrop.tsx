@@ -2,12 +2,12 @@ import React from "react";
 
 import styles from "./Backdrop.module.scss";
 
-interface Props {
+type Props = {
   click: any;
 }
 
-const backdrop = (props: Props) => (
+const Backdrop: React.FC<Props> = (props) => (
   <div onClick={props.click} className={styles.Backdrop}></div>
 );
 
-export default backdrop;
+export default Backdrop;
