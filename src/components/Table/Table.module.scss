@@ -1,5 +1,5 @@
 .Table {
-    width: 700px;
+  width: 800px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   background-color: rgba(25, 25, 25, 1);
   border-radius: 10px;
@@ -14,6 +14,9 @@ td {
   text-align: center;
   border-bottom: 1px solid #707070;
   border-right: 1px solid #707070;
+}
+tr {
+  height: 50px;
 }
 
 tbody > tr:first-child > td {

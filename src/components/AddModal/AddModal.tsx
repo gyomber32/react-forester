@@ -11,14 +11,14 @@ import styles from "./AddModal.module.scss";
 type Props = {
   onSubmit: (values: Values) => void;
   onCancel: () => void;
-}
+};
 
 type Values = {
   species: string;
   piece: number | "";
   date_planted: Date;
   picture: string;
-}
+};
 
 const initialValues: Values = {
   species: "",
@@ -40,15 +40,17 @@ const seedlingsSchema = Yup.object().shape({
   picture: Yup.string().required("Required"),
 });
 
-const AddModal: React.FC<Props> = ({ onSubmit, onCancel }) => {
+const AddModal: React.FC<Props> = (props) => {
   return (
     <div className={styles.AddModal}>
-      <header className={styles.AddModal_title}>Add new seedling(s)</header>
+      <header className={styles.AddModal_title}>
+        Add new {props.children}(s)
+      </header>
       <Formik
         initialValues={initialValues}
         validationSchema={seedlingsSchema}
         onSubmit={(values) => {
-          onSubmit(values);
+          props.onSubmit(values);
         }}
       >
         {({
@@ -117,7 +119,7 @@ const AddModal: React.FC<Props> = ({ onSubmit, onCancel }) => {
                 className={styles.AddModal_formActions_button}
                 disabled={isSubmitting}
                 type="button"
-                onClick={onCancel}
+                onClick={props.onCancel}
               >
                 Cancel
               </button>

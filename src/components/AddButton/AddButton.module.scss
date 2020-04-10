@@ -1,5 +1,6 @@
 .AddButton {
   background-color: rgb(25, 25, 25);
+  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.4);
   width: 70px;
   height: 70px;
   border: none;
@@ -12,7 +13,7 @@
 }
 
 .AddButton:hover {
-  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 30px 10px rgba(0, 0, 0, 0.4);
   transform: scale(1.1);
 }
 

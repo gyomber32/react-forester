@@ -23,9 +23,14 @@ const authSchema = Yup.object().shape({
 type AuthFormValues = {
   email: string;
   password: string;
-}
+};
 
-export class AuthPage extends Component<any> {
+export class AuthPage extends Component<any, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = {};
+  }
+
   initialValues: AuthFormValues = { email: "", password: "" };
   handleSubmit = (
     values: { email: string; password: string },

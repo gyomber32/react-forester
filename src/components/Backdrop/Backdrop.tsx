@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./Backdrop.module.scss";
 
 type Props = {
-  click: any;
+  click?: any;
 }
 
 const Backdrop: React.FC<Props> = (props) => (
