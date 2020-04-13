@@ -7,6 +7,7 @@ import AddButton from "../../components/AddButton/AddButton";
 import Navigation from "../../components/Navigation/Navigation";
 import Popup from "../../components/Popup/Popup";
 import Spinner from "../../components/Spinner/Spinner";
+import Chart from "../../components/Chart/Chart";
 
 /* Every child needs to learn how to cook, needs to learn how to cultivate a garden, plant seeds, learn about sustainability, be taken to a garden, and be able to put hands in the earth. */
 
@@ -18,24 +19,34 @@ import avatar2 from "../../assets/willow_seedling.jpg";
 import avatar3 from "../../assets/aesculus_seedling.jpg";
 import avatar4 from "../../assets/ulmus-minor_seedling.jpg";
 
-type Values = {
+type Card = {
+  id: string;
   species: string;
-  piece: number | "";
+  piece: number;
   date_planted: Date;
   picture: string;
 };
 
-export class SeedlingsPage extends Component<any, any> {
+type State = {
+  cards: Card[];
+  selectedCard: Card;
+  openDetailsModal: boolean;
+  openAddModal: boolean;
+  openPopup: boolean;
+  loading: boolean;
+};
+
+export class SeedlingsPage extends Component<any, State> {
   constructor(props: any) {
     super(props);
     this.state = {
       cards: [],
       selectedCard: {
-        id: null,
-        imageSource: "",
+        id: "",
+        picture: "",
         species: "",
-        piece: null,
-        date: "",
+        piece: 0,
+        date_planted: new Date(),
       },
       openDetailsModal: false,
       openAddModal: false,
@@ -50,39 +61,39 @@ export class SeedlingsPage extends Component<any, any> {
       this.setState({
         cards: [
           {
-            id: 0,
-            imageSource: avatar0,
+            id: "0",
+            picture: avatar0,
             species: "Oak",
             piece: 50,
-            date: "2018-06-04",
+            date_planted: new Date("2018-06-04"),
           },
           {
-            id: 1,
-            imageSource: avatar1,
+            id: "1",
+            picture: avatar1,
             species: "Red oak",
             piece: 30,
-            date: "2019-08-20",
+            date_planted: new Date("2019-08-20"),
           },
           {
-            id: 2,
-            imageSource: avatar2,
+            id: "2",
+            picture: avatar2,
             species: "Willow",
             piece: 50,
-            date: "2020-03-07",
+            date_planted: new Date("2020-03-07"),
           },
           {
-            id: 3,
-            imageSource: avatar3,
+            id: "3",
+            picture: avatar3,
             species: "Aesculus",
             piece: 5,
-            date: "2019-05-11",
+            date_planted: new Date("2019-05-11"),
           },
           {
-            id: 4,
-            imageSource: avatar4,
+            id: "4",
+            picture: avatar4,
             species: "Ulmus minor (Field elm)",
             piece: 5,
-            date: "2019-10-12",
+            date_planted: new Date("2019-10-12"),
           },
         ],
       });
@@ -90,22 +101,20 @@ export class SeedlingsPage extends Component<any, any> {
     }, 2000);
   }
 
-  openDetailsModal = (id: number) => {
-    const card = this.state.cards.find(
-      (card: { id: number }) => card.id === id
-    );
-    this.setState({ openDetailsModal: true, selectedCard: card });
+  openDetailsModal = (id: string) => {
+    const card = this.state.cards.filter((card) => card.id === id);
+    this.setState({ openDetailsModal: true, selectedCard: card[0] });
   };
 
   closeDetailsModal = () => {
     this.setState({
       openDetailsModal: false,
       selectedCard: {
-        id: null,
-        imageSource: "",
+        id: "",
+        picture: "",
         species: "",
-        piece: null,
-        date: "",
+        piece: 0,
+        date_planted: new Date(),
       },
     });
   };
@@ -118,10 +127,15 @@ export class SeedlingsPage extends Component<any, any> {
     this.setState({ openAddModal: false });
   };
 
-  onSubmit = (values: Values) => {
-    console.log(values);
+  onSubmit = (value: any) => {
+    const cards = this.state.cards;
+    value.id = cards[cards.length - 1].id + 1;
+    cards.push(value);
+    this.setState({ cards: cards });
+
     setTimeout(() => {
       this.closeAddModal();
+      console.log(cards);
     }, 1000);
     setTimeout(() => {
       this.setState({ openPopup: true });
@@ -151,27 +165,30 @@ export class SeedlingsPage extends Component<any, any> {
             )}
             {this.state.openDetailsModal && (
               <DetailsModal
-                title={this.state.selectedCard.species}
-                img={this.state.selectedCard.imageSource}
+                species={this.state.selectedCard.species}
+                picture={this.state.selectedCard.picture}
                 piece={this.state.selectedCard.piece}
-                date={this.state.selectedCard.date}
+                date_planted={this.state.selectedCard.date_planted}
               ></DetailsModal>
             )}
-            {this.state.cards.map((item: any) => (
+            {this.state.cards.map((item: Card) => (
               <Card
                 key={item.id}
-                imageSource={item.imageSource}
+                picture={item.picture}
                 species={item.species}
                 piece={item.piece}
                 click={() => this.openDetailsModal(item.id)}
               />
             ))}
           </div>
+          {!this.state.loading && (
+              <Chart data={this.state.cards}></Chart>
+            )}
           {this.state.openAddModal && (
             <Backdrop click={this.closeAddModal}></Backdrop>
           )}
           {this.state.openAddModal && (
-            <AddModal onSubmit={this.onSubmit} onCancel={this.closeAddModal}>
+            <AddModal type="seedlings" onSubmit={this.onSubmit} onCancel={this.closeAddModal}>
               seedling
             </AddModal>
           )}

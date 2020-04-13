@@ -7,22 +7,31 @@ import AddButton from "../../components/AddButton/AddButton";
 import Popup from "../../components/Popup/Popup";
 import Backdrop from "../../components/Backdrop/Backdrop";
 import Spinner from "../../components/Spinner/Spinner";
+import Chart from "../../components/Chart/Chart";
 
 import styles from "./Seeds.module.scss";
 
-type Values = {
+type Seeds = {
+  id: number;
   species: string;
-  piece: number | "";
-  date_planted: Date;
-  picture: string;
+  piece: number;
+  date: Date;
 };
 
-export class SeedsPage extends Component<any, any> {
+type State = {
+  seeds: Seeds[];
+  openAddModal: boolean;
+  openPopup: boolean;
+  loading: boolean;
+};
+
+export class SeedsPage extends Component<any, State> {
   constructor(props: any) {
     super(props);
     this.state = {
       seeds: [],
       openAddModal: false,
+      openPopup: false,
       loading: false,
     };
   }
@@ -36,31 +45,31 @@ export class SeedsPage extends Component<any, any> {
             id: 0,
             species: "Oak",
             piece: 50,
-            date: "2018-06-04",
+            date: new Date("2018-06-04"),
           },
           {
             id: 1,
             species: "Red oak",
             piece: 30,
-            date: "2019-08-20",
+            date: new Date("2019-08-20"),
           },
           {
             id: 2,
             species: "Willow",
             piece: 50,
-            date: "2020-03-07",
+            date: new Date("2020-03-07"),
           },
           {
             id: 3,
             species: "Aesculus",
             piece: 5,
-            date: "2019-05-11",
+            date: new Date("2019-05-11"),
           },
           {
             id: 4,
             species: "Ulmus minor (Field elm)",
             piece: 5,
-            date: "2019-10-12",
+            date: new Date("2019-10-12"),
           },
         ],
       });
@@ -76,8 +85,11 @@ export class SeedsPage extends Component<any, any> {
     this.setState({ openAddModal: false });
   };
 
-  onSubmit = (values: Values) => {
-    console.log(values);
+  onSubmit = (values: any) => {
+    const seeds = this.state.seeds;
+    values.id = seeds[seeds.length - 1].id + 1;
+    seeds.push(values);
+    this.setState({ seeds: seeds });
     setTimeout(() => {
       this.closeAddModal();
     }, 1000);
@@ -100,9 +112,19 @@ export class SeedsPage extends Component<any, any> {
               <Spinner></Spinner>
             </Fragment>
           )}
-          {!this.state.loading && <Table seeds={this.state.seeds}></Table>}
+          <div className={styles.Seeds_seedsContainer}>
+            {!this.state.loading && <Table seeds={this.state.seeds}></Table>}
+            {!this.state.loading && <Chart data={this.state.seeds}></Chart>}
+          </div>
           {this.state.openAddModal && (
-            <AddModal onSubmit={this.onSubmit} onCancel={this.closeAddModal}>
+            <Backdrop click={this.closeAddModal}></Backdrop>
+          )}
+          {this.state.openAddModal && (
+            <AddModal
+              type="seeds"
+              onSubmit={this.onSubmit}
+              onCancel={this.closeAddModal}
+            >
               seed
             </AddModal>
           )}

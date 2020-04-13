@@ -3,8 +3,15 @@ import { useTable } from "react-table";
 
 import styles from "./Table.module.scss";
 
+type Seeds = {
+  id: number;
+  species: string;
+  piece: number;
+  date: Date;
+};
+
 type Props = {
-  seeds: { id: number; species: string; piece: number; date: string }[];
+  seeds: Seeds[];
 }
 
 const Table: React.FC<Props> = (props) => {
@@ -26,8 +33,16 @@ const Table: React.FC<Props> = (props) => {
     []
   );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const data = React.useMemo(() => [...props.seeds], []);
+  const formatDate = () => {
+    let dataTemp: any = [];
+    props.seeds.forEach((seed, index) => {
+      dataTemp.push(seed);
+      dataTemp[index].date = dataTemp[index].date.toDateString();
+    });
+    return dataTemp;
+  };
+  
+  const data = React.useMemo(() => [...formatDate()], []);
 
   const {
     getTableProps,

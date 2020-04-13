@@ -1,30 +1,32 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import UniqueNumberField from "../UniqueNumberField/UniqueNumberField";
 
 import styles from "./AddModal.module.scss";
+import FileUpload from "../FileUpload/FileUpload";
 
 type Props = {
-  onSubmit: (values: Values) => void;
+  type: string;
+  onSubmit: (values: any) => void;
   onCancel: () => void;
 };
 
-type Values = {
-  species: string;
-  piece: number | "";
-  date_planted: Date;
-  picture: string;
-};
-
-const initialValues: Values = {
+const initialSeedlingsValues= {
+  id: "",
   species: "",
-  piece: "",
+  piece: 0,
   date_planted: new Date(),
   picture: "",
+};
+
+const initialSeedsValues = {
+  id: "",
+  species: "",
+  piece: 0,
+  date_planted: new Date()
 };
 
 const seedlingsSchema = Yup.object().shape({
@@ -36,8 +38,20 @@ const seedlingsSchema = Yup.object().shape({
   piece: Yup.number()
     .moreThan(0, "The number must be positive!")
     .required("Required"),
-  date_planted: Yup.date().required("Required"),
-  picture: Yup.string().required("Required"),
+  picture: Yup.string(),
+  date_planted: Yup.date().required("Required")
+});
+
+const seedsSchema = Yup.object().shape({
+  species: Yup.string()
+    .trim()
+    .min(2, "Too short!")
+    .max(50, "Too long!")
+    .required("Required"),
+  piece: Yup.number()
+    .moreThan(0, "The number must be positive!")
+    .required("Required"),
+  date_planted: Yup.date().required("Required")
 });
 
 const AddModal: React.FC<Props> = (props) => {
@@ -47,8 +61,8 @@ const AddModal: React.FC<Props> = (props) => {
         Add new {props.children}(s)
       </header>
       <Formik
-        initialValues={initialValues}
-        validationSchema={seedlingsSchema}
+        initialValues={props.type === "seedlings" ? initialSeedlingsValues : initialSeedsValues}
+        validationSchema={props.type === "seedlings" ? seedlingsSchema : seedsSchema}
         onSubmit={(values) => {
           props.onSubmit(values);
         }}
@@ -77,10 +91,12 @@ const AddModal: React.FC<Props> = (props) => {
             />
             <Field
               className={styles.AddModal_form_field}
+              type="number"
               name="piece"
               placeholder="Piece"
-              value={initialValues.piece}
-              component={UniqueNumberField}
+              value={values.piece ? values.piece : ""}
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
             <ErrorMessage
               className={styles.AddModal_form_error}
@@ -100,20 +116,19 @@ const AddModal: React.FC<Props> = (props) => {
               name="date_planted"
               component="div"
             />
-            <Field
-              className={styles.AddModal_form_field}
-              type="text"
-              name="picture"
-              placeholder="Picture"
-              value={values.picture}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            <ErrorMessage
-              className={styles.AddModal_form_error}
-              name="picture"
-              component="div"
-            />
+            {props.type === "seedlings" && (
+              <Fragment>
+                <Field
+                  name="picture"
+                  component={FileUpload}
+                />
+                <ErrorMessage
+                  className={styles.AddModal_form_error}
+                  name="picture"
+                  component="div"
+                />
+              </Fragment>
+            )}
             <div className={styles.AddModal_formActions}>
               <button
                 className={styles.AddModal_formActions_button}

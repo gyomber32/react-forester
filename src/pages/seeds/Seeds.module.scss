@@ -6,11 +6,14 @@
     background-size: cover;
     background-attachment: fixed;
   }
-  
-  Table {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+
+  .Seeds_seedsContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+    padding: 50px;
   }
+
   

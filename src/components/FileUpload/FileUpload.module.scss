@@ -1,0 +1,19 @@
+.Input {
+  /* needs to be changed */
+  width: 177px;
+  color: white;
+  height: 25px;
+  background-color: #707070;
+  border: none;
+  border-color: transparent;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+::-webkit-file-upload-button {
+  height: 25px;
+  border-radius: none;
+  background: #191919;
+  border: none;
+  color: white;
+}
