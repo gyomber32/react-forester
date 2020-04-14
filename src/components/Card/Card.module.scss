@@ -1,0 +1,32 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/animations";
+
+.Card {
+  box-shadow: $item-shadow;
+  background-color: rgba(25, 25, 25, 0.8);
+  border-radius: 10px;
+  margin: 10px;
+  transition: transform 1s;
+}
+
+.Card:hover {
+  box-shadow: $item-shadow-hover;
+  transform: $scale-hover;
+}
+
+.Card_img {
+  border-top-left-radius: $component-border-radius;
+  border-top-right-radius: $component-border-radius;
+  width: 300px;
+  height: 400px;
+}
+
+.Card_content {
+  padding: 2px 16px;
+}
+
+h4,
+p {
+  color: $text-color;
+}

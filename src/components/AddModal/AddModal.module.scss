@@ -1,0 +1,75 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/animations";
+@import "../../assets/styles/proportions";
+
+.AddModal {
+  background-color: $modal-background-color;
+  box-shadow: $item-shadow;
+  width: 400px;
+  height: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: $component-border-radius;
+  z-index: 2;
+}
+
+.AddModal_title {
+  color: $text-color;
+  font-size: $header-text-size;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.AddModal_form {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.AddModal_form_field {
+  color: $text-color;
+  height: 25px;
+  background-color: $form-field-color;
+  border-radius: $form-field-border-radius;
+  border: none;
+  border-color: transparent;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.AddModal_form_error {
+  color: $error-text-color;
+  padding-bottom: 10px;
+  font-weight: bold;
+}
+
+.AddModal_formActions {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px 0 10px 0;
+}
+
+.AddModal_formActions_button {
+  background-color: $form-action-button-color;
+  box-shadow: $item-shadow;
+  border: none;
+  border-color: transparent;
+  width: 100px;
+  height: 40px;
+  border-radius: $form-field-border-radius;
+  color: $text-color;
+  transition: transform 1s;
+}
+
+.AddModal_formActions_button:hover {
+  box-shadow: $item-shadow-hover;
+  transform: scale(1.1);
+}

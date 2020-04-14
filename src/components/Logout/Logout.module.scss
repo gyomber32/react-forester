@@ -1,0 +1,52 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/animations";
+
+.Logout {
+  list-style-type: none;
+  padding: 10px;
+}
+
+.Logout_element {
+  font-family: Arial;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: $text-color;
+  text-shadow: $text-shadow;
+  margin: 0 20px;
+  font-size: $navigation-text-size;
+  letter-spacing: 3px;
+  position: relative;
+  display: inline-block;
+  transition: all 0.25s cubic-bezier(1, 0, 0.58, 0.97);
+}
+
+.Logout_element:before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  top: calc(50% - 1.5px);
+  right: 0;
+  transition: inherit;
+}
+
+.Logout_element:hover {
+  transform: $navigation-item-scale-hover;
+}
+
+.Logout {
+  animation: animate 0.2s 1.3s ease 1 both;
+}
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

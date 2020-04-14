@@ -1,0 +1,23 @@
+@import '../../assets/styles/colors';
+@import '../../assets/styles/proportions';
+
+.Input {
+  /* needs to be changed */
+  width: 177px;
+  background-color: $form-field-color;
+  border-radius: $form-field-border-radius;
+  color: $text-color;
+  height: 25px;
+  border: none;
+  border-color: transparent;
+  margin-bottom: 20px;
+}
+
+::-webkit-file-upload-button {
+  background: $button-color;
+  height: 25px;
+  width: 50%;
+  border-radius: none;
+  border: 2px double $button-color;
+  color: $text-color;
+}

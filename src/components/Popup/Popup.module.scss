@@ -1,0 +1,37 @@
+@import '../../assets/styles/colors';
+@import '../../assets/styles/proportions';
+@import '../../assets/styles/animations';
+
+.Popup {
+  background-color: $background-color;
+  box-shadow: $item-shadow;
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 30%;
+  height: 50px;
+  border-bottom-left-radius: $component-border-radius;
+  border-bottom-right-radius: $component-border-radius;
+}
+
+.Popup_text {
+  top: 50%;
+  text-align: center;
+  font-weight: bold;
+  text-shadow: $text-shadow;
+}
+
+.Popup {
+  opacity: 1;
+  animation: fade 3s 1s ease 1 both;
+}
+
+@keyframes fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}

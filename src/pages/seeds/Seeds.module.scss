@@ -1,0 +1,21 @@
+@import "../../assets/styles/background-images";
+
+.Seeds {
+  background-image: $seeds-page-background;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  resize: both;
+  overflow-y: auto;
+}
+
+.Seeds_seedsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: flex-start;
+  padding: 50px;
+}

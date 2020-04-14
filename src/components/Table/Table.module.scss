@@ -1,0 +1,49 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/animations";
+
+.Table {
+  width: 800px;
+  box-shadow: $item-shadow;
+  background-color: $background-color;
+  border-radius: $component-border-radius;
+  margin: 10px;
+}
+
+th,
+td {
+  color: $text-color;
+  font-weight: bold;
+  font-size: $header-text-size;
+  text-align: center;
+  border-bottom: 1px solid $table-border-color;
+  border-right: 1px solid $table-border-color;
+}
+tr {
+  height: 50px;
+}
+
+tbody > tr:first-child > td {
+  border-top: 1px solid $table-border-color;
+}
+
+th {
+  border-bottom: none;
+}
+
+th:last-child {
+  border-right: 0;
+}
+
+td:last-child {
+  border-right: 0;
+}
+tbody > tr:last-child > td {
+  border-bottom: 0;
+}
+
+td {
+  color: $text-color;
+  font-size: $content-text-size;
+  text-align: center;
+}
