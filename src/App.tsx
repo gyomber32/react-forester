@@ -3,20 +3,16 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 /* pages */
 import { AuthPage } from "./pages/authentication/Auth";
-import { SeedlingsPage } from "./pages/seedlings/seedlings";
-import { SeedsPage } from "./pages/seeds/seeds";
+import { SeedlingsPage } from "./pages/seedlings/Seedlings";
+import { SeedsPage } from "./pages/seeds/Seeds";
 
-/* components */
-import { MainNavigation } from "./components/Navigation/MainNavigation";
-
-import "./App.css";
+import styles from "./App.module.scss";
 
 const App = () => {
   return (
-    <div className="App">
+    <div className={styles.App}>
       <BrowserRouter>
         <React.Fragment>
-          <MainNavigation />
           <Switch>
             <Route exact={true} path="/" to="/auth" />
             <Route path="/auth" component={AuthPage} />

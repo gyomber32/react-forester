@@ -1,0 +1,66 @@
+.AddModal {
+  z-index: 2;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: rgba(25, 25, 25, 1);
+  width: 400px;
+  height: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+}
+
+.AddModal_title {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.AddModal_form {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.AddModal_form_field {
+  color: white;
+  height: 25px;
+  background-color: #707070;
+  border: none;
+  border-color: transparent;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.AddModal_form_error {
+  color: white;
+  padding-bottom: 10px;
+}
+
+.AddModal_formActions {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px 0 10px 0;
+}
+
+.AddModal_formActions_button {
+  background-color: #505050;
+  border: none;
+  border-color: transparent;
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  color: white;
+}
+
+#root > div > div > div.AddModal_AddModal__1TS8l > form > div.react-datepicker__tab-loop > div.react-datepicker-popper.datepicker > div > .react-datepicker{
+  background-color: black !important;
+}

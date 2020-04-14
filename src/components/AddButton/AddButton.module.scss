@@ -1,0 +1,26 @@
+.AddButton {
+  background-color: rgb(25, 25, 25);
+  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.4);
+  width: 70px;
+  height: 70px;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  transition: transform 1s;
+}
+
+.AddButton:hover {
+  box-shadow: 0 8px 30px 10px rgba(0, 0, 0, 0.4);
+  transform: scale(1.1);
+}
+
+.AddButton___icon {
+  filter: invert(100%);
+  width: 30px;
+  height: 30px;
+  z-index: 200;
+  content: url("../../assets/icons/plus.svg");
+}

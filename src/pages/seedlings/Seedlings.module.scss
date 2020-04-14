@@ -1,0 +1,19 @@
+.Seedlings {
+  background-image: url("../../assets/background-images/seedlings_background.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  resize: both;
+  overflow-y: auto;
+}
+
+.Seedlings_cardsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: flex-start;
+  padding: 50px;
+}
