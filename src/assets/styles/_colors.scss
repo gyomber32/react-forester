@@ -1,7 +1,11 @@
-$background-color: #c6538c;
-$button-color: #c6538c;
-$input-field-color: #c6538c;
+$background-color: rgba(25, 25, 25, 0.8);
+$modal-background-color: #191919;
+$button-color: #191919;
+$backdrop-color: rgba(0, 0, 0, 0.5);
+$form-action-button-color: #505050;
+$form-field-color: #707070;
 $loading-indicator-color: #0a8a00;
-$text-color: white;
-$header-text-size: 24px;
-$content-text-size: 18px;
+$text-color: #ffffff;
+$error-text-color: #b30000;
+$spinner-color: #0a8a00;
+$table-border-color: #707070;
