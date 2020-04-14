@@ -9,24 +9,19 @@ import Backdrop from "../../components/Backdrop/Backdrop";
 import Spinner from "../../components/Spinner/Spinner";
 import Chart from "../../components/Chart/Chart";
 
+import Seed from '../../models/types/Seed';
+
 import styles from "./Seeds.module.scss";
 
-type Seeds = {
-  id: number;
-  species: string;
-  piece: number;
-  date: Date;
-};
-
 type State = {
-  seeds: Seeds[];
+  seeds: Seed[];
   openAddModal: boolean;
   openPopup: boolean;
   loading: boolean;
 };
 
-export class SeedsPage extends Component<any, State> {
-  constructor(props: any) {
+export class SeedsPage extends Component<{}, State> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       seeds: [],
@@ -42,34 +37,34 @@ export class SeedsPage extends Component<any, State> {
       this.setState({
         seeds: [
           {
-            id: 0,
+            id: "0",
             species: "Oak",
             piece: 50,
-            date: new Date("2018-06-04"),
+            dateSeeded: new Date("2018-06-04")
           },
           {
-            id: 1,
+            id: "1",
             species: "Red oak",
             piece: 30,
-            date: new Date("2019-08-20"),
+            dateSeeded: new Date("2019-08-20"),
           },
           {
-            id: 2,
+            id: "2",
             species: "Willow",
             piece: 50,
-            date: new Date("2020-03-07"),
+            dateSeeded: new Date("2020-03-07"),
           },
           {
-            id: 3,
+            id: "3",
             species: "Aesculus",
             piece: 5,
-            date: new Date("2019-05-11"),
+            dateSeeded: new Date("2019-05-11"),
           },
           {
-            id: 4,
+            id: "4",
             species: "Ulmus minor (Field elm)",
             piece: 5,
-            date: new Date("2019-10-12"),
+            dateSeeded: new Date("2019-10-12"),
           },
         ],
       });
@@ -113,7 +108,7 @@ export class SeedsPage extends Component<any, State> {
             </Fragment>
           )}
           {this.state.openPopup && (
-            <Popup message={"Succesfully added to database"}></Popup>
+            <Popup>Successfully added to database</Popup>
           )}
           <div className={styles.Seeds_seedsContainer}>
             {!this.state.loading && <Table seeds={this.state.seeds}></Table>}

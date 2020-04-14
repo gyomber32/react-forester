@@ -1,17 +1,5 @@
-type Card = {
-    id: string;
-    species: string;
-    piece: number;
-    date_planted: Date;
-    picture: string;
-};
-
-type Seeds = {
-    id: number;
-    species: string;
-    piece: number;
-    date: Date;
-  };
+import Seedling from "../models/types/Seedling";
+import Seed from "../models/types/Seed";
 
 type ChartData = {
     labels: String[];
@@ -25,7 +13,7 @@ type ChartData = {
     }];
 };
 
-const chartPropsTransform = (inputData: Card[] | Seeds[]) => {
+const chartPropsTransform = (inputData: Seedling[] | Seed[]) => {
     let chartData: ChartData = { labels: [], datasets: [{ data: [], backgroundColor: [], borderColor: [], borderWidth: 4, hoverBorderColor: [], hoverBackgroundColor: [] }] };
     inputData.forEach((data: any) => {
         chartData.labels.push(data.species);

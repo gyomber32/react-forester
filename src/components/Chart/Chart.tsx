@@ -2,27 +2,15 @@ import React from "react";
 
 import { Doughnut } from "react-chartjs-2";
 
+import Seedling from "../../models/types/Seedling";
+import Seed from "../../models/types/Seed";
+
 import chartPropsTransform from "../../utils/ChartPropTransform";
 
 import styles from "./Chart.module.scss";
 
-type Card = {
-  id: string;
-  species: string;
-  piece: number;
-  date_planted: Date;
-  picture: string;
-};
-
-type Seeds = {
-  id: number;
-  species: string;
-  piece: number;
-  date: Date;
-};
-
 type Props = {
-  data: Card[] | Seeds[];
+  data: Seedling[] | Seed[];
 };
 
 const Chart: React.FC<Props> = (props) => {

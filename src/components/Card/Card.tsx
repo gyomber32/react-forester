@@ -6,7 +6,7 @@ import styles from "./Card.module.scss";
 
 type Props = {
   species: string;
-  piece: number | null;
+  piece: number;
   picture: string;
   click: any;
 };

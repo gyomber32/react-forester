@@ -1,18 +1,13 @@
 import React from "react";
 import { useTable } from "react-table";
 
+import Seed from "../../models/types/Seed";
+
 import styles from "./Table.module.scss";
 
-type Seeds = {
-  id: number;
-  species: string;
-  piece: number;
-  date: Date;
-};
-
 type Props = {
-  seeds: Seeds[];
-}
+  seeds: Seed[];
+};
 
 const Table: React.FC<Props> = (props) => {
   const columns = React.useMemo(
@@ -27,7 +22,7 @@ const Table: React.FC<Props> = (props) => {
       },
       {
         Header: "Date seeded",
-        accessor: "date",
+        accessor: "dateSeeded",
       },
     ],
     []
@@ -37,11 +32,11 @@ const Table: React.FC<Props> = (props) => {
     let dataTemp: any = [];
     props.seeds.forEach((seed, index) => {
       dataTemp.push(seed);
-      dataTemp[index].date = dataTemp[index].date.toDateString();
+      dataTemp[index].dateSeeded = dataTemp[index].dateSeeded.toDateString();
     });
     return dataTemp;
   };
-  
+
   const data = React.useMemo(() => [...formatDate()], []);
 
   const {
