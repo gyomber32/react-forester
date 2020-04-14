@@ -128,14 +128,12 @@ export class SeedlingsPage extends Component<any, State> {
   };
 
   onSubmit = (value: any) => {
-    const cards = this.state.cards;
-    value.id = cards[cards.length - 1].id + 1;
-    cards.push(value);
-    this.setState({ cards: cards });
-
     setTimeout(() => {
+      const cards = this.state.cards;
+      value.id = cards[cards.length - 1].id + 1;
+      cards.push(value);
+      this.setState({ cards: cards });
       this.closeAddModal();
-      console.log(cards);
     }, 1000);
     setTimeout(() => {
       this.setState({ openPopup: true });
@@ -181,14 +179,16 @@ export class SeedlingsPage extends Component<any, State> {
               />
             ))}
           </div>
-          {!this.state.loading && (
-              <Chart data={this.state.cards}></Chart>
-            )}
+          {!this.state.loading && <Chart data={this.state.cards}></Chart>}
           {this.state.openAddModal && (
             <Backdrop click={this.closeAddModal}></Backdrop>
           )}
           {this.state.openAddModal && (
-            <AddModal type="seedlings" onSubmit={this.onSubmit} onCancel={this.closeAddModal}>
+            <AddModal
+              type="seedlings"
+              onSubmit={this.onSubmit}
+              onCancel={this.closeAddModal}
+            >
               seedling
             </AddModal>
           )}

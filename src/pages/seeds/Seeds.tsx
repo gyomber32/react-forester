@@ -86,11 +86,11 @@ export class SeedsPage extends Component<any, State> {
   };
 
   onSubmit = (values: any) => {
-    const seeds = this.state.seeds;
-    values.id = seeds[seeds.length - 1].id + 1;
-    seeds.push(values);
-    this.setState({ seeds: seeds });
     setTimeout(() => {
+      const seeds = this.state.seeds;
+      values.id = seeds[seeds.length - 1].id + 1;
+      seeds.push(values);
+      this.setState({ seeds: seeds });
       this.closeAddModal();
     }, 1000);
     setTimeout(() => {
@@ -111,6 +111,9 @@ export class SeedsPage extends Component<any, State> {
               <Backdrop></Backdrop>
               <Spinner></Spinner>
             </Fragment>
+          )}
+          {this.state.openPopup && (
+            <Popup message={"Succesfully added to database"}></Popup>
           )}
           <div className={styles.Seeds_seedsContainer}>
             {!this.state.loading && <Table seeds={this.state.seeds}></Table>}

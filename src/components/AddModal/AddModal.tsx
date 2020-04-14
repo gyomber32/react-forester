@@ -2,11 +2,12 @@ import React, { Fragment } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+import FileUpload from "../FileUpload/FileUpload";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import styles from "./AddModal.module.scss";
-import FileUpload from "../FileUpload/FileUpload";
 
 type Props = {
   type: string;
@@ -108,6 +109,7 @@ const AddModal: React.FC<Props> = (props) => {
               popperClassName="datepicker"
               name="date_planted"
               dateFormat="yyyy.MM.dd"
+              maxDate={new Date()}
               selected={values.date_planted}
               onChange={(date) => setFieldValue("date_planted", date)}
             />

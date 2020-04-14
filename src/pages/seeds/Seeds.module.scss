@@ -1,19 +1,19 @@
 .Seeds {
-    background-image: url("../../assets/background-images/seeds_background.jpg");
-    height: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-  }
+  background-image: url("../../assets/background-images/seeds_background.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  resize: both;
+  overflow-y: auto;
+}
 
-  .Seeds_seedsContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-content: flex-start;
-    padding: 50px;
-  }
-
-  
+.Seeds_seedsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: flex-start;
+  padding: 50px;
+}

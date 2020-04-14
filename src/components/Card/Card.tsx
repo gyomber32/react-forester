@@ -1,4 +1,7 @@
 import React from "react";
+
+import noContent from "../../assets/no-content.png";
+
 import styles from "./Card.module.scss";
 
 type Props = {
@@ -6,12 +9,16 @@ type Props = {
   piece: number | null;
   picture: string;
   click: any;
-}
+};
 
 const Card: React.FC<Props> = (props) => {
   return (
     <div className={styles.Card} onClick={props.click}>
-      <img src={props.picture} alt="Avatar" className={styles.Card_img} />
+      <img
+        src={props.picture ? props.picture : noContent}
+        alt="Avatar"
+        className={styles.Card_img}
+      />
       <div className={styles.Card_content}>
         <h4>
           <b>{props.species}</b>

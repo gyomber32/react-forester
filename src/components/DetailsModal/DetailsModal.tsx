@@ -1,4 +1,7 @@
 import React from "react";
+
+import parseDate from '../../utils/ParseDate';
+
 import styles from "./DetailsModal.module.scss";
 
 type Props = {
@@ -6,16 +9,7 @@ type Props = {
   piece: number | null;
   date_planted: Date;
   picture: string;
-}
-
-function parseData(date: Date): number {
-  const milliseconds = date.getTime();
-  const millisecondsUpToday = Date.parse(new Date().toString());
-  const days = Math.floor(
-    (millisecondsUpToday - milliseconds) / (24 * 60 * 60 * 1000)
-  );
-  return days;
-}
+};
 
 const DetailsModal: React.FC<Props> = (props) => {
   return (
@@ -26,11 +20,11 @@ const DetailsModal: React.FC<Props> = (props) => {
         <p className={styles.DetailsModal_content_paragraph}>
           Piece: {props.piece}
         </p>
-       <p className={styles.DetailsModal_content_paragraph}>
+        <p className={styles.DetailsModal_content_paragraph}>
           Date planted: {props.date_planted.toDateString()}
         </p>
         <p className={styles.DetailsModal_content_paragraph}>
-          Days growing: {parseData(props.date_planted)} days
+          Growing for: {parseDate(props.date_planted)}
         </p>
       </div>
     </div>
