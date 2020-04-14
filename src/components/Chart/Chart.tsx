@@ -14,7 +14,6 @@ type Props = {
 };
 
 const Chart: React.FC<Props> = (props) => {
-  console.log('rerender Chart')
   return (
     <div className={styles.Chart}>
       <Doughnut
