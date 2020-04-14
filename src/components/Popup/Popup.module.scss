@@ -1,20 +1,24 @@
+@import '../../assets/styles/colors';
+@import '../../assets/styles/proportions';
+@import '../../assets/styles/animations';
+
 .Popup {
+  background-color: $background-color;
+  box-shadow: $item-shadow;
   position: fixed;
   left: 50%;
   transform: translate(-50%, 0);
-  background-color: rgba(25, 25, 25, 0.8);
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   width: 30%;
   height: 50px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: $component-border-radius;
+  border-bottom-right-radius: $component-border-radius;
 }
 
 .Popup_text {
   top: 50%;
   text-align: center;
   font-weight: bold;
-  text-shadow: 4px 4px 3px black;
+  text-shadow: $text-shadow;
 }
 
 .Popup {

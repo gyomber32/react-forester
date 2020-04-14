@@ -1,6 +1,10 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/animations";
+@import "../../assets/styles/icons";
+
 .AddButton {
-  background-color: rgb(25, 25, 25);
-  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.4);
+  background-color: $button-color;
+  box-shadow: $item-shadow;
   width: 70px;
   height: 70px;
   border: none;
@@ -13,14 +17,14 @@
 }
 
 .AddButton:hover {
-  box-shadow: 0 8px 30px 10px rgba(0, 0, 0, 0.4);
-  transform: scale(1.1);
+  box-shadow: $item-shadow-hover;
+  transform: $scale-hover;
 }
 
 .AddButton___icon {
   filter: invert(100%);
   width: 30px;
   height: 30px;
-  z-index: 200;
-  content: url("../../assets/icons/plus.svg");
+  z-index: 1;
+  content: $add-icon;
 }

@@ -1,9 +1,14 @@
+@import "../../assets/styles/background-images";
+@import "../../assets/styles/colors";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/animations";
+
 .Auth {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100%;
-  background-image: url("../../assets/background-images/forester_auth_background.jpg");
+  background-image: $auth-page-background;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -12,9 +17,10 @@
 }
 
 .AuthDialog {
-  background-color: rgba(25, 25, 25, 0.9);
+  background-color: $background-color;
+  box-shadow: $item-shadow;
   margin: auto;
-  border-radius: 20px;
+  border-radius: $component-border-radius;
   width: 500px;
   padding-bottom: 20px;
 }
@@ -27,31 +33,31 @@
 }
 
 .AuthDialog_header_text {
-  color: white;
+  color: $text-color;
   font-size: 30px;
   text-align: justify;
   text-align-last: center;
 }
 
 .AuthDialog_header_textAuthor {
-  color: white;
-  font-size: 20px;
+  color: $text-color;
+  font-size: $header-text-size;
 }
 
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: white;
+  color: $text-color;
   opacity: 1; /* Firefox */
 }
 
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: white;
+  color: $text-color;
 }
 
 ::-ms-input-placeholder {
   /* Microsoft Edge */
-  color: white;
+  color: $text-color;
 }
 
 .AuthDialog_form {
@@ -62,17 +68,17 @@
 }
 
 .AuthDialog_form_field {
-  color: white;
+  color: $text-color;
   height: 25px;
-  background-color: #707070;
+  background-color: $form-field-color;
   border: none;
   border-color: transparent;
   margin-bottom: 20px;
-  border-radius: 5px;
+  border-radius: $form-field-border-radius;
 }
 
 .AuthDialog_form_error {
-  color: white;
+  color: $text-color;
   padding-bottom: 10px;
 }
 
@@ -84,11 +90,18 @@
 }
 
 .AuthDialog_formActions_button {
-  background-color: #505050;
+  background-color: $form-action-button-color;
+  box-shadow: $item-shadow;
   border: none;
   border-color: transparent;
   width: 100px;
   height: 40px;
-  border-radius: 5px;
-  color: white;
+  border-radius: $form-action-button-border-radius;
+  color: $text-color;
+  transition: transform 1s;
+}
+
+.AuthDialog_formActions_button:hover {
+  box-shadow: $item-shadow-hover;
+  transform: scale(1.1);
 }

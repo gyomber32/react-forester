@@ -1,5 +1,7 @@
+@import '../../assets/styles/background-images';
+
 .Seedlings {
-  background-image: url("../../assets/background-images/seedlings_background.jpg");
+  background-image: $seedlings-page-background;
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;

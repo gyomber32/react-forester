@@ -1,3 +1,7 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/animations";
+
 .Logout {
   list-style-type: none;
   padding: 10px;
@@ -8,10 +12,10 @@
   font-weight: 600;
   text-transform: uppercase;
   text-decoration: none;
-  color: white;
-  text-shadow: 4px 4px 3px black;
+  color: $text-color;
+  text-shadow: $text-shadow;
   margin: 0 20px;
-  font-size: 16px;
+  font-size: $navigation-text-size;
   letter-spacing: 3px;
   position: relative;
   display: inline-block;
@@ -25,12 +29,11 @@
   height: 2px;
   top: calc(50% - 1.5px);
   right: 0;
-  background-color: #262626;
   transition: inherit;
 }
 
 .Logout_element:hover {
-  transform: scale(1.2);
+  transform: $navigation-item-scale-hover;
 }
 
 .Logout {

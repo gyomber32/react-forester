@@ -1,19 +1,23 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/animations";
+@import "../../assets/styles/proportions";
+
 .AddModal {
-  z-index: 2;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  background-color: rgba(25, 25, 25, 1);
+  background-color: $modal-background-color;
+  box-shadow: $item-shadow;
   width: 400px;
   height: auto;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 10px;
+  border-radius: $component-border-radius;
+  z-index: 2;
 }
 
 .AddModal_title {
-  color: white;
-  font-size: 24px;
+  color: $text-color;
+  font-size: $header-text-size;
   font-weight: bold;
   text-align: center;
   padding-top: 10px;
@@ -28,9 +32,10 @@
 }
 
 .AddModal_form_field {
-  color: white;
+  color: $text-color;
   height: 25px;
-  background-color: #707070;
+  background-color: $form-field-color;
+  border-radius: $form-field-border-radius;
   border: none;
   border-color: transparent;
   margin-bottom: 20px;
@@ -38,8 +43,9 @@
 }
 
 .AddModal_form_error {
-  color: white;
+  color: $error-text-color;
   padding-bottom: 10px;
+  font-weight: bold;
 }
 
 .AddModal_formActions {
@@ -52,15 +58,18 @@
 }
 
 .AddModal_formActions_button {
-  background-color: #505050;
+  background-color: $form-action-button-color;
+  box-shadow: $item-shadow;
   border: none;
   border-color: transparent;
   width: 100px;
   height: 40px;
-  border-radius: 5px;
-  color: white;
+  border-radius: $form-field-border-radius;
+  color: $text-color;
+  transition: transform 1s;
 }
 
-#root > div > div > div.AddModal_AddModal__1TS8l > form > div.react-datepicker__tab-loop > div.react-datepicker-popper.datepicker > div > .react-datepicker{
-  background-color: black !important;
+.AddModal_formActions_button:hover {
+  box-shadow: $item-shadow-hover;
+  transform: scale(1.1);
 }
