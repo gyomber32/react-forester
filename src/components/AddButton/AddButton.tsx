@@ -4,7 +4,7 @@ import styles from "./AddButton.module.scss";
 
 type Props = {
   click: any;
-}
+};
 
 const Button: React.FC<Props> = (props) => (
   <button className={styles.AddButton} onClick={props.click}>

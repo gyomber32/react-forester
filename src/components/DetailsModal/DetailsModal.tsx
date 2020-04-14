@@ -1,13 +1,13 @@
 import React from "react";
 
-import parseDate from '../../utils/ParseDate';
+import parseDate from "../../utils/ParseDate";
 
 import styles from "./DetailsModal.module.scss";
 
 type Props = {
   species: string;
-  piece: number | null;
-  date_planted: Date;
+  piece: number;
+  datePlanted: Date;
   picture: string;
 };
 
@@ -21,10 +21,10 @@ const DetailsModal: React.FC<Props> = (props) => {
           Piece: {props.piece}
         </p>
         <p className={styles.DetailsModal_content_paragraph}>
-          Date planted: {props.date_planted.toDateString()}
+          Date planted: {props.datePlanted.toDateString()}
         </p>
         <p className={styles.DetailsModal_content_paragraph}>
-          Growing for: {parseDate(props.date_planted)}
+          Growing for: {parseDate(props.datePlanted)}
         </p>
       </div>
     </div>

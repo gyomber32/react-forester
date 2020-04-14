@@ -24,17 +24,17 @@ const fileSelectedhandler = (event: any, form: any, field: any) => {
 
 const FileUpload: React.FC<Props> = (props) => {
   return (
-      <input
-        className={styles.Input}
-        ref={textInput}
-        id="file"
-        type="file"
-        title=""
-        src=""
-        onChange={(event) => {
-          fileSelectedhandler(event, props.form, props.field);
-        }}
-      ></input>
+    <input
+      className={styles.Input}
+      ref={textInput}
+      id="file"
+      type="file"
+      title=""
+      src=""
+      onChange={(event) => {
+        fileSelectedhandler(event, props.form, props.field);
+      }}
+    ></input>
   );
 };
 
