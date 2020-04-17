@@ -10,6 +10,7 @@ import chartPropsTransform from "../../utils/ChartPropTransform";
 import styles from "./Chart.module.scss";
 
 type Props = {
+  length: number;
   data: Seedling[] | Seed[];
 };
 
@@ -34,4 +35,6 @@ const Chart: React.FC<Props> = (props) => {
   );
 };
 
-export default Chart;
+export default React.memo(Chart, function (prevProps, nextProps) {
+  return prevProps.length === nextProps.length;
+});

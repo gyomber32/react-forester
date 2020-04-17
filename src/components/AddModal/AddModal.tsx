@@ -7,9 +7,6 @@ import FileUpload from "../FileUpload/FileUpload";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import Seedling from "../../models/types/Seedling";
-import Seed from "../../models/types/Seed";
-
 import styles from "./AddModal.module.scss";
 
 type Props = {
@@ -18,7 +15,7 @@ type Props = {
   onCancel: () => void;
 };
 
-const initialSeedlingsValues: Seedling = {
+const initialSeedlingsValues = {
   id: "",
   species: "",
   piece: 0,
@@ -26,7 +23,7 @@ const initialSeedlingsValues: Seedling = {
   picture: "",
 };
 
-const initialSeedsValues: Seed = {
+const initialSeedsValues = {
   id: "",
   species: "",
   piece: 0,

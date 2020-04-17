@@ -1,8 +1,9 @@
 import moment from "moment";
 
-const parseDate = (date: Date): string => {
+const parseDate = (date: string): string => {
     let daysGrowing = "";
-    const date_planted = moment(date);
+    const tempDate = new Date(date);
+    const date_planted = moment(tempDate);
     const today = moment(new Date());
 
     const years = today.diff(date_planted, "year");

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 
 import Navigation from "../../components/Navigation/Navigation";
 import Table from "../../components/Table/Table";
@@ -9,126 +9,110 @@ import Backdrop from "../../components/Backdrop/Backdrop";
 import Spinner from "../../components/Spinner/Spinner";
 import Chart from "../../components/Chart/Chart";
 
-import Seed from '../../models/types/Seed';
+import Seed from "../../models/types/Seed";
 
 import styles from "./Seeds.module.scss";
 
-type State = {
-  seeds: Seed[];
-  openAddModal: boolean;
-  openPopup: boolean;
-  loading: boolean;
-};
+const SeedsPage: React.FC = () => {
+  const [seeds, setSeeds] = useState<Seed[]>([]);
 
-export class SeedsPage extends Component<{}, State> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      seeds: [],
-      openAddModal: false,
-      openPopup: false,
-      loading: false,
-    };
-  }
+  const [addModal, setAddModalState] = useState<boolean>(false);
 
-  componentWillMount() {
-    this.setState({ loading: true });
+  const [popup, setPopupState] = useState<boolean>(false);
+
+  const [loading, setLoadingState] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLoadingState(true);
     setTimeout(() => {
-      this.setState({
-        seeds: [
-          {
-            id: "0",
-            species: "Oak",
-            piece: 50,
-            dateSeeded: new Date("2018-06-04")
-          },
-          {
-            id: "1",
-            species: "Red oak",
-            piece: 30,
-            dateSeeded: new Date("2019-08-20"),
-          },
-          {
-            id: "2",
-            species: "Willow",
-            piece: 50,
-            dateSeeded: new Date("2020-03-07"),
-          },
-          {
-            id: "3",
-            species: "Aesculus",
-            piece: 5,
-            dateSeeded: new Date("2019-05-11"),
-          },
-          {
-            id: "4",
-            species: "Ulmus minor (Field elm)",
-            piece: 5,
-            dateSeeded: new Date("2019-10-12"),
-          },
-        ],
-      });
-      this.setState({ loading: false });
+      setSeeds([
+        {
+          id: "0",
+          species: "Oak",
+          piece: 50,
+          dateSeeded: new Date("2018-06-04").toDateString(),
+        },
+        {
+          id: "1",
+          species: "Red oak",
+          piece: 30,
+          dateSeeded: new Date("2019-08-20").toDateString(),
+        },
+        {
+          id: "2",
+          species: "Willow",
+          piece: 50,
+          dateSeeded: new Date("2020-03-07").toDateString(),
+        },
+        {
+          id: "3",
+          species: "Aesculus",
+          piece: 5,
+          dateSeeded: new Date("2019-05-11").toDateString(),
+        },
+        {
+          id: "4",
+          species: "Ulmus minor (Field elm)",
+          piece: 5,
+          dateSeeded: new Date("2019-10-12").toDateString(),
+        },
+      ]);
+
+      setLoadingState(false);
     }, 2000);
-  }
+  }, []);
 
-  openAddModal = () => {
-    this.setState({ openAddModal: true });
+  const openAddModal = () => {
+    setAddModalState(true);
   };
 
-  closeAddModal = () => {
-    this.setState({ openAddModal: false });
+  const closeAddModal = () => {
+    setAddModalState(false);
   };
 
-  onSubmit = (values: any) => {
+  const onSubmit = (value: any) => {
     setTimeout(() => {
-      const seeds = this.state.seeds;
-      values.id = seeds[seeds.length - 1].id + 1;
-      seeds.push(values);
-      this.setState({ seeds: seeds });
-      this.closeAddModal();
+      // needs to be deleted after values will be fecthed from the backend
+      value.id = seeds[seeds.length - 1].id + 1;
+      value.dateSeeded = value.dateSeeded.toDateString();
+      const newSeeds = seeds;
+      newSeeds.push(value);
+      setSeeds(newSeeds);
+      closeAddModal();
     }, 1000);
     setTimeout(() => {
-      this.setState({ openPopup: true });
+      setPopupState(true);
     }, 1000);
     setTimeout(() => {
-      this.setState({ openPopup: false });
+      setPopupState(false);
     }, 5000);
   };
 
-  render() {
-    return (
-      <Fragment>
-        <Navigation />
-        <div className={styles.Seeds}>
-          {this.state.loading && (
-            <Fragment>
-              <Backdrop></Backdrop>
-              <Spinner></Spinner>
-            </Fragment>
-          )}
-          {this.state.openPopup && (
-            <Popup>Successfully added to database</Popup>
-          )}
-          <div className={styles.Seeds_seedsContainer}>
-            {!this.state.loading && <Table seeds={this.state.seeds}></Table>}
-            {!this.state.loading && <Chart data={this.state.seeds}></Chart>}
-          </div>
-          {this.state.openAddModal && (
-            <Backdrop click={this.closeAddModal}></Backdrop>
-          )}
-          {this.state.openAddModal && (
-            <AddModal
-              type="seeds"
-              onSubmit={this.onSubmit}
-              onCancel={this.closeAddModal}
-            >
-              seed
-            </AddModal>
-          )}
-          <AddButton click={this.openAddModal}></AddButton>
+  return (
+    <Fragment>
+      <Navigation />
+      <div className={styles.Seeds}>
+        {loading && (
+          <Fragment>
+            <Backdrop></Backdrop>
+            <Spinner></Spinner>
+          </Fragment>
+        )}
+        {popup && <Popup>Successfully added to database</Popup>}
+        <div className={styles.Seeds_seedsContainer}>
+          {!loading && <Table seeds={seeds}></Table>}
+          {!loading && <Chart length={seeds.length} data={seeds}></Chart>}
         </div>
-      </Fragment>
-    );
-  }
-}
+        {addModal && <Backdrop click={closeAddModal}></Backdrop>}
+        {addModal && (
+          <AddModal type="seeds" onSubmit={onSubmit} onCancel={closeAddModal}>
+            seed
+          </AddModal>
+        )}
+        <AddButton click={openAddModal}></AddButton>
+      </div>
+    </Fragment>
+  );
+};
+
+export default SeedsPage;

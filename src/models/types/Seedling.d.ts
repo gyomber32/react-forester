@@ -2,7 +2,7 @@ type Seedling = {
     id: string;
     species: string;
     piece: number;
-    datePlanted: Date;
+    datePlanted: string;
     picture: string;
 };
 

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import Card from "../../components/Card/Card";
 import DetailsModal from "../../components/DetailsModal/DetailsModal";
 import AddModal from "../../components/AddModal/AddModal";
@@ -21,176 +21,158 @@ import avatar2 from "../../assets/willow_seedling.jpg";
 import avatar3 from "../../assets/aesculus_seedling.jpg";
 import avatar4 from "../../assets/ulmus-minor_seedling.jpg";
 
-type State = {
-  seedlings: Seedling[];
-  selectedSeedling: Seedling;
-  openDetailsModal: boolean;
-  openAddModal: boolean;
-  openPopup: boolean;
-  loading: boolean;
-};
+const SeedlingsPage: React.FC = () => {
+  const [seedlings, setSeedlings] = useState<Seedling[]>([]);
 
-export class SeedlingsPage extends Component<{}, State> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      seedlings: [],
-      selectedSeedling: {
-        id: "",
-        picture: "",
-        species: "",
-        piece: 0,
-        datePlanted: new Date(),
-      },
-      openDetailsModal: false,
-      openAddModal: false,
-      openPopup: false,
-      loading: false,
-    };
-  }
+  const [selectedSeedling, setSelectedSeedling] = useState<Seedling>({
+    id: "",
+    picture: "",
+    species: "",
+    piece: 0,
+    datePlanted: "",
+  });
 
-  componentWillMount() {
-    this.setState({ loading: true });
+  const [detailsModal, setDetailsModalState] = useState<boolean>(false);
+
+  const [addModal, setAddModalState] = useState<boolean>(false);
+
+  const [popup, setPopupState] = useState<boolean>(false);
+
+  const [loading, setLoadingState] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLoadingState(true);
     setTimeout(() => {
-      this.setState({
-        seedlings: [
-          {
-            id: "0",
-            picture: avatar0,
-            species: "Oak",
-            piece: 50,
-            datePlanted: new Date("2018-06-04"),
-          },
-          {
-            id: "1",
-            picture: avatar1,
-            species: "Red oak",
-            piece: 30,
-            datePlanted: new Date("2019-08-20"),
-          },
-          {
-            id: "2",
-            picture: avatar2,
-            species: "Willow",
-            piece: 50,
-            datePlanted: new Date("2020-03-07"),
-          },
-          {
-            id: "3",
-            picture: avatar3,
-            species: "Aesculus",
-            piece: 5,
-            datePlanted: new Date("2019-05-11"),
-          },
-          {
-            id: "4",
-            picture: avatar4,
-            species: "Ulmus minor (Field elm)",
-            piece: 5,
-            datePlanted: new Date("2019-10-12"),
-          },
-        ],
-      });
-      this.setState({ loading: false });
+      setSeedlings([
+        {
+          id: "0",
+          picture: avatar0,
+          species: "Oak",
+          piece: 50,
+          datePlanted: new Date("2018-06-04").toDateString(),
+        },
+        {
+          id: "1",
+          picture: avatar1,
+          species: "Red oak",
+          piece: 30,
+          datePlanted: new Date("2019-08-20").toDateString(),
+        },
+        {
+          id: "2",
+          picture: avatar2,
+          species: "Willow",
+          piece: 50,
+          datePlanted: new Date("2020-03-07").toDateString(),
+        },
+        {
+          id: "3",
+          picture: avatar3,
+          species: "Aesculus",
+          piece: 5,
+          datePlanted: new Date("2019-05-11").toDateString(),
+        },
+        {
+          id: "4",
+          picture: avatar4,
+          species: "Ulmus minor (Field elm)",
+          piece: 5,
+          datePlanted: new Date("2019-10-12").toDateString(),
+        },
+      ]);
+      setLoadingState(false);
     }, 2000);
-  }
+  }, []);
 
-  openDetailsModal = (id: string) => {
-    const seedling = this.state.seedlings.filter(
-      (seedling) => seedling.id === id
-    );
-    this.setState({ openDetailsModal: true, selectedSeedling: seedling[0] });
+  const openDetailsModal = (id: string) => {
+    const seedling = seedlings.filter((seedling) => seedling.id === id);
+    setSelectedSeedling(seedling[0]);
+    setDetailsModalState(true);
   };
 
-  closeDetailsModal = () => {
-    this.setState({
-      openDetailsModal: false,
-      selectedSeedling: {
-        id: "",
-        picture: "",
-        species: "",
-        piece: 0,
-        datePlanted: new Date(),
-      },
+  const closeDetailsModal = () => {
+    setDetailsModalState(false);
+    setSelectedSeedling({
+      id: "",
+      picture: "",
+      species: "",
+      piece: 0,
+      datePlanted: "",
     });
   };
 
-  openAddModal = () => {
-    this.setState({ openAddModal: true });
+  const openAddModal = () => {
+    setAddModalState(true);
   };
 
-  closeAddModal = () => {
-    this.setState({ openAddModal: false });
+  const closeAddModal = () => {
+    setAddModalState(false);
   };
 
-  onSubmit = (value: any) => {
+  const onSubmit = (value: any) => {
     setTimeout(() => {
-      const seedlings = this.state.seedlings;
+      // needs to be deleted after values will be fecthed from the backend
       value.id = seedlings[seedlings.length - 1].id + 1;
-      seedlings.push(value);
-      this.setState({ seedlings: seedlings });
-      this.closeAddModal();
+      value.datePlanted = value.datePlanted.toDateString();
+      const newSeedlings = seedlings;
+      newSeedlings.push(value);
+      setSeedlings(newSeedlings);
+      closeAddModal();
     }, 1000);
     setTimeout(() => {
-      this.setState({ openPopup: true });
+      setPopupState(true);
     }, 1000);
     setTimeout(() => {
-      this.setState({ openPopup: false });
+      setPopupState(false);
     }, 5000);
   };
 
-  render() {
-    return (
-      <Fragment>
-        <Navigation />
-        <div className={styles.Seedlings}>
-          {this.state.loading && (
-            <Fragment>
-              <Backdrop></Backdrop>
-              <Spinner></Spinner>
-            </Fragment>
+  return (
+    <Fragment>
+      <Navigation />
+      <div className={styles.Seedlings}>
+        {loading && (
+          <Fragment>
+            <Backdrop></Backdrop>
+            <Spinner></Spinner>
+          </Fragment>
+        )}
+        {popup && <Popup>Successfully added to database</Popup>}
+        <div className={styles.Seedlings_cardsContainer}>
+          {detailsModal && <Backdrop click={closeDetailsModal}></Backdrop>}
+          {detailsModal && (
+            <DetailsModal
+              species={selectedSeedling.species}
+              picture={selectedSeedling.picture}
+              piece={selectedSeedling.piece}
+              datePlanted={selectedSeedling.datePlanted}
+            ></DetailsModal>
           )}
-          {this.state.openPopup && (
-            <Popup>Successfully added to database</Popup>
-          )}
-          <div className={styles.Seedlings_cardsContainer}>
-            {this.state.openDetailsModal && (
-              <Backdrop click={this.closeDetailsModal}></Backdrop>
-            )}
-            {this.state.openDetailsModal && (
-              <DetailsModal
-                species={this.state.selectedSeedling.species}
-                picture={this.state.selectedSeedling.picture}
-                piece={this.state.selectedSeedling.piece}
-                datePlanted={this.state.selectedSeedling.datePlanted}
-              ></DetailsModal>
-            )}
-            {this.state.seedlings.map((item: Seedling) => (
-              <Card
-                key={item.id}
-                picture={item.picture}
-                species={item.species}
-                piece={item.piece}
-                click={() => this.openDetailsModal(item.id)}
-              />
-            ))}
-          </div>
-          {!this.state.loading && <Chart data={this.state.seedlings}></Chart>}
-          {this.state.openAddModal && (
-            <Backdrop click={this.closeAddModal}></Backdrop>
-          )}
-          {this.state.openAddModal && (
-            <AddModal
-              type="seedlings"
-              onSubmit={this.onSubmit}
-              onCancel={this.closeAddModal}
-            >
-              seedling
-            </AddModal>
-          )}
-          <AddButton click={this.openAddModal}></AddButton>
+          {seedlings.map((item: Seedling) => (
+            <Card
+              key={item.id}
+              picture={item.picture}
+              species={item.species}
+              piece={item.piece}
+              click={() => openDetailsModal(item.id)}
+            />
+          ))}
         </div>
-      </Fragment>
-    );
-  }
-}
+        {!loading && <Chart length={seedlings.length} data={seedlings}></Chart>}
+        {addModal && <Backdrop click={closeAddModal}></Backdrop>}
+        {addModal && (
+          <AddModal
+            type="seedlings"
+            onSubmit={onSubmit}
+            onCancel={closeAddModal}
+          >
+            seedling
+          </AddModal>
+        )}
+        <AddButton click={openAddModal}></AddButton>
+      </div>
+    </Fragment>
+  );
+};
+
+export default SeedlingsPage;

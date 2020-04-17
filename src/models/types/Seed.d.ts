@@ -2,7 +2,7 @@ type Seed = {
     id: string;
     species: string;
     piece: number;
-    dateSeeded: Date;
+    dateSeeded: string;
 };
 
 export default Seed;
