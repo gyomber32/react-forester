@@ -8,6 +8,7 @@ import Navigation from "../../components/Navigation/Navigation";
 import Popup from "../../components/Popup/Popup";
 import Spinner from "../../components/Spinner/Spinner";
 import Chart from "../../components/Chart/Chart";
+import { LatLng } from "leaflet";
 
 import Seedling from "../../models/types/Seedling";
 
@@ -30,6 +31,7 @@ const SeedlingsPage: React.FC = () => {
     species: "",
     piece: 0,
     datePlanted: "",
+    latlng: new LatLng(0, 0),
   });
 
   const [detailsModal, setDetailsModalState] = useState<boolean>(false);
@@ -50,6 +52,7 @@ const SeedlingsPage: React.FC = () => {
           species: "Oak",
           piece: 50,
           datePlanted: new Date("2018-06-04").toDateString(),
+          latlng: new LatLng(45.896707, 20.153758),
         },
         {
           id: "1",
@@ -57,6 +60,7 @@ const SeedlingsPage: React.FC = () => {
           species: "Red oak",
           piece: 30,
           datePlanted: new Date("2019-08-20").toDateString(),
+          latlng: new LatLng(45.896892, 20.154347),
         },
         {
           id: "2",
@@ -64,6 +68,7 @@ const SeedlingsPage: React.FC = () => {
           species: "Willow",
           piece: 50,
           datePlanted: new Date("2020-03-07").toDateString(),
+          latlng: new LatLng(45.896827, 20.153663),
         },
         {
           id: "3",
@@ -71,6 +76,7 @@ const SeedlingsPage: React.FC = () => {
           species: "Aesculus",
           piece: 5,
           datePlanted: new Date("2019-05-11").toDateString(),
+          latlng: new LatLng(45.897503, 20.155034),
         },
         {
           id: "4",
@@ -78,6 +84,7 @@ const SeedlingsPage: React.FC = () => {
           species: "Ulmus minor (Field elm)",
           piece: 5,
           datePlanted: new Date("2019-10-12").toDateString(),
+          latlng: new LatLng(45.897481, 20.150477),
         },
       ]);
       setLoadingState(false);
@@ -98,6 +105,7 @@ const SeedlingsPage: React.FC = () => {
       species: "",
       piece: 0,
       datePlanted: "",
+      latlng: new LatLng(0, 0),
     });
   };
 

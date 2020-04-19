@@ -15,6 +15,9 @@ const Navigation: React.FC = () => (
       <NavigationItem link="seeds" exact={true}>
         Seeds
       </NavigationItem>
+      <NavigationItem link="map" exact={true}>
+        Map
+      </NavigationItem>
       <Logout link="auth" exact={true}>
         Logout
       </Logout>
