@@ -12,8 +12,6 @@ import { LatLng } from "leaflet";
 
 import Seedling from "../../models/types/Seedling";
 
-/* Every child needs to learn how to cook, needs to learn how to cultivate a garden, plant seeds, learn about sustainability, be taken to a garden, and be able to put hands in the earth. */
-
 import styles from "./Seedlings.module.scss";
 
 import avatar0 from "../../assets/oak_seedling.jpg";

@@ -1,6 +1,8 @@
 import React from "react";
 import Seed from "../../models/types/Seed";
 
+import parseDate from "../../utils/ParseDate";
+
 import styles from "./Table.module.scss";
 
 type Props = {
@@ -9,7 +11,7 @@ type Props = {
 
 const Table: React.FC<Props> = (props) => {
 
-  const columns = ["Species", "Piece", "Date seeded"];
+  const columns = ["Species", "Piece", "Date seeded", "In soil for"];
 
   return (
     <table className={styles.Table}>
@@ -27,6 +29,7 @@ const Table: React.FC<Props> = (props) => {
               <th>{seed.species}</th>
               <th>{seed.piece}</th>
               <th>{seed.dateSeeded}</th>
+              <th>{parseDate(seed.dateSeeded)}</th>
             </tr>
           );
         })}

@@ -23,18 +23,18 @@ const mapPage: React.FC = () => {
   const [seedlings, setSeedlings] = useState<Seedling[]>([]);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [loading, setLoadingState] = useState<boolean>(false);
-
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [position, setPosition] = useState<LatLngExpression>();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     setLoadingState(true);
     getPosition().then((position) => {
-      const location = new LatLng(
+      return new LatLng(
         position.coords.latitude,
         position.coords.longitude
       );
-      setPosition(location);
+    }).then(position => {
+      setPosition(position);
     });
     setTimeout(() => {
       setSeedlings([
@@ -93,7 +93,7 @@ const mapPage: React.FC = () => {
             <Spinner></Spinner>
           </Fragment>
         )}
-        {!loading && <Map position={position} seedlings={seedlings} />}
+        {!loading && <Map position={position} seedlings={seedlings}/>}
       </div>
     </Fragment>
   );
