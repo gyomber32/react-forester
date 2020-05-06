@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+import LocationField from "../../components/MapPopup/MapPopup";
 import FileUpload from "../FileUpload/FileUpload";
 
 import DatePicker from "react-datepicker";
@@ -21,6 +22,7 @@ const initialSeedlingsValues = {
   piece: 0,
   datePlanted: new Date(),
   picture: "",
+  latlng: "",
 };
 
 const initialSeedsValues = {
@@ -39,8 +41,14 @@ const seedlingsSchema = Yup.object().shape({
   piece: Yup.number()
     .moreThan(0, "The number must be positive!")
     .required("Required"),
-  picture: Yup.string(),
   datePlanted: Yup.date().required("Required"),
+  /* latlng: Yup.object()
+    .shape({
+      latitude: Yup.number(),
+      longitude: Yup.number(),
+    })
+    .required("Required"), */
+  picture: Yup.string().notRequired(),
 });
 
 const seedsSchema = Yup.object().shape({
@@ -66,6 +74,7 @@ const AddModal: React.FC<Props> = (props) => {
           initialValues={initialSeedlingsValues}
           validationSchema={seedlingsSchema}
           onSubmit={(values) => {
+            console.log("values: ", values);
             props.onSubmit(values);
           }}
         >
@@ -119,6 +128,15 @@ const AddModal: React.FC<Props> = (props) => {
               <ErrorMessage
                 className={styles.AddModal_form_error}
                 name="datePlanted"
+                component="div"
+              />
+              <Field
+                name="latlng"
+                component={LocationField}
+              ></Field>
+              <ErrorMessage
+                className={styles.AddModal_form_error}
+                name="latlng"
                 component="div"
               />
               <Field name="picture" component={FileUpload} />

@@ -8,6 +8,7 @@ import Navigation from "../../components/Navigation/Navigation";
 import Popup from "../../components/Popup/Popup";
 import Spinner from "../../components/Spinner/Spinner";
 import Chart from "../../components/Chart/Chart";
+
 import { LatLng } from "leaflet";
 
 import Seedling from "../../models/types/Seedling";

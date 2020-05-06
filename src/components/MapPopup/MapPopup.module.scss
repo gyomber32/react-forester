@@ -1,0 +1,47 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/animations";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/icons";
+
+.AddModal_form_field {
+  color: $text-color;
+  height: 25px;
+  background-color: $form-field-color;
+  border-radius: $form-field-border-radius;
+  border: none;
+  border-color: transparent;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.MapPopup {
+  background-color: $modal-background-color;
+  box-shadow: $item-shadow;
+  width: 280px;
+  height: 280px;
+  border-radius: $component-border-radius;
+  z-index: 2;
+  position: absolute;
+  margin-top: 60px;
+  top: 50%;
+  left: 46%;
+  display: flex;
+  flex-direction: column;
+}
+
+.MapPopup_closeButton {
+  text-align: end;
+  padding-right: 5px;
+  position: relative;
+}
+
+.MapPopup_closeButton___icon {
+  filter: invert(100%);
+  width: 10px;
+  height: 10px;
+  content: $close-icon;
+}
+
+.Map{
+  align-self: center;
+}

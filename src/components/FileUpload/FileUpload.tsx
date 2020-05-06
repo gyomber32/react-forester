@@ -9,7 +9,7 @@ type Props = {
 
 const textInput = createRef<HTMLInputElement>();
 
-const fileSelectedhandler = (event: any, form: any, field: any) => {
+const fileSelectedHandler = (event: any, form: any, field: any) => {
   const file = event.target.files[0];
   const reader = new FileReader();
   let fileTag: any;
@@ -32,7 +32,7 @@ const FileUpload: React.FC<Props> = (props) => {
       title=""
       src=""
       onChange={(event) => {
-        fileSelectedhandler(event, props.form, props.field);
+        fileSelectedHandler(event, props.form, props.field);
       }}
     ></input>
   );
