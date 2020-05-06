@@ -158,8 +158,8 @@ const SeedlingsPage: React.FC = () => {
           {seedlings.map((item: Seedling) => (
             <Card
               key={item.id}
-              picture={item.picture}
               species={item.species}
+              picture={item.picture}
               piece={item.piece}
               click={() => openDetailsModal(item.id)}
             />

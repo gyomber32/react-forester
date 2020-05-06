@@ -1,37 +1,37 @@
-import React, { Fragment, useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { LatLngExpression, LatLng, Icon } from "leaflet";
-import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import React, { Fragment, useState, useRef, useEffect } from "react";
+import { LatLng, Icon } from "leaflet";
+import { Map, Marker, TileLayer } from "react-leaflet";
 
 import getPosition from "../../utils/Position";
 
-import manSvg from "../../assets/icons/man.svg";
+import treeSvg from "../../assets/icons/tree.svg";
 
-import styles from "./MapPopup.module.scss";
+import styles from "./LocationField.module.scss";
 
-const manIcon = new Icon({
-  iconUrl: manSvg,
+const treeIcon = new Icon({
+  iconUrl: treeSvg,
   iconSize: [50, 50],
 });
 
 type Props = {
+  className: string;
   name: string;
-  //handleMapClick: any;
-  handleBlur: any;
-  setFieldValue: any;
-  onChange: any;
-  //value: any;
+  type: string;
+  placeholder: string;
+  value: string;
+  onValueChange: any;
 };
 
 const LocationField: React.FC<Props> = (props) => {
-  const [position, setPosition] = useState<LatLng>();
-
+  const [position, setPosition] = useState<LatLng>(new LatLng(0, 0));
   const [mapPopup, setMapPopup] = useState<boolean>(false);
 
   const handleMapClick = (e: any) => {
-    console.log(e.latlng);
-    setPosition(e.latlng);
-    return "sadadasdasd";
+    if(e.latlng !== undefined) {
+      console.log(1);
+      setPosition(e.latlng);
+      props.onValueChange(`${e.latlng.lat}, ${e.latlng.lng}`);
+    }
   };
 
   const openMap = () => {
@@ -53,16 +53,16 @@ const LocationField: React.FC<Props> = (props) => {
 
   return (
     <Fragment>
-      <Field
-        name="latlng"
-        type="text"
-        placeholder="Location"
-        className={styles.AddModal_form_field}
-        value={position ? `${position.lat}, ${position.lng}` : ""}
+      <input
+        className={props.className}
+        id={props.name}
+        name={props.name}
+        type={props.type}
+        value={props.value}
+        readOnly={true}
         onClick={openMap}
-        onChange={() => props.setFieldValue("latlng", handleMapClick)}
-        onBlur={props.handleBlur}
-      />
+        placeholder={props.placeholder}
+      ></input>
       {mapPopup && (
         <div className={styles.MapPopup}>
           <div className={styles.MapPopup_closeButton} onClick={closeMapPopup}>
@@ -79,11 +79,7 @@ const LocationField: React.FC<Props> = (props) => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               />
-              {/* <Marker position={position} icon={manIcon}>
-                <Popup>
-                  <span>You are here</span>
-                </Popup>
-              </Marker> */}
+              <Marker position={position} icon={treeIcon}></Marker>
             </Map>
           </div>
         </div>

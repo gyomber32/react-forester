@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import LocationField from "../../components/MapPopup/MapPopup";
+import LocationField from "../MapPopup/LocationField";
 import FileUpload from "../FileUpload/FileUpload";
 
 import DatePicker from "react-datepicker";
@@ -42,12 +42,7 @@ const seedlingsSchema = Yup.object().shape({
     .moreThan(0, "The number must be positive!")
     .required("Required"),
   datePlanted: Yup.date().required("Required"),
-  /* latlng: Yup.object()
-    .shape({
-      latitude: Yup.number(),
-      longitude: Yup.number(),
-    })
-    .required("Required"), */
+  latlng: Yup.string().required("Required"),
   picture: Yup.string().notRequired(),
 });
 
@@ -74,7 +69,6 @@ const AddModal: React.FC<Props> = (props) => {
           initialValues={initialSeedlingsValues}
           validationSchema={seedlingsSchema}
           onSubmit={(values) => {
-            console.log("values: ", values);
             props.onSubmit(values);
           }}
         >
@@ -131,7 +125,14 @@ const AddModal: React.FC<Props> = (props) => {
                 component="div"
               />
               <Field
+                className={styles.AddModal_form_field}
                 name="latlng"
+                type="text"
+                placeholder="Location"
+                value={values.latlng}
+                onValueChange={(location: string) => {
+                  setFieldValue("latlng", location);
+                }}
                 component={LocationField}
               ></Field>
               <ErrorMessage
