@@ -28,7 +28,7 @@ const LocationField: React.FC<Props> = (props) => {
 
   const handleMapClick = (e: any) => {
     if(e.latlng !== undefined) {
-      console.log(1);
+
       setPosition(e.latlng);
       props.onValueChange(`${e.latlng.lat}, ${e.latlng.lng}`);
     }

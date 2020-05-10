@@ -28,6 +28,7 @@ const FileUpload: React.FC<Props> = (props) => {
       className={styles.Input}
       ref={textInput}
       id="file"
+      name="file"
       type="file"
       title=""
       src=""

@@ -121,6 +121,7 @@ const SeedlingsPage: React.FC = () => {
       // needs to be deleted after values will be fecthed from the backend
       value.id = seedlings[seedlings.length - 1].id + 1;
       value.datePlanted = value.datePlanted.toDateString();
+      console.log(value);
       const newSeedlings = seedlings;
       newSeedlings.push(value);
       setSeedlings(newSeedlings);
