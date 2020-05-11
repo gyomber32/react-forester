@@ -11,6 +11,8 @@ import Chart from "../../components/Chart/Chart";
 
 import Seed from "../../models/types/Seed";
 
+import axios from "axios";
+
 import styles from "./Seeds.module.scss";
 
 const SeedsPage: React.FC = () => {
@@ -22,44 +24,34 @@ const SeedsPage: React.FC = () => {
 
   const [loading, setLoadingState] = useState<boolean>(false);
 
+  const query = {
+    query: `
+    query {
+      seeds {
+          _id
+          species
+          seededQuantity
+          brairdedQuantity
+          dateSeeded
+      }
+    }`,
+  };
+
   useEffect(() => {
     setLoadingState(true);
-    setTimeout(() => {
-      setSeeds([
-        {
-          id: "0",
-          species: "Oak",
-          piece: 50,
-          dateSeeded: new Date("2018-06-04").toDateString(),
-        },
-        {
-          id: "1",
-          species: "Red oak",
-          piece: 30,
-          dateSeeded: new Date("2019-08-20").toDateString(),
-        },
-        {
-          id: "2",
-          species: "Willow",
-          piece: 50,
-          dateSeeded: new Date("2020-03-07").toDateString(),
-        },
-        {
-          id: "3",
-          species: "Aesculus",
-          piece: 5,
-          dateSeeded: new Date("2019-05-11").toDateString(),
-        },
-        {
-          id: "4",
-          species: "Ulmus minor (Field elm)",
-          piece: 5,
-          dateSeeded: new Date("2019-10-12").toDateString(),
-        },
-      ]);
-
-      setLoadingState(false);
-    }, 2000);
+    axios({
+      url: "http://localhost:3000/graphql",
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      data: JSON.stringify(query),
+    })
+      .then((result) => {
+        setSeeds(result.data.data.seeds);
+        setLoadingState(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const openAddModal = () => {
@@ -73,7 +65,7 @@ const SeedsPage: React.FC = () => {
   const onSubmit = (value: any) => {
     setTimeout(() => {
       // needs to be deleted after values will be fecthed from the backend
-      value.id = seeds[seeds.length - 1].id + 1;
+      value._id = seeds[seeds.length - 1]._id + 1;
       value.dateSeeded = value.dateSeeded.toDateString();
       const newSeeds = seeds;
       newSeeds.push(value);

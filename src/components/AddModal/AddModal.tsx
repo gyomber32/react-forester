@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import LocationField from "../MapPopup/LocationField";
+import LocationField from "../LocationField/LocationField";
 import FileUpload from "../FileUpload/FileUpload";
 
 import DatePicker from "react-datepicker";

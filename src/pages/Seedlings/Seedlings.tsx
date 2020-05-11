@@ -9,28 +9,23 @@ import Popup from "../../components/Popup/Popup";
 import Spinner from "../../components/Spinner/Spinner";
 import Chart from "../../components/Chart/Chart";
 
-import { LatLng } from "leaflet";
-
 import Seedling from "../../models/types/Seedling";
 
-import styles from "./Seedlings.module.scss";
+import axios from "axios";
 
-import avatar0 from "../../assets/oak_seedling.jpg";
-import avatar1 from "../../assets/red-oak_seedling.jpg";
-import avatar2 from "../../assets/willow_seedling.jpg";
-import avatar3 from "../../assets/aesculus_seedling.jpg";
-import avatar4 from "../../assets/ulmus-minor_seedling.jpg";
+import styles from "./Seedlings.module.scss";
 
 const SeedlingsPage: React.FC = () => {
   const [seedlings, setSeedlings] = useState<Seedling[]>([]);
 
   const [selectedSeedling, setSelectedSeedling] = useState<Seedling>({
-    id: "",
+    _id: "",
     picture: "",
     species: "",
-    piece: 0,
+    plantedQuantity: 0,
+    survivedQuantity: 0,
     datePlanted: "",
-    latlng: new LatLng(0, 0),
+    location: "",
   });
 
   const [detailsModal, setDetailsModalState] = useState<boolean>(false);
@@ -41,57 +36,39 @@ const SeedlingsPage: React.FC = () => {
 
   const [loading, setLoadingState] = useState<boolean>(false);
 
+  const query = {
+    query: `
+      query {
+        seedlings {
+          _id
+          species
+          plantedQuantity
+          survivedQuantity
+          datePlanted
+          location
+        }
+      }`,
+  };
+
   useEffect(() => {
     setLoadingState(true);
-    setTimeout(() => {
-      setSeedlings([
-        {
-          id: "0",
-          picture: avatar0,
-          species: "Oak",
-          piece: 50,
-          datePlanted: new Date("2018-06-04").toDateString(),
-          latlng: new LatLng(45.896707, 20.153758),
-        },
-        {
-          id: "1",
-          picture: avatar1,
-          species: "Red oak",
-          piece: 30,
-          datePlanted: new Date("2019-08-20").toDateString(),
-          latlng: new LatLng(45.896892, 20.154347),
-        },
-        {
-          id: "2",
-          picture: avatar2,
-          species: "Willow",
-          piece: 50,
-          datePlanted: new Date("2020-03-07").toDateString(),
-          latlng: new LatLng(45.896827, 20.153663),
-        },
-        {
-          id: "3",
-          picture: avatar3,
-          species: "Aesculus",
-          piece: 5,
-          datePlanted: new Date("2019-05-11").toDateString(),
-          latlng: new LatLng(45.897503, 20.155034),
-        },
-        {
-          id: "4",
-          picture: avatar4,
-          species: "Ulmus minor (Field elm)",
-          piece: 5,
-          datePlanted: new Date("2019-10-12").toDateString(),
-          latlng: new LatLng(45.897481, 20.150477),
-        },
-      ]);
-      setLoadingState(false);
-    }, 2000);
+    axios({
+      url: "http://localhost:3000/graphql",
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      data: JSON.stringify(query),
+    })
+      .then((result) => {
+        setSeedlings(result.data.data.seedlings);
+        setLoadingState(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const openDetailsModal = (id: string) => {
-    const seedling = seedlings.filter((seedling) => seedling.id === id);
+    const seedling = seedlings.filter((seedling) => seedling._id === id);
     setSelectedSeedling(seedling[0]);
     setDetailsModalState(true);
   };
@@ -99,12 +76,13 @@ const SeedlingsPage: React.FC = () => {
   const closeDetailsModal = () => {
     setDetailsModalState(false);
     setSelectedSeedling({
-      id: "",
+      _id: "",
       picture: "",
       species: "",
-      piece: 0,
+      plantedQuantity: 0,
+      survivedQuantity: 0,
       datePlanted: "",
-      latlng: new LatLng(0, 0),
+      location: "",
     });
   };
 
@@ -119,9 +97,8 @@ const SeedlingsPage: React.FC = () => {
   const onSubmit = (value: any) => {
     setTimeout(() => {
       // needs to be deleted after values will be fecthed from the backend
-      value.id = seedlings[seedlings.length - 1].id + 1;
+      value._id = seedlings[seedlings.length - 1]._id + 1;
       value.datePlanted = value.datePlanted.toDateString();
-      console.log(value);
       const newSeedlings = seedlings;
       newSeedlings.push(value);
       setSeedlings(newSeedlings);
@@ -152,17 +129,19 @@ const SeedlingsPage: React.FC = () => {
             <DetailsModal
               species={selectedSeedling.species}
               picture={selectedSeedling.picture}
-              piece={selectedSeedling.piece}
+              plantedQuantity={selectedSeedling.plantedQuantity}
+              survivedQuantity={selectedSeedling.survivedQuantity}
               datePlanted={selectedSeedling.datePlanted}
             ></DetailsModal>
           )}
           {seedlings.map((item: Seedling) => (
             <Card
-              key={item.id}
+              key={item._id}
               species={item.species}
               picture={item.picture}
-              piece={item.piece}
-              click={() => openDetailsModal(item.id)}
+              plantedQuantity={item.plantedQuantity}
+              survivedQuantity={item.survivedQuantity}
+              click={() => openDetailsModal(item._id)}
             />
           ))}
         </div>

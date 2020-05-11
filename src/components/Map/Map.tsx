@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { LatLngExpression, Icon } from "leaflet";
+import { LatLngExpression, Icon, LatLng } from "leaflet";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 
 import Seedling from "../../models/types/Seedling";
@@ -8,10 +8,8 @@ import manSvg from "../../assets/icons/man.svg";
 import treeSvg from "../../assets/icons/tree.svg";
 
 import "leaflet/dist/leaflet.css";
-import styles from "./Map.module.scss";
 
 import parseDate from "../../utils/ParseDate";
-import Backdrop from "../Backdrop/Backdrop";
 
 const manIcon = new Icon({
   iconUrl: manSvg,
@@ -48,12 +46,14 @@ const map: React.FC<Props> = (props) => {
   const markers = props.seedlings
     ? props.seedlings.map((seedling) => {
         return (
-          <Marker key={seedling.id} position={seedling.latlng} icon={treeIcon}>
+          <Marker key={seedling._id} position={new LatLng(+seedling.location.split(',')[0],+seedling.location.split(',')[1])} icon={treeIcon}>
             <Popup>
               <span>
                 Species: <b>{seedling.species}</b>
                 <br></br>
-                Piece: <b>{seedling.piece}</b>
+                Planted: <b>{seedling.plantedQuantity}</b>
+                <br></br>
+                Survived: <b>{seedling.survivedQuantity}</b>
                 <br></br>
                 Date planted: <b>{seedling.datePlanted}</b>
                 <br></br>

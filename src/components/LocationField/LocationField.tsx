@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef, useEffect } from "react";
+import React, { Fragment, useState } from "react";
 import { LatLng, Icon } from "leaflet";
 import { Map, Marker, TileLayer } from "react-leaflet";
 
@@ -27,8 +27,7 @@ const LocationField: React.FC<Props> = (props) => {
   const [mapPopup, setMapPopup] = useState<boolean>(false);
 
   const handleMapClick = (e: any) => {
-    if(e.latlng !== undefined) {
-
+    if (e.latlng !== undefined) {
       setPosition(e.latlng);
       props.onValueChange(`${e.latlng.lat}, ${e.latlng.lng}`);
     }

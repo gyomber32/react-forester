@@ -1,12 +1,13 @@
 import { LatLng } from "leaflet";
 
 type Seedling = {
-    id: string;
+    _id: string;
     species: string;
-    piece: number;
+    plantedQuantity: number;
+    survivedQuantity: number;
     datePlanted: string;
     picture: string;
-    latlng: LatLng;
+    location: string;
 };
 
 export default Seedling;

@@ -1,7 +1,8 @@
 type Seed = {
-    id: string;
+    _id: string;
     species: string;
-    piece: number;
+    seededQuantity: number;
+    brairdedQuantity: number;
     dateSeeded: string;
 };
 

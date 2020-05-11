@@ -6,7 +6,8 @@ import styles from "./Card.module.scss";
 
 type Props = {
   species: string;
-  piece: number;
+  plantedQuantity: number;
+  survivedQuantity: number;
   picture: string;
   click: any;
 };
@@ -23,7 +24,7 @@ const Card: React.FC<Props> = (props) => {
         <h4>
           <b>{props.species}</b>
         </h4>
-        <p>{props.piece} piece</p>
+        <p>{props.survivedQuantity} piece</p>
       </div>
     </div>
   );

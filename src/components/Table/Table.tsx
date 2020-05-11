@@ -11,7 +11,7 @@ type Props = {
 
 const Table: React.FC<Props> = (props) => {
 
-  const columns = ["Species", "Piece", "Date seeded", "In soil for"];
+  const columns = ["Species", "Seeded quantity", "Brairded quantity", "Date seeded", "In soil for"];
 
   return (
     <table className={styles.Table}>
@@ -27,7 +27,8 @@ const Table: React.FC<Props> = (props) => {
           return (
             <tr key={index}>
               <th>{seed.species}</th>
-              <th>{seed.piece}</th>
+              <th>{seed.seededQuantity}</th>
+              <th>{seed.brairdedQuantity}</th>
               <th>{seed.dateSeeded}</th>
               <th>{parseDate(seed.dateSeeded)}</th>
             </tr>

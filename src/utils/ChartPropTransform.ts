@@ -17,7 +17,12 @@ const chartPropsTransform = (inputData: Seedling[] | Seed[]) => {
     let chartData: ChartData = { labels: [], datasets: [{ data: [], backgroundColor: [], borderColor: [], borderWidth: 4, hoverBorderColor: [], hoverBackgroundColor: [] }] };
     inputData.forEach((data: any) => {
         chartData.labels.push(data.species);
-        chartData.datasets[0].data.push(data.piece);
+        if(data.hasOwnProperty('datePlanted')){
+            chartData.datasets[0].data.push(data.plantedQuantity);
+        }
+        if(data.hasOwnProperty('dateSeeded')){
+            chartData.datasets[0].data.push(data.seededQuantity);
+        }
         const color = generateRandomColor();
         chartData.datasets[0].backgroundColor.push(color);
         chartData.datasets[0].borderColor.push(color);

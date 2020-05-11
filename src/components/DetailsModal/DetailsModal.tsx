@@ -8,7 +8,8 @@ import styles from "./DetailsModal.module.scss";
 
 type Props = {
   species: string;
-  piece: number;
+  plantedQuantity: number;
+  survivedQuantity: number;
   datePlanted: string;
   picture: string;
 };
@@ -24,7 +25,10 @@ const DetailsModal: React.FC<Props> = (props) => {
       )}
       <div className={styles.DetailsModal_content}>
         <p className={styles.DetailsModal_content_paragraph}>
-          Piece: {props.piece}
+          Planted quantity: {props.plantedQuantity}
+        </p>
+        <p className={styles.DetailsModal_content_paragraph}>
+          Survived quantity: {props.survivedQuantity}
         </p>
         <p className={styles.DetailsModal_content_paragraph}>
           Date planted: {props.datePlanted}
