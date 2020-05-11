@@ -43,7 +43,7 @@ const SeedsPage: React.FC = () => {
       url: "http://localhost:3000/graphql",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `bearer ${localStorage.getItem("token")}`,
+        Authorization: `bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       data: JSON.stringify(query),
@@ -66,21 +66,41 @@ const SeedsPage: React.FC = () => {
   };
 
   const onSubmit = (value: any) => {
-    setTimeout(() => {
-      // needs to be deleted after values will be fecthed from the backend
-      value._id = seeds[seeds.length - 1]._id + 1;
-      value.dateSeeded = value.dateSeeded.toDateString();
-      const newSeeds = seeds;
-      newSeeds.push(value);
-      setSeeds(newSeeds);
-      closeAddModal();
-    }, 1000);
-    setTimeout(() => {
-      setPopupState(true);
-    }, 1000);
-    setTimeout(() => {
-      setPopupState(false);
-    }, 5000);
+    console.log(value);
+    //value.dateSeeded = value.dateSeeded.toDateString();
+    value.brairdedQuantity = +value.seededQuantity;
+    /*value.seededQuantity = +value.seededQuantity; */
+    const mutation = {
+      query: `
+        mutation {
+          createSeed(seedInput: {species: "${value.species}", seededQuantity: ${value.seededQuantity}, brairdedQuantity: ${value.brairdedQuantity}, dateSeeded: "${value.dateSeeded}"}) {
+            _id
+            species
+            seededQuantity
+            brairdedQuantity
+            dateSeeded
+          }
+        }`,
+    };
+    axios({
+      url: "http://localhost:3000/graphql",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `bearer ${localStorage.getItem("token")}`,
+      },
+      method: "POST",
+      data: JSON.stringify(mutation),
+    })
+      .then(() => {
+        closeAddModal();
+        setPopupState(true);
+        setTimeout(() => {
+          setPopupState(false);
+        }, 5000);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (

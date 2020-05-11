@@ -26,9 +26,8 @@ const initialSeedlingsValues = {
 };
 
 const initialSeedsValues = {
-  id: "",
   species: "",
-  piece: 0,
+  seededQuantity: 0,
   dateSeeded: new Date(),
 };
 
@@ -52,7 +51,7 @@ const seedsSchema = Yup.object().shape({
     .min(2, "Too short!")
     .max(50, "Too long!")
     .required("Required"),
-  piece: Yup.number()
+  seededQuantity: Yup.number()
     .moreThan(0, "The number must be positive!")
     .required("Required"),
   dateSeeded: Yup.date().required("Required"),
@@ -200,15 +199,15 @@ const AddModal: React.FC<Props> = (props) => {
               <Field
                 className={styles.AddModal_form_field}
                 type="number"
-                name="piece"
-                placeholder="Piece"
-                value={values.piece ? values.piece : ""}
+                name="seededQuantity"
+                placeholder="Seeded quantity"
+                value={values.seededQuantity ? values.seededQuantity : ""}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
               <ErrorMessage
                 className={styles.AddModal_form_error}
-                name="piece"
+                name="seededQuantity"
                 component="div"
               />
               <DatePicker
