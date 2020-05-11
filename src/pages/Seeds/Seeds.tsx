@@ -66,10 +66,7 @@ const SeedsPage: React.FC = () => {
   };
 
   const onSubmit = (value: any) => {
-    console.log(value);
-    //value.dateSeeded = value.dateSeeded.toDateString();
-    value.brairdedQuantity = +value.seededQuantity;
-    /*value.seededQuantity = +value.seededQuantity; */
+    value.brairdedQuantity = value.seededQuantity;
     const mutation = {
       query: `
         mutation {

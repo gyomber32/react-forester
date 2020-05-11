@@ -62,7 +62,6 @@ const SeedlingsPage: React.FC = () => {
       data: JSON.stringify(query),
     })
       .then((result) => {
-        console.log(result);
         setSeedlings(result.data.data.seedlings);
         setLoadingState(false);
       })
@@ -99,21 +98,40 @@ const SeedlingsPage: React.FC = () => {
   };
 
   const onSubmit = (value: any) => {
-    setTimeout(() => {
-      // needs to be deleted after values will be fecthed from the backend
-      value._id = seedlings[seedlings.length - 1]._id + 1;
-      value.datePlanted = value.datePlanted.toDateString();
-      const newSeedlings = seedlings;
-      newSeedlings.push(value);
-      setSeedlings(newSeedlings);
-      closeAddModal();
-    }, 1000);
-    setTimeout(() => {
-      setPopupState(true);
-    }, 1000);
-    setTimeout(() => {
-      setPopupState(false);
-    }, 5000);
+    value.survivedQuantity = value.plantedQuantity;
+    const mutation = {
+      query: `
+        mutation {
+          createSeedling(seedlingInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted}", location: "${value.location}", picture: "${value.picture}"}) {
+            _id
+            species
+            plantedQuantity
+            survivedQuantity
+            datePlanted
+            location
+            picture
+          }
+        }`,
+    };
+    axios({
+      url: "http://localhost:3000/graphql",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `bearer ${localStorage.getItem("token")}`,
+      },
+      method: "POST",
+      data: JSON.stringify(mutation),
+    })
+      .then(() => {
+        closeAddModal();
+        setPopupState(true);
+        setTimeout(() => {
+          setPopupState(false);
+        }, 5000);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (

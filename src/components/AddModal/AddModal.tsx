@@ -17,12 +17,12 @@ type Props = {
 };
 
 const initialSeedlingsValues = {
-  id: "",
   species: "",
-  piece: 0,
+  plantedQuantity: 0,
+  survivedQuantity: 0,
   datePlanted: new Date(),
   picture: "",
-  latlng: "",
+  location: "",
 };
 
 const initialSeedsValues = {
@@ -37,11 +37,11 @@ const seedlingsSchema = Yup.object().shape({
     .min(2, "Too short!")
     .max(50, "Too long!")
     .required("Required"),
-  piece: Yup.number()
+  plantedQuantity: Yup.number()
     .moreThan(0, "The number must be positive!")
     .required("Required"),
   datePlanted: Yup.date().required("Required"),
-  latlng: Yup.string().required("Required"),
+  location: Yup.string().required("Required"),
   picture: Yup.string().notRequired(),
 });
 
@@ -96,15 +96,15 @@ const AddModal: React.FC<Props> = (props) => {
               <Field
                 className={styles.AddModal_form_field}
                 type="number"
-                name="piece"
-                placeholder="Piece"
-                value={values.piece ? values.piece : ""}
+                name="plantedQuantity"
+                placeholder="Planted quantity"
+                value={values.plantedQuantity ? values.plantedQuantity : ""}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
               <ErrorMessage
                 className={styles.AddModal_form_error}
-                name="piece"
+                name="plantedQuantity"
                 component="div"
               />
               <DatePicker
@@ -128,15 +128,15 @@ const AddModal: React.FC<Props> = (props) => {
                 name="latlng"
                 type="text"
                 placeholder="Location"
-                value={values.latlng}
+                value={values.location}
                 onValueChange={(location: string) => {
-                  setFieldValue("latlng", location);
+                  setFieldValue("location", location);
                 }}
                 component={LocationField}
               ></Field>
               <ErrorMessage
                 className={styles.AddModal_form_error}
-                name="latlng"
+                name="location"
                 component="div"
               />
               <Field name="picture" component={FileUpload} />
