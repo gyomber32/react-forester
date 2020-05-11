@@ -49,7 +49,10 @@ const mapPage: React.FC = () => {
       });
     axios({
       url: "http://localhost:3000/graphql",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `bearer ${sessionStorage.getItem("token")}`,
+      },
       method: "POST",
       data: JSON.stringify(query),
     })

@@ -4,6 +4,8 @@ import * as Yup from "yup";
 
 import { History } from "history";
 
+import axios from "axios";
+
 import styles from "./Auth.module.scss";
 
 const authSchema = Yup.object().shape({
@@ -29,7 +31,32 @@ const AuthPage: React.FC<Props> = (props) => {
     values: { email: string; password: string },
     { setSubmitting }: FormikHelpers<AuthFormValues>
   ) => {
-    props.history.push("seedlings");
+    const query = {
+      query: `
+        query {
+          login(userInput: {email: "${values.email}", password: "${values.password}"}) {
+            _id
+            token
+            tokenExpiration
+          }
+        }`,
+    };
+    axios({
+      url: "http://localhost:3000/graphql",
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      data: JSON.stringify(query),
+    })
+      .then((authData) => {
+        sessionStorage.setItem('token', authData.data.data.login.token);
+        /* NEXT STEP IS AUTOLOGIN AND AUTO LOGOUT
+        sessionStorage.setItem('tokenExpiry', authData.data.login.tokenExpiration);
+        */
+        props.history.push("seedlings");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
