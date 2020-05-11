@@ -48,7 +48,8 @@ const AuthPage: React.FC<Props> = (props) => {
       data: JSON.stringify(query),
     })
       .then((authData) => {
-        sessionStorage.setItem('token', authData.data.data.login.token);
+        localStorage.setItem('token', authData.data.data.login.token);
+        console.log(authData.data.data.login.token)
         /* NEXT STEP IS AUTOLOGIN AND AUTO LOGOUT
         sessionStorage.setItem('tokenExpiry', authData.data.login.tokenExpiration);
         */

@@ -5,6 +5,10 @@ import Logout from "../Logout/Logout";
 
 import styles from "./Navigation.module.scss";
 
+const logout = () => {
+  localStorage.removeItem("token");
+}
+
 const Navigation: React.FC = () => (
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   <header className={styles.MainNavigation}>
@@ -18,7 +22,7 @@ const Navigation: React.FC = () => (
       <NavigationItem link="map" exact={true}>
         Map
       </NavigationItem>
-      <Logout link="auth" exact={true}>
+      <Logout link="auth" exact={true} click={logout}>
         Logout
       </Logout>
     </ul>

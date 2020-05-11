@@ -56,12 +56,13 @@ const SeedlingsPage: React.FC = () => {
       url: "http://localhost:3000/graphql",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `bearer ${sessionStorage.getItem("token")}`,
+        "Authorization": `bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       data: JSON.stringify(query),
     })
       .then((result) => {
+        console.log(result);
         setSeedlings(result.data.data.seedlings);
         setLoadingState(false);
       })
