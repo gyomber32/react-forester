@@ -102,6 +102,10 @@ const SeedsPage: React.FC = () => {
         }, 5500);
       })
       .catch((error) => {
+        setPopup({ isOpen: true, message: "Error during adding to database" });
+        setTimeout(() => {
+          setPopup({ isOpen: false, message: "" });
+        }, 5500);
         console.log(error);
       });
   };
