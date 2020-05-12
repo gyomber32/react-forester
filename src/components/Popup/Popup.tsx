@@ -3,13 +3,13 @@ import React from "react";
 import styles from "./Popup.module.scss";
 
 type Props = {
-  children: string;
+  message: string;
 };
 
 const Popup: React.FC<Props> = (props) => {
   return (
     <div className={styles.Popup}>
-      <p className={styles.Popup_text}>{props.children}</p>
+      <p className={styles.Popup_text}>{props.message}</p>
     </div>
   );
 };

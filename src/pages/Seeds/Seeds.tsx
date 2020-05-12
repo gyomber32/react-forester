@@ -11,6 +11,7 @@ import Chart from "../../components/Chart/Chart";
 import NoData from "../../components/NoData/NoData";
 
 import Seed from "../../models/types/Seed";
+import PopUp from "../../models/types/PopUp";
 
 import axios from "axios";
 
@@ -21,7 +22,10 @@ const SeedsPage: React.FC = () => {
 
   const [addModal, setAddModalState] = useState<boolean>(false);
 
-  const [popup, setPopupState] = useState<boolean>(false);
+  const [popup, setPopup] = useState<PopUp>({
+    isOpen: false,
+    message: "",
+  });
 
   const [loading, setLoadingState] = useState<boolean>(false);
 
@@ -92,10 +96,10 @@ const SeedsPage: React.FC = () => {
     })
       .then(() => {
         closeAddModal();
-        setPopupState(true);
+        setPopup({ isOpen: true, message: "Successfully added to database" });
         setTimeout(() => {
-          setPopupState(false);
-        }, 5000);
+          setPopup({ isOpen: false, message: "" });
+        }, 5500);
       })
       .catch((error) => {
         console.log(error);
@@ -112,7 +116,7 @@ const SeedsPage: React.FC = () => {
             <Spinner></Spinner>
           </Fragment>
         )}
-        {popup && <Popup>Successfully added to database</Popup>}
+        {popup.isOpen && <Popup message={popup.message}></Popup>}
         <div className={styles.Seeds_seedsContainer}>
           {!loading && seeds.length > 0 && (
             <Fragment>

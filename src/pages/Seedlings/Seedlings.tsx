@@ -11,6 +11,7 @@ import Chart from "../../components/Chart/Chart";
 import NoData from "../../components/NoData/NoData";
 
 import Seedling from "../../models/types/Seedling";
+import PopUp from "../../models/types/PopUp";
 
 import axios from "axios";
 
@@ -33,7 +34,7 @@ const SeedlingsPage: React.FC = () => {
 
   const [addModal, setAddModalState] = useState<boolean>(false);
 
-  const [popup, setPopupState] = useState<boolean>(false);
+  const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
 
   const [loading, setLoadingState] = useState<boolean>(false);
 
@@ -126,10 +127,10 @@ const SeedlingsPage: React.FC = () => {
     })
       .then(() => {
         closeAddModal();
-        setPopupState(true);
+        setPopup({ isOpen: true, message: "Successfully added to database" });
         setTimeout(() => {
-          setPopupState(false);
-        }, 5000);
+          setPopup({ isOpen: false, message: "" });
+        }, 5500);
       })
       .catch((error) => {
         console.log(error);
@@ -146,10 +147,10 @@ const SeedlingsPage: React.FC = () => {
             <Spinner></Spinner>
           </Fragment>
         )}
-        {popup && <Popup>Successfully added to database</Popup>}
-        <div className={styles.Seedlings_cardsContainer}>
-          {!loading && seedlings.length > 0 && (
-            <Fragment>
+        {popup.isOpen && <Popup message={popup.message}></Popup>}
+        {!loading && seedlings.length > 0 && (
+          <Fragment>
+            <div className={styles.Seedlings_cardsContainer}>
               {seedlings.map((item: Seedling) => (
                 <Card
                   key={item._id}
@@ -160,10 +161,10 @@ const SeedlingsPage: React.FC = () => {
                   click={() => openDetailsModal(item._id)}
                 />
               ))}
-              <Chart length={seedlings.length} data={seedlings}></Chart>
-            </Fragment>
-          )}
-        </div>
+            </div>
+            <Chart length={seedlings.length} data={seedlings}></Chart>
+          </Fragment>
+        )}
         {!loading && seedlings.length === 0 && <NoData>seedlings</NoData>}
         {detailsModal && <Backdrop click={closeDetailsModal}></Backdrop>}
         {detailsModal && (
