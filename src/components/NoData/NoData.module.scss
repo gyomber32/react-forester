@@ -1,0 +1,19 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/animations";
+
+.NoData {
+  width: 50%;
+  box-shadow: $item-shadow;
+  background-color: $background-color;
+  border-radius: $component-border-radius;
+  height: auto;
+  margin: auto;
+  text-align: center;
+}
+
+.NoData_text {
+  color: $text-color;
+  font-size: $noData-text-size;
+  padding: 10px;
+}

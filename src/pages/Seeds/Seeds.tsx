@@ -8,6 +8,7 @@ import Popup from "../../components/Popup/Popup";
 import Backdrop from "../../components/Backdrop/Backdrop";
 import Spinner from "../../components/Spinner/Spinner";
 import Chart from "../../components/Chart/Chart";
+import NoData from "../../components/NoData/NoData";
 
 import Seed from "../../models/types/Seed";
 
@@ -112,9 +113,14 @@ const SeedsPage: React.FC = () => {
         )}
         {popup && <Popup>Successfully added to database</Popup>}
         <div className={styles.Seeds_seedsContainer}>
-          {!loading && <Table seeds={seeds}></Table>}
-          {!loading && <Chart length={seeds.length} data={seeds}></Chart>}
+          {!loading && seeds.length > 0 && (
+            <Fragment>
+              <Table seeds={seeds}></Table>
+              <Chart length={seeds.length} data={seeds}></Chart>
+            </Fragment>
+          )}
         </div>
+        {!loading && seeds.length === 0 && <NoData>seeds</NoData>}
         {addModal && <Backdrop click={closeAddModal}></Backdrop>}
         {addModal && (
           <AddModal type="seeds" onSubmit={onSubmit} onCancel={closeAddModal}>

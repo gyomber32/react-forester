@@ -78,8 +78,9 @@
 }
 
 .AuthDialog_form_error {
-  color: $text-color;
+  color: $error-text-color;
   padding-bottom: 10px;
+  font-weight: bold;
 }
 
 .AuthDialog_formActions {

@@ -8,6 +8,7 @@ import Navigation from "../../components/Navigation/Navigation";
 import Popup from "../../components/Popup/Popup";
 import Spinner from "../../components/Spinner/Spinner";
 import Chart from "../../components/Chart/Chart";
+import NoData from "../../components/NoData/NoData";
 
 import Seedling from "../../models/types/Seedling";
 
@@ -56,14 +57,14 @@ const SeedlingsPage: React.FC = () => {
       url: "http://localhost:3000/graphql",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `bearer ${localStorage.getItem("token")}`,
+        Authorization: `bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       data: JSON.stringify(query),
     })
       .then((result) => {
-        setSeedlings(result.data.data.seedlings);
         setLoadingState(false);
+        setSeedlings(result.data.data.seedlings);
       })
       .catch((error) => {
         console.log(error);
@@ -146,28 +147,33 @@ const SeedlingsPage: React.FC = () => {
         )}
         {popup && <Popup>Successfully added to database</Popup>}
         <div className={styles.Seedlings_cardsContainer}>
-          {detailsModal && <Backdrop click={closeDetailsModal}></Backdrop>}
-          {detailsModal && (
-            <DetailsModal
-              species={selectedSeedling.species}
-              picture={selectedSeedling.picture}
-              plantedQuantity={selectedSeedling.plantedQuantity}
-              survivedQuantity={selectedSeedling.survivedQuantity}
-              datePlanted={selectedSeedling.datePlanted}
-            ></DetailsModal>
+          {!loading && seedlings.length > 0 && (
+            <Fragment>
+              {seedlings.map((item: Seedling) => (
+                <Card
+                  key={item._id}
+                  species={item.species}
+                  picture={item.picture}
+                  plantedQuantity={item.plantedQuantity}
+                  survivedQuantity={item.survivedQuantity}
+                  click={() => openDetailsModal(item._id)}
+                />
+              ))}
+              <Chart length={seedlings.length} data={seedlings}></Chart>
+            </Fragment>
           )}
-          {seedlings.map((item: Seedling) => (
-            <Card
-              key={item._id}
-              species={item.species}
-              picture={item.picture}
-              plantedQuantity={item.plantedQuantity}
-              survivedQuantity={item.survivedQuantity}
-              click={() => openDetailsModal(item._id)}
-            />
-          ))}
         </div>
-        {!loading && <Chart length={seedlings.length} data={seedlings}></Chart>}
+        {!loading && seedlings.length === 0 && <NoData>seedlings</NoData>}
+        {detailsModal && <Backdrop click={closeDetailsModal}></Backdrop>}
+        {detailsModal && (
+          <DetailsModal
+            species={selectedSeedling.species}
+            picture={selectedSeedling.picture}
+            plantedQuantity={selectedSeedling.plantedQuantity}
+            survivedQuantity={selectedSeedling.survivedQuantity}
+            datePlanted={selectedSeedling.datePlanted}
+          ></DetailsModal>
+        )}
         {addModal && <Backdrop click={closeAddModal}></Backdrop>}
         {addModal && (
           <AddModal
