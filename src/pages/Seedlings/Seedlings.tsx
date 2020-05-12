@@ -100,6 +100,7 @@ const SeedlingsPage: React.FC = () => {
 
   const onSubmit = (value: any) => {
     value.survivedQuantity = value.plantedQuantity;
+    value.datePlanted = value.datePlanted.toDateString();
     const mutation = {
       query: `
         mutation {
