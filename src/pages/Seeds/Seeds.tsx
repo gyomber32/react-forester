@@ -18,15 +18,11 @@ import axios from "axios";
 import styles from "./Seeds.module.scss";
 
 const SeedsPage: React.FC = () => {
-
   const [seeds, setSeeds] = useState<Seed[]>([]);
 
   const [addModal, setAddModalState] = useState<boolean>(false);
 
-  const [popup, setPopup] = useState<PopUp>({
-    isOpen: false,
-    message: "",
-  });
+  const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
 
   const [loading, setLoadingState] = useState<boolean>(false);
 
@@ -61,9 +57,9 @@ const SeedsPage: React.FC = () => {
       .catch((error) => {
         console.log(error);
       });
-      return () => {
-        setPopup({isOpen: false, message: "message"});
-      }
+    return () => {
+      setPopup({ isOpen: false, message: "message" });
+    };
   }, []);
 
   const openAddModal = () => {

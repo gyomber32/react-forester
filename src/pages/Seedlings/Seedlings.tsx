@@ -19,7 +19,7 @@ import axios from "axios";
 import styles from "./Seedlings.module.scss";
 
 const SeedlingsPage: React.FC = () => {
-  let timeoutID: any;
+  
   const [seedlings, setSeedlings] = useState<Seedling[]>([]);
 
   const [selectedSeedling, setSelectedSeedling] = useState<Seedling>({
@@ -134,13 +134,13 @@ const SeedlingsPage: React.FC = () => {
       .then(() => {
         closeAddModal();
         setPopup({ isOpen: true, message: "Successfully added to database" });
-        timeoutID = setTimeout(() => {
+        setTimeout(() => {
           setPopup({ isOpen: false, message: "" });
         }, 5500);
       })
       .catch((error) => {
         setPopup({ isOpen: true, message: "Error during adding to database" });
-        timeoutID = setTimeout(() => {
+        setTimeout(() => {
           setPopup({ isOpen: false, message: "" });
         }, 5500);
         console.log(error);

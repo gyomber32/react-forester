@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
-import { History } from "history";
+import Popup from "../../components/Popup/Popup";
 
+import { History } from "history";
 import axios from "axios";
+
+import PopUp from "../../models/types/PopUp";
 
 import styles from "./Auth.module.scss";
 
@@ -26,6 +29,8 @@ type Props = {
 };
 
 const AuthPage: React.FC<Props> = (props) => {
+  const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
+
   const initialValues: AuthFormValues = { email: "", password: "" };
   const handleSubmit = (
     values: { email: string; password: string },
@@ -48,19 +53,34 @@ const AuthPage: React.FC<Props> = (props) => {
       data: JSON.stringify(query),
     })
       .then((authData) => {
-        localStorage.setItem('token', authData.data.data.login.token);
+        console.log(authData)
+        if (authData.data.hasOwnProperty("errors")) {
+          setPopup({ isOpen: true, message: authData.data.errors[0].message });
+          setTimeout(() => {
+            setPopup({ isOpen: false, message: "" });
+          }, 5500);
+          return;
+        } else {
+          localStorage.setItem("token", authData.data.data.login.token);
+          props.history.push("seedlings");
+        }
         /* NEXT STEP IS AUTOLOGIN AND AUTO LOGOUT
         sessionStorage.setItem('tokenExpiry', authData.data.login.tokenExpiration);
         */
-        props.history.push("seedlings");
       })
       .catch((error) => {
         console.log(error);
+        setPopup({ isOpen: true, message: error.message });
+        setTimeout(() => {
+          setPopup({ isOpen: false, message: "" });
+        }, 5500);
+        return;
       });
   };
 
   return (
     <div className={styles.Auth}>
+      {popup.isOpen && <Popup message={popup.message}></Popup>}
       <div className={styles.AuthDialog}>
         <div className={styles.AuthDialog_header}>
           <p className={styles.AuthDialog_header_text}>
