@@ -48,6 +48,10 @@
   animation: animate 0.2s 1.3s ease 1 both;
 }
 
+.NavigationItem:nth-child(4) {
+  animation: animate 0.2s 1.4s ease 1 both;
+}
+
 @keyframes animate {
   0% {
     opacity: 0;

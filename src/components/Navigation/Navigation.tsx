@@ -1,13 +1,12 @@
 import React from "react";
 
 import NavigationItem from "./NavigationItem/NavigationItem";
-import Logout from "../Logout/Logout";
 
 import styles from "./Navigation.module.scss";
 
 const logout = () => {
   localStorage.removeItem("token");
-}
+};
 
 const Navigation: React.FC = () => (
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -22,9 +21,9 @@ const Navigation: React.FC = () => (
       <NavigationItem link="map" exact={true}>
         Map
       </NavigationItem>
-      <Logout link="auth" exact={true} click={logout}>
+      <NavigationItem link="auth" exact={true} click={logout}>
         Logout
-      </Logout>
+      </NavigationItem>
     </ul>
   </header>
 );

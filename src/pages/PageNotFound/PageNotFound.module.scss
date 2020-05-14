@@ -1,0 +1,20 @@
+@import "../../assets/styles/background-images";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/colors";
+
+.PageNotFound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.PageNotFound_text {
+  font-size: $content-text-size;
+  font-weight: bold;
+  color: black;
+}
+.PageNotFound_img {
+  background-image: $page-not-found;
+  width: 500px;
+  height: 196px;
+}

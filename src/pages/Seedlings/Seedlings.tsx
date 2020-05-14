@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+
 import Card from "../../components/Card/Card";
 import DetailsModal from "../../components/DetailsModal/DetailsModal";
 import AddModal from "../../components/AddModal/AddModal";
@@ -18,6 +19,7 @@ import axios from "axios";
 import styles from "./Seedlings.module.scss";
 
 const SeedlingsPage: React.FC = () => {
+  let timeoutID: any;
   const [seedlings, setSeedlings] = useState<Seedling[]>([]);
 
   const [selectedSeedling, setSelectedSeedling] = useState<Seedling>({
@@ -70,6 +72,10 @@ const SeedlingsPage: React.FC = () => {
       .catch((error) => {
         console.log(error);
       });
+    return () => {
+      //clearTimeout(a);
+      //setPopup({isOpen: false, message: "message"});
+    };
   }, []);
 
   const openDetailsModal = (id: string) => {
@@ -128,13 +134,13 @@ const SeedlingsPage: React.FC = () => {
       .then(() => {
         closeAddModal();
         setPopup({ isOpen: true, message: "Successfully added to database" });
-        setTimeout(() => {
+        timeoutID = setTimeout(() => {
           setPopup({ isOpen: false, message: "" });
         }, 5500);
       })
       .catch((error) => {
         setPopup({ isOpen: true, message: "Error during adding to database" });
-        setTimeout(() => {
+        timeoutID = setTimeout(() => {
           setPopup({ isOpen: false, message: "" });
         }, 5500);
         console.log(error);
