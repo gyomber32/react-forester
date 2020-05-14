@@ -13,13 +13,17 @@
   text-transform: uppercase;
   text-decoration: none;
   color: $text-color;
-  text-shadow: $text-shadow;
+  text-shadow: $text-shadow-black;
   margin: 0 20px;
   font-size: $navigation-text-size;
   letter-spacing: 3px;
   position: relative;
   display: inline-block;
   transition: all 0.25s cubic-bezier(1, 0, 0.58, 0.97);
+
+  &___active {
+    color: #545454;
+  }
 }
 
 .NavigationItem_element:before {

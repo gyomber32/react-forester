@@ -16,6 +16,7 @@ const NavigationItem: React.FC<Props> = (props) => (
       to={props.link}
       exact={props.exact}
       className={styles.NavigationItem_element}
+      activeClassName={styles.NavigationItem_element___active}
     >
       {props.children}
     </NavLink>

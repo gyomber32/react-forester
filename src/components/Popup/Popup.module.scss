@@ -1,6 +1,6 @@
-@import '../../assets/styles/colors';
-@import '../../assets/styles/proportions';
-@import '../../assets/styles/animations';
+@import "../../assets/styles/colors";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/animations";
 
 .Popup {
   background-color: $background-color;
@@ -19,7 +19,7 @@
   top: 50%;
   text-align: center;
   font-weight: bold;
-  text-shadow: $text-shadow;
+  text-shadow: $text-shadow-black;
 }
 
 .Popup {
