@@ -4,18 +4,12 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import AuthPage from "./pages/Authentication/Auth";
 import SeedlingsPage from "./pages/Seedlings/Seedlings";
 import SeedsPage from "./pages/Seeds/Seeds";
-
-import Backdrop from "./components/Backdrop/Backdrop";
-import Spinner from "./components/Spinner/Spinner";
+import MapPage from "./pages/Map/Map";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
 
 import IsAuthenticated from "./utils/IsAuthenticated";
 
 import styles from "./App.module.scss";
-
-const MapPage = React.lazy(() => import("./pages/Map/Map"));
-const PageNotFound = React.lazy(() =>
-  import("./pages/PageNotFound/PageNotFound")
-);
 
 const App = () => {
   return (
@@ -59,39 +53,13 @@ const App = () => {
             <Route
               path="/map"
               render={() =>
-                IsAuthenticated() ? (
-                  <Suspense
-                    fallback={
-                      <Fragment>
-                        <Backdrop />
-                        <Spinner />
-                      </Fragment>
-                    }
-                  >
-                    <MapPage />
-                  </Suspense>
-                ) : (
-                  <Redirect to="/" />
-                )
+                IsAuthenticated() ? <MapPage /> : <Redirect to="/" />
               }
             />
             <Route
               path="*"
               render={() =>
-                IsAuthenticated() ? (
-                  <Suspense
-                    fallback={
-                      <Fragment>
-                        <Backdrop />
-                        <Spinner />
-                      </Fragment>
-                    }
-                  >
-                    <PageNotFound />
-                  </Suspense>
-                ) : (
-                  <Redirect to="/" />
-                )
+                IsAuthenticated() ? <PageNotFound /> : <Redirect to="/" />
               }
             />
           </Switch>
