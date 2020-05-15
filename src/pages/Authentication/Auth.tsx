@@ -36,12 +36,10 @@ const AuthPage: React.FC<Props> = (props) => {
     values: { email: string; password: string },
     { setSubmitting }: FormikHelpers<AuthFormValues>
   ) => {
-    console.log(props.history)
     const query = {
       query: `
         query {
           login(userInput: {email: "${values.email}", password: "${values.password}"}) {
-            _id
             token
             tokenExpiration
           }
@@ -54,7 +52,6 @@ const AuthPage: React.FC<Props> = (props) => {
       data: JSON.stringify(query),
     })
       .then((authData) => {
-        console.log(authData)
         if (authData.data.hasOwnProperty("errors")) {
           setPopup({ isOpen: true, message: authData.data.errors[0].message });
           setTimeout(() => {
@@ -66,9 +63,6 @@ const AuthPage: React.FC<Props> = (props) => {
           localStorage.setItem("tokenExpiration", authData.data.data.login.tokenExpiration);
           props.history.push("seedlings");
         }
-        /* NEXT STEP IS AUTOLOGIN AND AUTO LOGOUT
-        sessionStorage.setItem('tokenExpiry', authData.data.login.tokenExpiration);
-        */
       })
       .catch((error) => {
         console.log(error);
