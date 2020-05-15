@@ -23,8 +23,27 @@ const App = () => {
       <BrowserRouter>
         <React.Fragment>
           <Switch>
-            <Route exact={true} path="/" to="/auth" component={AuthPage} />
-            <Route path="/auth" component={AuthPage} />
+            <Route
+              exact={true}
+              path="/"
+              render={() =>
+                IsAuthenticated() ? (
+                  <Redirect to="/seedlings" />
+                ) : (
+                  <Route to="/auth" component={AuthPage} />
+                )
+              }
+            />
+            <Route
+              path="/auth"
+              render={() =>
+                IsAuthenticated() ? (
+                  <Redirect to="/seedlings" />
+                ) : (
+                  <Route to="/auth" component={AuthPage} />
+                )
+              }
+            />
             <Route
               path="/seedlings"
               render={() =>

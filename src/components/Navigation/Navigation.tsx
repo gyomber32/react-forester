@@ -6,6 +6,7 @@ import styles from "./Navigation.module.scss";
 
 const logout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("tokenExpiration");
 };
 
 const Navigation: React.FC = () => (

@@ -36,6 +36,7 @@ const AuthPage: React.FC<Props> = (props) => {
     values: { email: string; password: string },
     { setSubmitting }: FormikHelpers<AuthFormValues>
   ) => {
+    console.log(props.history)
     const query = {
       query: `
         query {
@@ -62,6 +63,7 @@ const AuthPage: React.FC<Props> = (props) => {
           return;
         } else {
           localStorage.setItem("token", authData.data.data.login.token);
+          localStorage.setItem("tokenExpiration", authData.data.data.login.tokenExpiration);
           props.history.push("seedlings");
         }
         /* NEXT STEP IS AUTOLOGIN AND AUTO LOGOUT
