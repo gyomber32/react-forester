@@ -1,0 +1,21 @@
+@import '../../assets/styles/background-images';
+
+.Trees {
+  background-image: $trees-page-background;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  resize: both;
+  overflow-y: auto;
+}
+
+.Trees_cardsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: flex-start;
+  padding: 50px;
+}

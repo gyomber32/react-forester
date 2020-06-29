@@ -16,6 +16,15 @@ type Props = {
   onCancel: () => void;
 };
 
+const initialTreesValues = {
+  species: "",
+  plantedQuantity: 0,
+  survivedQuantity: 0,
+  datePlanted: new Date(),
+  picture: File,
+  location: "",
+};
+
 const initialSeedlingsValues = {
   species: "",
   plantedQuantity: 0,
@@ -30,6 +39,27 @@ const initialSeedsValues = {
   seededQuantity: 0,
   dateSeeded: new Date(),
 };
+
+const treesSchema = Yup.object().shape({
+  species: Yup.string()
+    .trim()
+    .min(2, "Too short!")
+    .max(50, "Too long!")
+    .required("Required"),
+  plantedQuantity: Yup.number()
+    .moreThan(0, "The number must be positive!")
+    .required("Required"),
+  datePlanted: Yup.date().required("Required"),
+  location: Yup.string().required("Required"),
+  picture: Yup.object().shape({
+    lastModified: Yup.number(),
+    lastModifiedDate: Yup.date(),
+    name: Yup.string(),
+    path: Yup.string(),
+    size: Yup.number(),
+    type: Yup.string(),
+    webkitRelativePath: Yup.string(),
+  }).nullable()});
 
 const seedlingsSchema = Yup.object().shape({
   species: Yup.string()
@@ -56,6 +86,10 @@ const seedsSchema = Yup.object().shape({
     .required("Required"),
   dateSeeded: Yup.date().required("Required"),
 });
+
+const onDrop = async (file: any) => {
+  console.log(file);
+};
 
 const AddModal: React.FC<Props> = (props) => {
   return (
@@ -224,6 +258,113 @@ const AddModal: React.FC<Props> = (props) => {
               <ErrorMessage
                 className={styles.AddModal_form_error}
                 name="dateSeeded"
+                component="div"
+              />
+              <div className={styles.AddModal_formActions}>
+                <button
+                  className={styles.AddModal_formActions_button}
+                  disabled={isSubmitting}
+                  type="button"
+                  onClick={props.onCancel}
+                >
+                  Cancel
+                </button>
+                <button
+                  className={styles.AddModal_formActions_button}
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  Save
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      )}
+      {props.type === "trees" && (
+        <Formik
+          initialValues={initialTreesValues}
+          validationSchema={treesSchema}
+          onSubmit={(values) => {
+            props.onSubmit(values);
+          }}
+        >
+          {({
+            isSubmitting,
+            values,
+            handleChange,
+            handleBlur,
+            setFieldValue,
+          }) => (
+            <Form className={styles.AddModal_form}>
+              <Field
+                className={styles.AddModal_form_field}
+                type="text"
+                name="species"
+                placeholder="Species"
+                value={values.species}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              <ErrorMessage
+                className={styles.AddModal_form_error}
+                name="species"
+                component="div"
+              />
+              <Field
+                className={styles.AddModal_form_field}
+                type="number"
+                name="plantedQuantity"
+                placeholder="Planted quantity"
+                value={values.plantedQuantity ? values.plantedQuantity : ""}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              <ErrorMessage
+                className={styles.AddModal_form_error}
+                name="plantedQuantity"
+                component="div"
+              />
+              <DatePicker
+                className={styles.AddModal_form_field}
+                popperClassName="datepicker"
+                name="datePlanted"
+                dateFormat="yyyy.MM.dd"
+                maxDate={new Date()}
+                selected={values.datePlanted}
+                onChange={(datePlanted) =>
+                  setFieldValue("datePlanted", datePlanted)
+                }
+              />
+              <ErrorMessage
+                className={styles.AddModal_form_error}
+                name="datePlanted"
+                component="div"
+              />
+              <Field
+                className={styles.AddModal_form_field}
+                name="latlng"
+                type="text"
+                placeholder="Location"
+                value={values.location}
+                onValueChange={(location: string) => {
+                  setFieldValue("location", location);
+                }}
+                component={LocationField}
+              ></Field>
+              <ErrorMessage
+                className={styles.AddModal_form_error}
+                name="location"
+                component="div"
+              />
+              <Field
+                className={styles.AddModal_form_field}
+                name="picture"
+                component={FileUpload}
+              />
+              <ErrorMessage
+                className={styles.AddModal_form_error}
+                name="picture"
                 component="div"
               />
               <div className={styles.AddModal_formActions}>

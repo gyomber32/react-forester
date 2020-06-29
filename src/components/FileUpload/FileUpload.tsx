@@ -1,4 +1,6 @@
-import React, { createRef } from "react";
+import React from "react";
+
+import Dropzone from "react-dropzone";
 
 import styles from "./FileUpload.module.scss";
 
@@ -7,35 +9,34 @@ type Props = {
   form: any;
 };
 
-const textInput = createRef<HTMLInputElement>();
+const acceptedPictureTypes = ["image/jpeg", "image/jpg", "image/png"];
 
-const fileSelectedHandler = (event: any, form: any, field: any) => {
-  const file = event.target.files[0];
-  const reader = new FileReader();
-  let fileTag: any;
-  fileTag = document.getElementById("file");
-  if (textInput.current) textInput.current.title = file.name;
-  reader.onload = (event) => {
-    fileTag.src = event.target?.result;
-  };
-  reader.readAsDataURL(file);
-  form.setFieldValue(field.name, file);
+const onDrop = (picture: any, form: any, field: any) => {
+  form.setFieldValue(field.name, picture[0]);
 };
 
 const FileUpload: React.FC<Props> = (props) => {
   return (
-    <input
-      className={styles.Input}
-      ref={textInput}
-      id="file"
-      name="file"
-      type="file"
-      title=""
-      src=""
-      onChange={(event) => {
-        fileSelectedHandler(event, props.form, props.field);
-      }}
-    ></input>
+    // file is max 10 MB and only single image can be uploaded, in types defined above
+    <div>
+      <Dropzone
+        onDrop={(acceptedPicture) =>
+          onDrop(acceptedPicture, props.form, props.field)
+        }
+        multiple={false}
+        maxSize={10000000}
+        accept={acceptedPictureTypes}
+      >
+        {({ getRootProps, getInputProps }) => (
+          <section>
+            <div {...getRootProps()} className={styles.Input}>
+              <input {...getInputProps()}/>
+              <p className={styles.Input_paragraph}>Drag 'n' drop or click to select a picture</p>
+            </div>
+          </section>
+        )}
+      </Dropzone>
+    </div>
   );
 };
 

@@ -1,7 +1,8 @@
-import React, { Suspense, Fragment } from "react";
+import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import AuthPage from "./pages/Authentication/Auth";
+import TreesPage from "./pages/Trees/Trees";
 import SeedlingsPage from "./pages/Seedlings/Seedlings";
 import SeedsPage from "./pages/Seeds/Seeds";
 import MapPage from "./pages/Map/Map";
@@ -22,7 +23,7 @@ const App = () => {
               path="/"
               render={() =>
                 IsAuthenticated() ? (
-                  <Redirect to="/seedlings" />
+                  <Redirect to="/trees" />
                 ) : (
                   <Route to="/auth" component={AuthPage} />
                 )
@@ -32,10 +33,16 @@ const App = () => {
               path="/auth"
               render={() =>
                 IsAuthenticated() ? (
-                  <Redirect to="/seedlings" />
+                  <Redirect to="/trees" />
                 ) : (
                   <Route to="/auth" component={AuthPage} />
                 )
+              }
+            />
+            <Route
+              path="/trees"
+              render={() =>
+                IsAuthenticated() ? <TreesPage /> : <Redirect to="/" />
               }
             />
             <Route
