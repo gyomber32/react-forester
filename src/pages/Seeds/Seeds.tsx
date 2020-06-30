@@ -72,11 +72,10 @@ const SeedsPage: React.FC = () => {
 
   const onSubmit = (value: any) => {
     value.brairdedQuantity = value.seededQuantity;
-    value.dateSeeded = value.dateSeeded.toDateString();
     const mutation = {
       query: `
         mutation {
-          createSeed(seedInput: {species: "${value.species}", seededQuantity: ${value.seededQuantity}, brairdedQuantity: ${value.brairdedQuantity}, dateSeeded: "${value.dateSeeded}"}) {
+          createSeed(seedInput: {species: "${value.species}", seededQuantity: ${value.seededQuantity}, brairdedQuantity: ${value.brairdedQuantity}, dateSeeded: "${value.dateSeeded.toDateString()}"}) {
             _id
             species
             seededQuantity
@@ -121,14 +120,14 @@ const SeedsPage: React.FC = () => {
           </Fragment>
         )}
         {popup.isOpen && <Popup message={popup.message}></Popup>}
-        <div className={styles.Seeds_seedsContainer}>
           {!loading && seeds.length > 0 && (
+            <div className={styles.Seeds_seedsContainer}>
             <Fragment>
               <Table seeds={seeds}></Table>
               <Chart length={seeds.length} data={seeds}></Chart>
             </Fragment>
+            </div>
           )}
-        </div>
         {!loading && seeds.length === 0 && <NoData>seeds</NoData>}
         {addModal && <Backdrop click={closeAddModal}></Backdrop>}
         {addModal && (

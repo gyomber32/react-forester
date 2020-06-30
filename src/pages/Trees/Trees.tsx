@@ -136,7 +136,6 @@ const TreesPage: React.FC = () => {
 
   const onSubmit = async (value: any) => {
     value.survivedQuantity = value.plantedQuantity;
-    value.datePlanted = value.datePlanted.toDateString();
     if (value.picture) {
       let bodyFormData = new FormData();
       bodyFormData.append("picture", value.picture);
@@ -153,7 +152,7 @@ const TreesPage: React.FC = () => {
         const mutation = {
           query: `
             mutation {
-              createTree(treeInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted}", location: "${value.location}", pictureId: "${pictureResponse.data.id}"}) {
+              createTree(treeInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted.toDateString()}", location: "${value.location}", pictureId: "${pictureResponse.data.id}"}) {
                 _id
                 species
                 plantedQuantity
@@ -173,7 +172,7 @@ const TreesPage: React.FC = () => {
           method: "POST",
           data: JSON.stringify(mutation),
         });
-        if (!treeResponse.data._id) {
+        if (!treeResponse.data.data.createTree._id) {
           throw new Error("No response from the server");
         }
         closeAddModal();
@@ -188,45 +187,46 @@ const TreesPage: React.FC = () => {
         }, 5500);
         console.log(error);
       }
-    }
-    const mutation = {
-      query: `
-        mutation {
-          createTree(treeInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted}", location: "${value.location}", pictureId: ""}) {
-            _id
-            species
-            plantedQuantity
-            survivedQuantity
-            datePlanted
-            location
-            pictureId
-          }
-        }`,
-    };
-    try {
-      let treeResponse = await axios({
-        url: "http://localhost:3000/graphql",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${localStorage.getItem("token")}`,
-        },
-        method: "POST",
-        data: JSON.stringify(mutation),
-      });
-      if (!treeResponse.data._id) {
-        throw Error;
+    } else {
+      try {
+        const mutation = {
+          query: `
+            mutation {
+              createTree(treeInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted}", location: "${value.location}", pictureId: ""}) {
+                _id
+                species
+                plantedQuantity
+                survivedQuantity
+                datePlanted
+                location
+                pictureId
+              }
+            }`,
+        };
+        const treeResponse = await axios({
+          url: "http://localhost:3000/graphql",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${localStorage.getItem("token")}`,
+          },
+          method: "POST",
+          data: JSON.stringify(mutation),
+        });
+        if (!treeResponse.data.data.createTree._id) {
+          throw new Error("No response from the server");
+        }
+        closeAddModal();
+        setPopup({ isOpen: true, message: "Successfully added to database" });
+        setTimeout(() => {
+          setPopup({ isOpen: false, message: "" });
+        }, 5500);
+      } catch (error) {
+        setPopup({ isOpen: true, message: "Error during adding to database" });
+        setTimeout(() => {
+          setPopup({ isOpen: false, message: "" });
+        }, 5500);
+        console.log(error);
       }
-      closeAddModal();
-      setPopup({ isOpen: true, message: "Successfully added to database" });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-    } catch (error) {
-      setPopup({ isOpen: true, message: "Error during adding to database" });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-      console.log(error);
     }
   };
 

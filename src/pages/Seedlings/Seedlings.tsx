@@ -72,10 +72,6 @@ const SeedlingsPage: React.FC = () => {
       .catch((error) => {
         console.log(error);
       });
-    return () => {
-      //clearTimeout(a);
-      //setPopup({isOpen: false, message: "message"});
-    };
   }, []);
 
   const openDetailsModal = (id: string) => {
@@ -107,11 +103,10 @@ const SeedlingsPage: React.FC = () => {
 
   const onSubmit = (value: any) => {
     value.survivedQuantity = value.plantedQuantity;
-    value.datePlanted = value.datePlanted.toDateString();
     const mutation = {
       query: `
         mutation {
-          createSeedling(seedlingInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted}", location: "${value.location}", picture: "${value.picture}"}) {
+          createSeedling(seedlingInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted.toDateString()}", location: "${value.location}", picture: "${value.picture}"}) {
             _id
             species
             plantedQuantity
