@@ -21,7 +21,7 @@ const initialTreesValues = {
   plantedQuantity: 0,
   survivedQuantity: 0,
   datePlanted: new Date(),
-  picture: File,
+  picture: null,
   location: "",
 };
 
@@ -86,10 +86,6 @@ const seedsSchema = Yup.object().shape({
     .required("Required"),
   dateSeeded: Yup.date().required("Required"),
 });
-
-const onDrop = async (file: any) => {
-  console.log(file);
-};
 
 const AddModal: React.FC<Props> = (props) => {
   return (

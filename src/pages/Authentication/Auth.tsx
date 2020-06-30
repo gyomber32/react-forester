@@ -61,7 +61,7 @@ const AuthPage: React.FC<Props> = (props) => {
         } else {
           localStorage.setItem("token", authData.data.data.login.token);
           localStorage.setItem("tokenExpiration", authData.data.data.login.tokenExpiration);
-          props.history.push("seedlings");
+          props.history.push("trees");
         }
       })
       .catch((error) => {

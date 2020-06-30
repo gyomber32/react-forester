@@ -26,7 +26,7 @@ const mapPage: React.FC = () => {
   const query = {
     query: `
     query {
-      seedlings {
+      trees {
           _id
           species
           plantedQuantity
@@ -57,7 +57,7 @@ const mapPage: React.FC = () => {
       data: JSON.stringify(query),
     })
       .then((result) => {
-        setSeedlings(result.data.data.seedlings);
+        setSeedlings(result.data.data.trees);
         setLoadingState(false);
       })
       .catch((error) => {

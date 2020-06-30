@@ -1,5 +1,3 @@
-import { LatLng } from "leaflet";
-
 type Tree = {
     _id: string;
     species: string;
@@ -7,6 +5,7 @@ type Tree = {
     survivedQuantity: number;
     datePlanted: string;
     picture: string;
+    pictureId: string;
     location: string;
 };
 

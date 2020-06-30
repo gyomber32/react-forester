@@ -14,6 +14,8 @@ import NoData from "../../components/NoData/NoData";
 import Tree from "../../models/types/Tree";
 import PopUp from "../../models/types/PopUp";
 
+import NoPicture from "../../assets/no-content.png"
+
 import axios from "axios";
 
 import styles from "./Trees.module.scss";
@@ -24,6 +26,7 @@ const TreesPage: React.FC = () => {
   const [selectedTree, setSelectedTree] = useState<Tree>({
     _id: "",
     picture: "",
+    pictureId: "",
     species: "",
     plantedQuantity: 0,
     survivedQuantity: 0,
@@ -48,14 +51,15 @@ const TreesPage: React.FC = () => {
           plantedQuantity
           survivedQuantity
           datePlanted
+          pictureId
           location
         }
       }`,
   };
 
-  useEffect(() => {
+  const getTrees = async () => {
     setLoadingState(true);
-    axios({
+    const response = await axios({
       url: "http://localhost:3000/graphql",
       headers: {
         "Content-Type": "application/json",
@@ -63,18 +67,27 @@ const TreesPage: React.FC = () => {
       },
       method: "POST",
       data: JSON.stringify(query),
-    })
-      .then((result) => {
-        setLoadingState(false);
-        setTrees(result.data.data.trees);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    return () => {
-      //clearTimeout(a);
-      //setPopup({isOpen: false, message: "message"});
-    };
+    });
+    let trees: Tree[] = [];
+    response.data.data.trees.forEach((tree: Tree) => {
+      const tempTree: Tree = {
+        _id: tree._id,
+        species: tree.species,
+        plantedQuantity: tree.plantedQuantity,
+        survivedQuantity: tree.survivedQuantity,
+        datePlanted: tree.datePlanted,
+        picture: tree.pictureId ? `http://localhost:3000/picture/${tree.pictureId}`: NoPicture,
+        pictureId: tree.pictureId,
+        location: tree.location,
+      };
+      trees.push(tempTree);
+    });
+    setTrees(trees);
+    setLoadingState(false);
+  };
+
+  useEffect(() => {
+      getTrees();
   }, []);
 
   const openDetailsModal = (id: string) => {
@@ -88,6 +101,7 @@ const TreesPage: React.FC = () => {
     setSelectedTree({
       _id: "",
       picture: "",
+      pictureId: "",
       species: "",
       plantedQuantity: 0,
       survivedQuantity: 0,
@@ -104,47 +118,100 @@ const TreesPage: React.FC = () => {
     setAddModalState(false);
   };
 
-  const onSubmit = (value: any) => {
+  const onSubmit = async (value: any) => {
     value.survivedQuantity = value.plantedQuantity;
     value.datePlanted = value.datePlanted.toDateString();
-    console.log(value);
+    if (value.picture) {
+      let bodyFormData = new FormData();
+      bodyFormData.append("picture", value.picture);
+      try {
+        const pictureResponse = await axios({
+          method: "post",
+          url: "http://localhost:3000/picture",
+          data: bodyFormData,
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        if (!pictureResponse.data.id) {
+          throw Error;
+        }
+        const mutation = {
+          query: `
+            mutation {
+              createTree(treeInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted}", location: "${value.location}", pictureId: "${pictureResponse.data.id}"}) {
+                _id
+                species
+                plantedQuantity
+                survivedQuantity
+                datePlanted
+                location
+                pictureId
+              }
+            }`,
+        };
+        const treeResponse = await axios({
+          url: "http://localhost:3000/graphql",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${localStorage.getItem("token")}`,
+          },
+          method: "POST",
+          data: JSON.stringify(mutation),
+        });
+        if (!treeResponse.data._id) {
+          throw Error;
+        }
+        closeAddModal();
+        setPopup({ isOpen: true, message: "Successfully added to database" });
+        setTimeout(() => {
+          setPopup({ isOpen: false, message: "" });
+        }, 5500);
+      } catch (error) {
+        setPopup({ isOpen: true, message: "Error during adding to database" });
+        setTimeout(() => {
+          setPopup({ isOpen: false, message: "" });
+        }, 5500);
+        console.log(error);
+      }
+    }
     const mutation = {
       query: `
         mutation {
-          createTree(treeInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted}", location: "${value.location}", picture: "${value.picture}"}) {
+          createTree(treeInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted}", location: "${value.location}", pictureId: ""}) {
             _id
             species
             plantedQuantity
             survivedQuantity
             datePlanted
             location
-            picture
+            pictureId
           }
         }`,
     };
-    axios({
-      url: "http://localhost:3000/graphql",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-      method: "POST",
-      data: JSON.stringify(mutation),
-    })
-      .then(() => {
-        closeAddModal();
-        setPopup({ isOpen: true, message: "Successfully added to database" });
-        setTimeout(() => {
-          setPopup({ isOpen: false, message: "" });
-        }, 5500);
-      })
-      .catch((error) => {
-        setPopup({ isOpen: true, message: "Error during adding to database" });
-        setTimeout(() => {
-          setPopup({ isOpen: false, message: "" });
-        }, 5500);
-        console.log(error);
+    try {
+      let treeResponse = await axios({
+        url: "http://localhost:3000/graphql",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        method: "POST",
+        data: JSON.stringify(mutation),
       });
+      if (!treeResponse.data._id) {
+        throw Error;
+      }
+      closeAddModal();
+      setPopup({ isOpen: true, message: "Successfully added to database" });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+    } catch (error) {
+      setPopup({ isOpen: true, message: "Error during adding to database" });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+      console.log(error);
+    }
   };
 
   return (

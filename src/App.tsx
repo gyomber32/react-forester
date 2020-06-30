@@ -42,31 +42,31 @@ const App = () => {
             <Route
               path="/trees"
               render={() =>
-                IsAuthenticated() ? <TreesPage /> : <Redirect to="/" />
+                IsAuthenticated() ? <TreesPage /> : <Redirect to="/auth" />
               }
             />
             <Route
               path="/seedlings"
               render={() =>
-                IsAuthenticated() ? <SeedlingsPage /> : <Redirect to="/" />
+                IsAuthenticated() ? <SeedlingsPage /> : <Redirect to="/auth" />
               }
             />
             <Route
               path="/seeds"
               render={() =>
-                IsAuthenticated() ? <SeedsPage /> : <Redirect to="/" />
+                IsAuthenticated() ? <SeedsPage /> : <Redirect to="/auth" />
               }
             />
             <Route
               path="/map"
               render={() =>
-                IsAuthenticated() ? <MapPage /> : <Redirect to="/" />
+                IsAuthenticated() ? <MapPage /> : <Redirect to="/auth" />
               }
             />
             <Route
               path="*"
               render={() =>
-                IsAuthenticated() ? <PageNotFound /> : <Redirect to="/" />
+                IsAuthenticated() ? <PageNotFound /> : <Redirect to="/auth" />
               }
             />
           </Switch>
