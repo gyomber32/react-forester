@@ -14,7 +14,7 @@ import NoData from "../../components/NoData/NoData";
 import Tree from "../../models/types/Tree";
 import PopUp from "../../models/types/PopUp";
 
-import NoPicture from "../../assets/no-content.png"
+import NoPicture from "../../assets/no-content.png";
 
 import axios from "axios";
 
@@ -59,35 +59,51 @@ const TreesPage: React.FC = () => {
 
   const getTrees = async () => {
     setLoadingState(true);
-    const response = await axios({
-      url: "http://localhost:3000/graphql",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-      method: "POST",
-      data: JSON.stringify(query),
-    });
-    let trees: Tree[] = [];
-    response.data.data.trees.forEach((tree: Tree) => {
-      const tempTree: Tree = {
-        _id: tree._id,
-        species: tree.species,
-        plantedQuantity: tree.plantedQuantity,
-        survivedQuantity: tree.survivedQuantity,
-        datePlanted: tree.datePlanted,
-        picture: tree.pictureId ? `http://localhost:3000/picture/${tree.pictureId}`: NoPicture,
-        pictureId: tree.pictureId,
-        location: tree.location,
-      };
-      trees.push(tempTree);
-    });
-    setTrees(trees);
+    try {
+      const response = await axios({
+        url: "http://localhost:3000/graphql",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        method: "POST",
+        data: JSON.stringify(query),
+      });
+      if (!response) {
+        throw new Error("No response from the server");
+      }
+      let trees: Tree[] = [];
+      response.data.data.trees.forEach((tree: Tree) => {
+        const tempTree: Tree = {
+          _id: tree._id,
+          species: tree.species,
+          plantedQuantity: tree.plantedQuantity,
+          survivedQuantity: tree.survivedQuantity,
+          datePlanted: tree.datePlanted,
+          picture: tree.pictureId
+            ? `http://localhost:3000/picture/${tree.pictureId}`
+            : NoPicture,
+          pictureId: tree.pictureId,
+          location: tree.location,
+        };
+        trees.push(tempTree);
+      });
+      setTrees(trees);
+    } catch (error) {
+      setPopup({
+        isOpen: true,
+        message: "Error during fecthing from database",
+      });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+      console.log(error);
+    }
     setLoadingState(false);
   };
 
   useEffect(() => {
-      getTrees();
+    getTrees();
   }, []);
 
   const openDetailsModal = (id: string) => {
@@ -132,7 +148,7 @@ const TreesPage: React.FC = () => {
           headers: { "Content-Type": "multipart/form-data" },
         });
         if (!pictureResponse.data.id) {
-          throw Error;
+          throw new Error("No response from the server");
         }
         const mutation = {
           query: `
@@ -158,7 +174,7 @@ const TreesPage: React.FC = () => {
           data: JSON.stringify(mutation),
         });
         if (!treeResponse.data._id) {
-          throw Error;
+          throw new Error("No response from the server");
         }
         closeAddModal();
         setPopup({ isOpen: true, message: "Successfully added to database" });
