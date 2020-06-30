@@ -8,7 +8,7 @@ import axios from "axios";
 
 import styles from "./Map.module.scss";
 
-import Seedling from "../../models/types/Seedling";
+import Tree from "../../models/types/Tree";
 import Backdrop from "../../components/Backdrop/Backdrop";
 import Spinner from "../../components/Spinner/Spinner";
 
@@ -16,7 +16,7 @@ import getPosition from "../../utils/Position";
 
 const mapPage: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [seedlings, setSeedlings] = useState<Seedling[]>([]);
+  const [trees, setTrees] = useState<Tree[]>([]);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [loading, setLoadingState] = useState<boolean>(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -57,7 +57,7 @@ const mapPage: React.FC = () => {
       data: JSON.stringify(query),
     })
       .then((result) => {
-        setSeedlings(result.data.data.trees);
+        setTrees(result.data.data.trees);
         setLoadingState(false);
       })
       .catch((error) => {
@@ -75,7 +75,7 @@ const mapPage: React.FC = () => {
             <Spinner></Spinner>
           </Fragment>
         )}
-        {!loading && <Map position={position} seedlings={seedlings} />}
+        {!loading && <Map position={position} trees={trees} />}
       </div>
     </Fragment>
   );

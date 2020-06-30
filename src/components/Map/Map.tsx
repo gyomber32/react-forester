@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { LatLngExpression, Icon, LatLng } from "leaflet";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 
-import Seedling from "../../models/types/Seedling";
+import Tree from "../../models/types/Tree";
 
 import manSvg from "../../assets/icons/man.svg";
 import treeSvg from "../../assets/icons/tree.svg";
@@ -23,14 +23,14 @@ const treeIcon = new Icon({
 
 type Props = {
   position: LatLngExpression | undefined;
-  seedlings?: Seedling[];
+  trees?: Tree[];
 };
 
 const map: React.FC<Props> = (props) => {
   const marker = props.position ? (
     <Marker position={props.position} icon={manIcon}>
       <Popup>
-        {props.seedlings ? (
+        {props.trees ? (
           <span>You are here</span>
         ) : (
           <span>
@@ -43,21 +43,21 @@ const map: React.FC<Props> = (props) => {
     </Marker>
   ) : null;
 
-  const markers = props.seedlings
-    ? props.seedlings.map((seedling) => {
+  const markers = props.trees
+    ? props.trees.map((tree) => {
         return (
-          <Marker key={seedling._id} position={new LatLng(+seedling.location.split(',')[0],+seedling.location.split(',')[1])} icon={treeIcon}>
+          <Marker key={tree._id} position={new LatLng(+tree.location.split(',')[0],+tree.location.split(',')[1])} icon={treeIcon}>
             <Popup>
               <span>
-                Species: <b>{seedling.species}</b>
+                Species: <b>{tree.species}</b>
                 <br></br>
-                Planted: <b>{seedling.plantedQuantity}</b>
+                Planted: <b>{tree.plantedQuantity}</b>
                 <br></br>
-                Survived: <b>{seedling.survivedQuantity}</b>
+                Survived: <b>{tree.survivedQuantity}</b>
                 <br></br>
-                Date planted: <b>{seedling.datePlanted}</b>
+                Date planted: <b>{tree.datePlanted}</b>
                 <br></br>
-                Growing for: <b>{parseDate(seedling.datePlanted)}</b>
+                Growing for: <b>{parseDate(tree.datePlanted)}</b>
               </span>
             </Popup>
           </Marker>
