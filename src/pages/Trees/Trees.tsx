@@ -20,7 +20,7 @@ import axios from "axios";
 
 import styles from "./Trees.module.scss";
 
-const TreesPage: React.FC = () => {
+const TreesPage: React.FC = (props) => {
   const [trees, setTrees] = useState<Tree[]>([]);
 
   const [selectedTree, setSelectedTree] = useState<Tree>({
@@ -42,7 +42,7 @@ const TreesPage: React.FC = () => {
 
   const [loading, setLoadingState] = useState<boolean>(false);
 
-  const query = {
+  const allTreesQuery = {
     query: `
       query {
         trees {
@@ -57,7 +57,7 @@ const TreesPage: React.FC = () => {
       }`,
   };
 
-  const getTrees = async () => {
+  const getOneTree = async (id: string) => {
     setLoadingState(true);
     try {
       const response = await axios({
@@ -67,7 +67,63 @@ const TreesPage: React.FC = () => {
           Authorization: `bearer ${localStorage.getItem("token")}`,
         },
         method: "POST",
-        data: JSON.stringify(query),
+        data: JSON.stringify({
+          query: `
+          query {
+            oneTree(_id: "${id}"){
+              _id
+              species
+              plantedQuantity
+              survivedQuantity
+              datePlanted
+              pictureId
+              location
+            }
+          }`,
+        }),
+      });
+      if (!response) {
+        throw new Error("No response from the server");
+      }
+      const tree: Tree = {
+        _id: response.data.data.oneTree._id,
+        species: response.data.data.oneTree.species,
+        plantedQuantity: response.data.data.oneTree.plantedQuantity,
+        survivedQuantity: response.data.data.oneTree.survivedQuantity,
+        datePlanted: response.data.data.oneTree.datePlanted,
+        picture: response.data.data.oneTree.pictureId
+          ? `http://localhost:3000/picture/${response.data.data.oneTree.pictureId}`
+          : NoPicture,
+        pictureId: response.data.data.oneTree.pictureId,
+        location: response.data.data.oneTree.location,
+      };
+      let tempTrees = trees;
+      tempTrees.push(tree);
+      setTrees(tempTrees);
+    } catch (error) {
+      setPopup({
+        isOpen: true,
+        message: "Error during fecthing from database",
+      });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+      console.log(error);
+    }
+    setLoadingState(false);
+  };
+
+  const getAllTrees = async () => {
+    setLoadingState(true);
+    try {
+      const response = await axios({
+        url: "http://localhost:3000/graphql",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        method: "POST",
+        data: JSON.stringify(allTreesQuery),
       });
       if (!response) {
         throw new Error("No response from the server");
@@ -103,7 +159,7 @@ const TreesPage: React.FC = () => {
   };
 
   useEffect(() => {
-    getTrees();
+    getAllTrees();
   }, []);
 
   const openDetailsModal = (id: string) => {
@@ -144,7 +200,9 @@ const TreesPage: React.FC = () => {
           method: "post",
           url: "http://localhost:3000/picture",
           data: bodyFormData,
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
         if (!pictureResponse.data.id) {
           throw new Error("No response from the server");
@@ -152,7 +210,15 @@ const TreesPage: React.FC = () => {
         const mutation = {
           query: `
             mutation {
-              createTree(treeInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted.toDateString()}", location: "${value.location}", pictureId: "${pictureResponse.data.id}"}) {
+              createTree(treeInput: {species: "${
+                value.species
+              }", plantedQuantity: ${
+            value.plantedQuantity
+          }, survivedQuantity: ${
+            value.survivedQuantity
+          }, datePlanted: "${value.datePlanted.toDateString()}", location: "${
+            value.location
+          }", pictureId: "${pictureResponse.data.id}"}) {
                 _id
                 species
                 plantedQuantity
@@ -180,6 +246,7 @@ const TreesPage: React.FC = () => {
         setTimeout(() => {
           setPopup({ isOpen: false, message: "" });
         }, 5500);
+        await getOneTree(treeResponse.data.data.createTree._id);
       } catch (error) {
         setPopup({ isOpen: true, message: "Error during adding to database" });
         setTimeout(() => {
