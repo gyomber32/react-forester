@@ -1,0 +1,50 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/animations";
+
+.ConfirmationModal {
+  background-color: $modal-background-color;
+  box-shadow: $item-shadow;
+  width: 500px;
+  height: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: $component-border-radius;
+  z-index: 2;
+}
+
+.ConfirmationModal_text {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  color: $text-color;
+  font-size: $content-text-size;
+}
+
+.ConfirmationModal_formActions {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px 0 10px 0;
+}
+
+.ConfirmationModal_formActions_button {
+  background-color: $form-action-button-color;
+  box-shadow: $item-shadow;
+  border: none;
+  border-color: transparent;
+  width: 100px;
+  height: 40px;
+  border-radius: $form-field-border-radius;
+  color: $text-color;
+  transition: transform 1s;
+}
+
+.ConfirmationModal__formActions_button:hover {
+  box-shadow: $item-shadow-hover;
+  transform: scale(1.1);
+}

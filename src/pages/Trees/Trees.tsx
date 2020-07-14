@@ -19,10 +19,10 @@ import NoPicture from "../../assets/no-content.png";
 import axios from "axios";
 
 import styles from "./Trees.module.scss";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 
 const TreesPage: React.FC = (props) => {
   const [trees, setTrees] = useState<Tree[]>([]);
-
   const [selectedTree, setSelectedTree] = useState<Tree>({
     _id: "",
     picture: "",
@@ -33,13 +33,12 @@ const TreesPage: React.FC = (props) => {
     datePlanted: "",
     location: "",
   });
-
   const [detailsModal, setDetailsModalState] = useState<boolean>(false);
-
   const [addModal, setAddModalState] = useState<boolean>(false);
-
+  const [confirmationModal, setConfirmationModalState] = useState<boolean>(
+    false
+  );
   const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
-
   const [loading, setLoadingState] = useState<boolean>(false);
 
   const allTreesQuery = {
@@ -190,7 +189,61 @@ const TreesPage: React.FC = (props) => {
     setAddModalState(false);
   };
 
+  const openConfirmationModal = () => {
+    setConfirmationModalState(true);
+  };
+
+  const closeConfirmationModal = () => {
+    setConfirmationModalState(false);
+    if (detailsModal) {
+      closeDetailsModal();
+    }
+  };
+
+  const deleteTree = async () => {
+    setLoadingState(true);
+    try {
+      const mutation = {
+        query: `
+            mutation {
+              deleteTree(_id: "${selectedTree._id}"){
+                message
+              }
+            }`,
+      };
+      const response = await axios({
+        url: "http://localhost:3000/graphql",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        method: "POST",
+        data: JSON.stringify(mutation),
+      });
+      if (!response.data.data.deleteTree) {
+        throw new Error("No response from the server");
+      }
+      await getAllTrees();
+      closeConfirmationModal();
+      setPopup({
+        isOpen: true,
+        message: response.data.data.deleteTree.message,
+      });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+    } catch (error) {
+      setPopup({ isOpen: true, message: error.message });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+      console.log(error);
+    }
+    setLoadingState(false);
+  };
+
   const onSubmit = async (value: any) => {
+    setLoadingState(true);
     value.survivedQuantity = value.plantedQuantity;
     if (value.picture) {
       let bodyFormData = new FormData();
@@ -254,6 +307,7 @@ const TreesPage: React.FC = (props) => {
         }, 5500);
         console.log(error);
       }
+      setLoadingState(false);
     } else {
       try {
         const mutation = {
@@ -295,6 +349,7 @@ const TreesPage: React.FC = (props) => {
         console.log(error);
       }
     }
+    setLoadingState(false);
   };
 
   return (
@@ -334,7 +389,17 @@ const TreesPage: React.FC = (props) => {
             plantedQuantity={selectedTree.plantedQuantity}
             survivedQuantity={selectedTree.survivedQuantity}
             datePlanted={selectedTree.datePlanted}
+            openConfirmationModal={openConfirmationModal}
           ></DetailsModal>
+        )}
+        {confirmationModal && (
+          <Fragment>
+            <Backdrop click={closeConfirmationModal}></Backdrop>
+            <ConfirmationModal
+              onYes={deleteTree}
+              onCancel={closeConfirmationModal}
+            ></ConfirmationModal>
+          </Fragment>
         )}
         {addModal && <Backdrop click={closeAddModal}></Backdrop>}
         {addModal && (

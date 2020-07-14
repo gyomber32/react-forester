@@ -1,6 +1,7 @@
 @import "../../assets/styles/colors";
 @import "../../assets/styles/proportions";
 @import "../../assets/styles/animations";
+@import "../../assets/styles/icons";
 
 .DetailsModal {
   background-color: $background-color;
@@ -15,13 +16,40 @@
   z-index: 2;
 }
 
+.DetailsModal_header {
+  display: flex;
+  flex-direction: column;
+}
+
 .DetailsModal_title {
   color: $text-color;
   text-shadow: $text-shadow-black;
   font-size: 30px;
   font-weight: bold;
   text-align: center;
-  padding: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.DetailsModal_deleteButton {
+  align-self: flex-end;
+  margin: 5px 5px 0px 0px;
+  border: none;
+  border-radius: $component-border-radius;
+  background-color: transparent;
+}
+
+.DetailsModal_deleteButton:hover {
+  box-shadow: $item-shadow-hover;
+  transform: $scale-hover;
+}
+
+.DetailsModal_deleteButton___icon {
+  filter: invert(100%);
+  width: 20px;
+  height: 20px;
+  z-index: 1;
+  content: $delete-icon;
 }
 
 .DetailsModal_img {

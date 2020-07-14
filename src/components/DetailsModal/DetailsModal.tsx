@@ -12,12 +12,18 @@ type Props = {
   survivedQuantity: number;
   datePlanted: string;
   picture: string;
+  openConfirmationModal: () => void;
 };
 
 const DetailsModal: React.FC<Props> = (props) => {
   return (
     <div className={styles.DetailsModal}>
-      <header className={styles.DetailsModal_title}>{props.species}</header>
+      <header className={styles.DetailsModal_header}>
+        <button className={styles.DetailsModal_deleteButton} onClick={props.openConfirmationModal}>
+          <i className={styles.DetailsModal_deleteButton___icon}></i>
+        </button>
+        <div className={styles.DetailsModal_title}>{props.species}</div>
+      </header>
       {props.picture ? (
         <img src={props.picture} alt="" className={styles.DetailsModal_img} />
       ) : (

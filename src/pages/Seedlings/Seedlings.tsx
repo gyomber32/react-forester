@@ -40,6 +40,10 @@ const SeedlingsPage: React.FC = () => {
 
   const [loading, setLoadingState] = useState<boolean>(false);
 
+  const [confirmationModal, setConfirmationModalState] = useState<boolean>(
+    false
+  );
+
   const query = {
     query: `
       query {
@@ -99,6 +103,14 @@ const SeedlingsPage: React.FC = () => {
 
   const closeAddModal = () => {
     setAddModalState(false);
+  };
+
+  const openConfirmationModal = () => {
+    setConfirmationModalState(true);
+  };
+
+  const closeConfirmationModal = () => {
+    setConfirmationModalState(false);
   };
 
   const onSubmit = (value: any) => {
@@ -179,6 +191,7 @@ const SeedlingsPage: React.FC = () => {
             plantedQuantity={selectedSeedling.plantedQuantity}
             survivedQuantity={selectedSeedling.survivedQuantity}
             datePlanted={selectedSeedling.datePlanted}
+            openConfirmationModal={openConfirmationModal}
           ></DetailsModal>
         )}
         {addModal && <Backdrop click={closeAddModal}></Backdrop>}
