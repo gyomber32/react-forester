@@ -203,6 +203,18 @@ const TreesPage: React.FC = (props) => {
   const deleteTree = async () => {
     setLoadingState(true);
     try {
+      if (selectedTree.pictureId) {
+        const pictureResponse = await axios({
+          method: "delete",
+          url: `http://localhost:3000/picture/${selectedTree.pictureId}`,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!pictureResponse) {
+          throw new Error("No response from the server");
+        }
+      }
       const mutation = {
         query: `
             mutation {
@@ -341,6 +353,7 @@ const TreesPage: React.FC = (props) => {
         setTimeout(() => {
           setPopup({ isOpen: false, message: "" });
         }, 5500);
+        await getOneTree(treeResponse.data.data.createTree._id);
       } catch (error) {
         setPopup({ isOpen: true, message: "Error during adding to database" });
         setTimeout(() => {
