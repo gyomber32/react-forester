@@ -202,6 +202,7 @@ const TreesPage: React.FC = (props) => {
 
   const deleteTree = async () => {
     setLoadingState(true);
+    closeConfirmationModal();
     try {
       if (selectedTree.pictureId) {
         const pictureResponse = await axios({
@@ -236,7 +237,6 @@ const TreesPage: React.FC = (props) => {
         throw new Error("No response from the server");
       }
       await getAllTrees();
-      closeConfirmationModal();
       setPopup({
         isOpen: true,
         message: response.data.data.deleteTree.message,
@@ -256,6 +256,7 @@ const TreesPage: React.FC = (props) => {
 
   const onSubmit = async (value: any) => {
     setLoadingState(true);
+    closeAddModal();
     value.survivedQuantity = value.plantedQuantity;
     if (value.picture) {
       let bodyFormData = new FormData();
@@ -306,7 +307,6 @@ const TreesPage: React.FC = (props) => {
         if (!treeResponse.data.data.createTree._id) {
           throw new Error("No response from the server");
         }
-        closeAddModal();
         setPopup({ isOpen: true, message: "Successfully added to database" });
         setTimeout(() => {
           setPopup({ isOpen: false, message: "" });
@@ -371,7 +371,7 @@ const TreesPage: React.FC = (props) => {
       <div className={styles.Trees}>
         {loading && (
           <Fragment>
-            <Backdrop></Backdrop>
+            <Backdrop zIndex={3}></Backdrop>
             <Spinner></Spinner>
           </Fragment>
         )}
@@ -407,7 +407,7 @@ const TreesPage: React.FC = (props) => {
         )}
         {confirmationModal && (
           <Fragment>
-            <Backdrop click={closeConfirmationModal}></Backdrop>
+            <Backdrop click={closeConfirmationModal} zIndex={3}></Backdrop>
             <ConfirmationModal
               onYes={deleteTree}
               onCancel={closeConfirmationModal}
