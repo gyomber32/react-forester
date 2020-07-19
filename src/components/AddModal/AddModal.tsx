@@ -110,7 +110,7 @@ const AddModal: React.FC<Props> = (props) => {
           }) => (
             <Form className={styles.AddModal_form}>
               <Field
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 type="text"
                 name="species"
                 placeholder="Species"
@@ -119,12 +119,12 @@ const AddModal: React.FC<Props> = (props) => {
                 onBlur={handleBlur}
               />
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="species"
                 component="div"
               />
               <Field
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 type="number"
                 name="plantedQuantity"
                 placeholder="Planted quantity"
@@ -133,12 +133,12 @@ const AddModal: React.FC<Props> = (props) => {
                 onBlur={handleBlur}
               />
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="plantedQuantity"
                 component="div"
               />
               <DatePicker
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 popperClassName="datepicker"
                 name="datePlanted"
                 dateFormat="yyyy.MM.dd"
@@ -149,12 +149,12 @@ const AddModal: React.FC<Props> = (props) => {
                 }
               />
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="datePlanted"
                 component="div"
               />
               <Field
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 name="latlng"
                 type="text"
                 placeholder="Location"
@@ -165,13 +165,13 @@ const AddModal: React.FC<Props> = (props) => {
                 component={LocationField}
               ></Field>
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="location"
                 component="div"
               />
               <Field name="picture" component={FileUpload} />
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="picture"
                 component="div"
               />
@@ -213,7 +213,7 @@ const AddModal: React.FC<Props> = (props) => {
           }) => (
             <Form className={styles.AddModal_form}>
               <Field
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 type="text"
                 name="species"
                 placeholder="Species"
@@ -222,12 +222,12 @@ const AddModal: React.FC<Props> = (props) => {
                 onBlur={handleBlur}
               />
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="species"
                 component="div"
               />
               <Field
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 type="number"
                 name="seededQuantity"
                 placeholder="Seeded quantity"
@@ -236,12 +236,12 @@ const AddModal: React.FC<Props> = (props) => {
                 onBlur={handleBlur}
               />
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="seededQuantity"
                 component="div"
               />
               <DatePicker
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 popperClassName="datepicker"
                 name="dateSeeded"
                 dateFormat="yyyy.MM.dd"
@@ -252,7 +252,7 @@ const AddModal: React.FC<Props> = (props) => {
                 }
               />
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="dateSeeded"
                 component="div"
               />
@@ -294,7 +294,7 @@ const AddModal: React.FC<Props> = (props) => {
           }) => (
             <Form className={styles.AddModal_form}>
               <Field
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 type="text"
                 name="species"
                 placeholder="Species"
@@ -303,12 +303,12 @@ const AddModal: React.FC<Props> = (props) => {
                 onBlur={handleBlur}
               />
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="species"
                 component="div"
               />
               <Field
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 type="number"
                 name="plantedQuantity"
                 placeholder="Planted quantity"
@@ -317,12 +317,12 @@ const AddModal: React.FC<Props> = (props) => {
                 onBlur={handleBlur}
               />
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="plantedQuantity"
                 component="div"
               />
               <DatePicker
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 popperClassName="datepicker"
                 name="datePlanted"
                 dateFormat="yyyy.MM.dd"
@@ -333,12 +333,12 @@ const AddModal: React.FC<Props> = (props) => {
                 }
               />
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="datePlanted"
                 component="div"
               />
               <Field
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 name="latlng"
                 type="text"
                 placeholder="Location"
@@ -349,17 +349,17 @@ const AddModal: React.FC<Props> = (props) => {
                 component={LocationField}
               ></Field>
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="location"
                 component="div"
               />
               <Field
-                className={styles.AddModal_form_field}
+                className={styles.AddModal_formField}
                 name="picture"
                 component={FileUpload}
               />
               <ErrorMessage
-                className={styles.AddModal_form_error}
+                className={styles.AddModal_formError}
                 name="picture"
                 component="div"
               />
