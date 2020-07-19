@@ -1,6 +1,6 @@
 import Tree from "../models/types/Tree";
 
-export const getAllTrees = () => {
+export const getAllTreesQuery = () => {
     return JSON.stringify({
         query: `
             query {
@@ -17,7 +17,7 @@ export const getAllTrees = () => {
     });
 };
 
-export const getOneTree = (id: string) => {
+export const getOneTreeQuery = (id: string) => {
     return JSON.stringify({
         query: `
             query {
@@ -34,8 +34,8 @@ export const getOneTree = (id: string) => {
     });
 };
 
-export const createTree = (tree: Tree, pictureId?: string) => {
-    if (tree.pictureId) {
+export const createTreeMutation = (tree: Tree, pictureId?: string) => {
+    if (pictureId) {
         return JSON.stringify({
             query: `
                 mutation {
@@ -68,7 +68,7 @@ export const createTree = (tree: Tree, pictureId?: string) => {
     }
 }
 
-export const deleteTree = (id: string) => {
+export const deleteTreeMutation = (id: string) => {
     return JSON.stringify({
         query: `
             mutation {

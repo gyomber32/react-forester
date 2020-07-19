@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 
 import Card from "../../components/Card/Card";
 import DetailsModal from "../../components/DetailsModal/DetailsModal";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import AddModal from "../../components/AddModal/AddModal";
 import Backdrop from "../../components/Backdrop/Backdrop";
 import AddButton from "../../components/AddButton/AddButton";
@@ -17,9 +18,14 @@ import PopUp from "../../models/types/PopUp";
 import NoPicture from "../../assets/no-content.png";
 
 import axios from "axios";
+import {
+  getAllTreesQuery,
+  getOneTreeQuery,
+  createTreeMutation,
+  deleteTreeMutation,
+} from "../../graphql/queries";
 
 import styles from "./Trees.module.scss";
-import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 
 const TreesPage: React.FC = (props) => {
   const [trees, setTrees] = useState<Tree[]>([]);
@@ -41,21 +47,6 @@ const TreesPage: React.FC = (props) => {
   const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
   const [loading, setLoadingState] = useState<boolean>(false);
 
-  const allTreesQuery = {
-    query: `
-      query {
-        trees {
-          _id
-          species
-          plantedQuantity
-          survivedQuantity
-          datePlanted
-          pictureId
-          location
-        }
-      }`,
-  };
-
   const getOneTree = async (id: string) => {
     setLoadingState(true);
     try {
@@ -66,20 +57,7 @@ const TreesPage: React.FC = (props) => {
           Authorization: `bearer ${localStorage.getItem("token")}`,
         },
         method: "POST",
-        data: JSON.stringify({
-          query: `
-          query {
-            oneTree(_id: "${id}"){
-              _id
-              species
-              plantedQuantity
-              survivedQuantity
-              datePlanted
-              pictureId
-              location
-            }
-          }`,
-        }),
+        data: getOneTreeQuery(id),
       });
       if (!response) {
         throw new Error("No response from the server");
@@ -122,7 +100,7 @@ const TreesPage: React.FC = (props) => {
           Authorization: `bearer ${localStorage.getItem("token")}`,
         },
         method: "POST",
-        data: JSON.stringify(allTreesQuery),
+        data: getAllTreesQuery(),
       });
       if (!response) {
         throw new Error("No response from the server");
@@ -158,8 +136,21 @@ const TreesPage: React.FC = (props) => {
   };
 
   useEffect(() => {
+    document.addEventListener("keydown", closeOnEscapeButton, false)
     getAllTrees();
+
+    return () => {
+      document.removeEventListener("keydown", closeOnEscapeButton, false);
+    };
   }, []);
+
+  const closeOnEscapeButton = (event?: any) => {
+    if(event.keyCode === 27) {
+      closeDetailsModal();
+      closeAddModal();
+      closeConfirmationModal();
+    }
+  }
 
   const openDetailsModal = (id: string) => {
     const tree = trees.filter((tree) => tree._id === id);
@@ -216,14 +207,6 @@ const TreesPage: React.FC = (props) => {
           throw new Error("No response from the server");
         }
       }
-      const mutation = {
-        query: `
-            mutation {
-              deleteTree(_id: "${selectedTree._id}"){
-                message
-              }
-            }`,
-      };
       const response = await axios({
         url: "http://localhost:3000/graphql",
         headers: {
@@ -231,7 +214,7 @@ const TreesPage: React.FC = (props) => {
           Authorization: `bearer ${localStorage.getItem("token")}`,
         },
         method: "POST",
-        data: JSON.stringify(mutation),
+        data: deleteTreeMutation(selectedTree._id),
       });
       if (!response.data.data.deleteTree) {
         throw new Error("No response from the server");
@@ -273,28 +256,6 @@ const TreesPage: React.FC = (props) => {
         if (!pictureResponse.data.id) {
           throw new Error("No response from the server");
         }
-        const mutation = {
-          query: `
-            mutation {
-              createTree(treeInput: {species: "${
-                value.species
-              }", plantedQuantity: ${
-            value.plantedQuantity
-          }, survivedQuantity: ${
-            value.survivedQuantity
-          }, datePlanted: "${value.datePlanted.toDateString()}", location: "${
-            value.location
-          }", pictureId: "${pictureResponse.data.id}"}) {
-                _id
-                species
-                plantedQuantity
-                survivedQuantity
-                datePlanted
-                location
-                pictureId
-              }
-            }`,
-        };
         const treeResponse = await axios({
           url: "http://localhost:3000/graphql",
           headers: {
@@ -302,7 +263,7 @@ const TreesPage: React.FC = (props) => {
             Authorization: `bearer ${localStorage.getItem("token")}`,
           },
           method: "POST",
-          data: JSON.stringify(mutation),
+          data: createTreeMutation(value, pictureResponse.data.id),
         });
         if (!treeResponse.data.data.createTree._id) {
           throw new Error("No response from the server");
@@ -322,20 +283,6 @@ const TreesPage: React.FC = (props) => {
       setLoadingState(false);
     } else {
       try {
-        const mutation = {
-          query: `
-            mutation {
-              createTree(treeInput: {species: "${value.species}", plantedQuantity: ${value.plantedQuantity}, survivedQuantity: ${value.survivedQuantity}, datePlanted: "${value.datePlanted}", location: "${value.location}", pictureId: ""}) {
-                _id
-                species
-                plantedQuantity
-                survivedQuantity
-                datePlanted
-                location
-                pictureId
-              }
-            }`,
-        };
         const treeResponse = await axios({
           url: "http://localhost:3000/graphql",
           headers: {
@@ -343,7 +290,7 @@ const TreesPage: React.FC = (props) => {
             Authorization: `bearer ${localStorage.getItem("token")}`,
           },
           method: "POST",
-          data: JSON.stringify(mutation),
+          data: createTreeMutation(value),
         });
         if (!treeResponse.data.data.createTree._id) {
           throw new Error("No response from the server");

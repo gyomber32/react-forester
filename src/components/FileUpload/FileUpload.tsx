@@ -3,6 +3,7 @@ import React from "react";
 import Dropzone from "react-dropzone";
 
 import styles from "./FileUpload.module.scss";
+import { resizeImage } from "../../utils/image_resize";
 
 type Props = {
   field: any;
@@ -11,8 +12,11 @@ type Props = {
 
 const acceptedPictureTypes = ["image/jpeg", "image/jpg", "image/png"];
 
-const onDrop = (picture: any, form: any, field: any) => {
-  form.setFieldValue(field.name, picture[0]);
+const onDrop = async (picture: any, form: any, field: any) => {
+  const resizedPicture = await resizeImage(picture[0]);
+  console.log(picture[0]);
+  console.log(resizedPicture);
+  form.setFieldValue(field.name, resizedPicture);
 };
 
 const FileUpload: React.FC<Props> = (props) => {
