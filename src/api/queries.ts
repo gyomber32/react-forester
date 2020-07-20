@@ -1,5 +1,17 @@
 import Tree from "../models/types/Tree";
 
+export const authQuery = (email: string, password: string) => {
+    return JSON.stringify({
+        query: `
+            query {
+                login(userInput: {email: "${email}", password: "${password}"}) {
+                token
+                tokenExpiration
+          }
+        }`,
+    });
+};
+
 export const getAllTreesQuery = () => {
     return JSON.stringify({
         query: `

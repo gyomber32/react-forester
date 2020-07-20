@@ -1,10 +1,27 @@
 import axios from "axios"
 
-import { getAllTreesQuery, getOneTreeQuery, createTreeMutation, deleteTreeMutation } from "./queries";
+import { authQuery, getAllTreesQuery, getOneTreeQuery, createTreeMutation, deleteTreeMutation } from "./queries";
 
 import Tree from "../models/types/Tree";
 
 import NoPicture from "../assets/no-content.png";
+
+export const login = async (email: string, password: string) => {
+    try {
+        const response = await axios({
+            url: "http://localhost:3000/graphql",
+            headers: { "Content-Type": "application/json" },
+            method: "POST",
+            data: authQuery(email, password),
+        });
+        if (response.data.hasOwnProperty("errors")) {
+            throw new Error(response.data.errors[0].message);
+        }
+        return response.data.data.login;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
 
 export const getAllTrees = async () => {
     try {

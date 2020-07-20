@@ -67,7 +67,6 @@ const TreesPage: React.FC = (props) => {
     setLoadingState(true);
     try {
       const trees = await getAllTrees();
-      console.log(trees);
       setTrees(trees);
     } catch (error) {
       setPopup({

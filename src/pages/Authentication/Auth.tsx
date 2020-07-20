@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import Popup from "../../components/Popup/Popup";
 
 import { History } from "history";
-import axios from "axios";
+import { login } from "../../api/index";
 
 import PopUp from "../../models/types/PopUp";
 
@@ -32,49 +32,21 @@ const AuthPage: React.FC<Props> = (props) => {
   const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
 
   const initialValues: AuthFormValues = { email: "", password: "" };
-  const handleSubmit = (
+  const handleSubmit = async (
     values: { email: string; password: string },
     { setSubmitting }: FormikHelpers<AuthFormValues>
   ) => {
-    const query = {
-      query: `
-        query {
-          login(userInput: {email: "${values.email}", password: "${values.password}"}) {
-            token
-            tokenExpiration
-          }
-        }`,
-    };
-    axios({
-      url: "http://localhost:3000/graphql",
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-      data: JSON.stringify(query),
-    })
-      .then((authData) => {
-        if (authData.data.hasOwnProperty("errors")) {
-          setPopup({ isOpen: true, message: authData.data.errors[0].message });
-          setTimeout(() => {
-            setPopup({ isOpen: false, message: "" });
-          }, 5500);
-          return;
-        } else {
-          localStorage.setItem("token", authData.data.data.login.token);
-          localStorage.setItem(
-            "tokenExpiration",
-            authData.data.data.login.tokenExpiration
-          );
-          props.history.push("trees");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setPopup({ isOpen: true, message: error.message });
-        setTimeout(() => {
-          setPopup({ isOpen: false, message: "" });
-        }, 5500);
-        return;
-      });
+    try {
+      const response = await login(values.email, values.password);
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("tokenExpiration", response.tokenExpiration);
+      props.history.push("trees");
+    } catch (error) {
+      setPopup({ isOpen: true, message: error.message });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+    }
   };
 
   return (
