@@ -14,8 +14,6 @@ const acceptedPictureTypes = ["image/jpeg", "image/jpg", "image/png"];
 
 const onDrop = async (picture: any, form: any, field: any) => {
   const resizedPicture = await resizeImage(picture[0]);
-  console.log(picture[0]);
-  console.log(resizedPicture);
   form.setFieldValue(field.name, resizedPicture);
 };
 

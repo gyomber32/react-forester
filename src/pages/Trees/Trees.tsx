@@ -15,15 +15,12 @@ import NoData from "../../components/NoData/NoData";
 import Tree from "../../models/types/Tree";
 import PopUp from "../../models/types/PopUp";
 
-import NoPicture from "../../assets/no-content.png";
-
-import axios from "axios";
 import {
-  getAllTreesQuery,
-  getOneTreeQuery,
-  createTreeMutation,
-  deleteTreeMutation,
-} from "../../graphql/queries";
+  getAllTrees,
+  getOneTree,
+  removeTree,
+  createTree,
+} from "../../api/index";
 
 import styles from "./Trees.module.scss";
 
@@ -47,40 +44,15 @@ const TreesPage: React.FC = (props) => {
   const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
   const [loading, setLoadingState] = useState<boolean>(false);
 
-  const getOneTree = async (id: string) => {
+  const fetchOneTree = async (id: string) => {
     setLoadingState(true);
     try {
-      const response = await axios({
-        url: "http://localhost:3000/graphql",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${localStorage.getItem("token")}`,
-        },
-        method: "POST",
-        data: getOneTreeQuery(id),
-      });
-      if (!response) {
-        throw new Error("No response from the server");
-      }
-      const tree: Tree = {
-        _id: response.data.data.oneTree._id,
-        species: response.data.data.oneTree.species,
-        plantedQuantity: response.data.data.oneTree.plantedQuantity,
-        survivedQuantity: response.data.data.oneTree.survivedQuantity,
-        datePlanted: response.data.data.oneTree.datePlanted,
-        picture: response.data.data.oneTree.pictureId
-          ? `http://localhost:3000/picture/${response.data.data.oneTree.pictureId}`
-          : NoPicture,
-        pictureId: response.data.data.oneTree.pictureId,
-        location: response.data.data.oneTree.location,
-      };
-      let tempTrees = trees;
-      tempTrees.push(tree);
-      setTrees(tempTrees);
+      const tree = await getOneTree(id);
+      setTrees([...trees, tree]);
     } catch (error) {
       setPopup({
         isOpen: true,
-        message: "Error during fecthing from database",
+        message: error.message,
       });
       setTimeout(() => {
         setPopup({ isOpen: false, message: "" });
@@ -90,42 +62,15 @@ const TreesPage: React.FC = (props) => {
     setLoadingState(false);
   };
 
-  const getAllTrees = async () => {
+  const fetchAllTrees = async () => {
     setLoadingState(true);
     try {
-      const response = await axios({
-        url: "http://localhost:3000/graphql",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${localStorage.getItem("token")}`,
-        },
-        method: "POST",
-        data: getAllTreesQuery(),
-      });
-      if (!response) {
-        throw new Error("No response from the server");
-      }
-      let trees: Tree[] = [];
-      response.data.data.trees.forEach((tree: Tree) => {
-        const tempTree: Tree = {
-          _id: tree._id,
-          species: tree.species,
-          plantedQuantity: tree.plantedQuantity,
-          survivedQuantity: tree.survivedQuantity,
-          datePlanted: tree.datePlanted,
-          picture: tree.pictureId
-            ? `http://localhost:3000/picture/${tree.pictureId}`
-            : NoPicture,
-          pictureId: tree.pictureId,
-          location: tree.location,
-        };
-        trees.push(tempTree);
-      });
+      const trees = await getAllTrees();
       setTrees(trees);
     } catch (error) {
       setPopup({
         isOpen: true,
-        message: "Error during fecthing from database",
+        message: error.message,
       });
       setTimeout(() => {
         setPopup({ isOpen: false, message: "" });
@@ -136,21 +81,20 @@ const TreesPage: React.FC = (props) => {
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", closeOnEscapeButton, false)
-    getAllTrees();
-
+    document.addEventListener("keydown", closeOnEscapeButton, false);
+    fetchAllTrees();
     return () => {
       document.removeEventListener("keydown", closeOnEscapeButton, false);
     };
   }, []);
 
   const closeOnEscapeButton = (event?: any) => {
-    if(event.keyCode === 27) {
+    if (event.keyCode === 27) {
       closeDetailsModal();
       closeAddModal();
       closeConfirmationModal();
     }
-  }
+  };
 
   const openDetailsModal = (id: string) => {
     const tree = trees.filter((tree) => tree._id === id);
@@ -195,34 +139,11 @@ const TreesPage: React.FC = (props) => {
     setLoadingState(true);
     closeConfirmationModal();
     try {
-      if (selectedTree.pictureId) {
-        const pictureResponse = await axios({
-          method: "delete",
-          url: `http://localhost:3000/picture/${selectedTree.pictureId}`,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!pictureResponse) {
-          throw new Error("No response from the server");
-        }
-      }
-      const response = await axios({
-        url: "http://localhost:3000/graphql",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${localStorage.getItem("token")}`,
-        },
-        method: "POST",
-        data: deleteTreeMutation(selectedTree._id),
-      });
-      if (!response.data.data.deleteTree) {
-        throw new Error("No response from the server");
-      }
-      await getAllTrees();
+      const responseMessage = await removeTree(selectedTree);
+      await fetchAllTrees();
       setPopup({
         isOpen: true,
-        message: response.data.data.deleteTree.message,
+        message: responseMessage,
       });
       setTimeout(() => {
         setPopup({ isOpen: false, message: "" });
@@ -241,73 +162,19 @@ const TreesPage: React.FC = (props) => {
     setLoadingState(true);
     closeAddModal();
     value.survivedQuantity = value.plantedQuantity;
-    if (value.picture) {
-      let bodyFormData = new FormData();
-      bodyFormData.append("picture", value.picture);
-      try {
-        const pictureResponse = await axios({
-          method: "post",
-          url: "http://localhost:3000/picture",
-          data: bodyFormData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        if (!pictureResponse.data.id) {
-          throw new Error("No response from the server");
-        }
-        const treeResponse = await axios({
-          url: "http://localhost:3000/graphql",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${localStorage.getItem("token")}`,
-          },
-          method: "POST",
-          data: createTreeMutation(value, pictureResponse.data.id),
-        });
-        if (!treeResponse.data.data.createTree._id) {
-          throw new Error("No response from the server");
-        }
-        setPopup({ isOpen: true, message: "Successfully added to database" });
-        setTimeout(() => {
-          setPopup({ isOpen: false, message: "" });
-        }, 5500);
-        await getOneTree(treeResponse.data.data.createTree._id);
-      } catch (error) {
-        setPopup({ isOpen: true, message: "Error during adding to database" });
-        setTimeout(() => {
-          setPopup({ isOpen: false, message: "" });
-        }, 5500);
-        console.log(error);
-      }
-      setLoadingState(false);
-    } else {
-      try {
-        const treeResponse = await axios({
-          url: "http://localhost:3000/graphql",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${localStorage.getItem("token")}`,
-          },
-          method: "POST",
-          data: createTreeMutation(value),
-        });
-        if (!treeResponse.data.data.createTree._id) {
-          throw new Error("No response from the server");
-        }
-        closeAddModal();
-        setPopup({ isOpen: true, message: "Successfully added to database" });
-        setTimeout(() => {
-          setPopup({ isOpen: false, message: "" });
-        }, 5500);
-        await getOneTree(treeResponse.data.data.createTree._id);
-      } catch (error) {
-        setPopup({ isOpen: true, message: "Error during adding to database" });
-        setTimeout(() => {
-          setPopup({ isOpen: false, message: "" });
-        }, 5500);
-        console.log(error);
-      }
+    try {
+      const id = await createTree(value);
+      fetchOneTree(id);
+      setPopup({ isOpen: true, message: "Tree created successfully" });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+    } catch (error) {
+      setPopup({ isOpen: true, message: error.message });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+      console.log(error);
     }
     setLoadingState(false);
   };
