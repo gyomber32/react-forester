@@ -34,6 +34,7 @@ const TreesPage: React.FC = (props) => {
     plantedQuantity: 0,
     survivedQuantity: 0,
     datePlanted: "",
+    daysInSoil: "",
     location: "",
   });
   const [detailsModal, setDetailsModalState] = useState<boolean>(false);
@@ -66,6 +67,7 @@ const TreesPage: React.FC = (props) => {
     setLoadingState(true);
     try {
       const trees = await getAllTrees();
+      console.log(trees);
       setTrees(trees);
     } catch (error) {
       setPopup({
@@ -112,6 +114,7 @@ const TreesPage: React.FC = (props) => {
       plantedQuantity: 0,
       survivedQuantity: 0,
       datePlanted: "",
+      daysInSoil: "",
       location: "",
     });
   };
@@ -198,7 +201,6 @@ const TreesPage: React.FC = (props) => {
                   key={item._id}
                   species={item.species}
                   picture={item.picture}
-                  plantedQuantity={item.plantedQuantity}
                   survivedQuantity={item.survivedQuantity}
                   click={() => openDetailsModal(item._id)}
                 />
@@ -216,6 +218,7 @@ const TreesPage: React.FC = (props) => {
             plantedQuantity={selectedTree.plantedQuantity}
             survivedQuantity={selectedTree.survivedQuantity}
             datePlanted={selectedTree.datePlanted}
+            daysInSoil={selectedTree.daysInSoil}
             openConfirmationModal={openConfirmationModal}
           ></DetailsModal>
         )}

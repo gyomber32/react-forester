@@ -4,6 +4,7 @@ type Tree = {
     plantedQuantity: number;
     survivedQuantity: number;
     datePlanted: string;
+    daysInSoil: string;
     picture: string;
     pictureId: string;
     location: string;

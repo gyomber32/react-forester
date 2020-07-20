@@ -9,8 +9,6 @@ import treeSvg from "../../assets/icons/tree.svg";
 
 import "leaflet/dist/leaflet.css";
 
-import parseDate from "../../utils/ParseDate";
-
 const manIcon = new Icon({
   iconUrl: manSvg,
   iconSize: [50, 50],
@@ -57,7 +55,7 @@ const map: React.FC<Props> = (props) => {
                 <br></br>
                 Date planted: <b>{tree.datePlanted}</b>
                 <br></br>
-                Growing for: <b>{parseDate(tree.datePlanted)}</b>
+                Growing for: <b>{tree.daysInSoil}</b>
               </span>
             </Popup>
           </Marker>

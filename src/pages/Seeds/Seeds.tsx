@@ -35,6 +35,7 @@ const SeedsPage: React.FC = () => {
           seededQuantity
           brairdedQuantity
           dateSeeded
+          daysInSoil
       }
     }`,
   };
@@ -81,6 +82,7 @@ const SeedsPage: React.FC = () => {
             seededQuantity
             brairdedQuantity
             dateSeeded
+            daysInSoil
           }
         }`,
     };

@@ -6,6 +6,7 @@ type Seedling = {
     plantedQuantity: number;
     survivedQuantity: number;
     datePlanted: string;
+    daysInSoil: string;
     picture: string;
     location: string;
 };

@@ -10,6 +10,7 @@ export const getAllTreesQuery = () => {
                     plantedQuantity
                     survivedQuantity
                     datePlanted
+                    daysInSoil
                     pictureId
                     location
         }
@@ -27,6 +28,7 @@ export const getOneTreeQuery = (id: string) => {
                     plantedQuantity
                     survivedQuantity
                     datePlanted
+                    daysInSoil
                     pictureId
                     location
                 }

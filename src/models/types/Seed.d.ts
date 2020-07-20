@@ -4,6 +4,7 @@ type Seed = {
     seededQuantity: number;
     brairdedQuantity: number;
     dateSeeded: string;
+    daysInSoil: string;
 };
 
 export default Seed;

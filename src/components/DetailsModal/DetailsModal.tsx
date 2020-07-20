@@ -1,7 +1,5 @@
 import React from "react";
 
-import parseDate from "../../utils/ParseDate";
-
 import noContent from "../../assets/no-content.png";
 
 import styles from "./DetailsModal.module.scss";
@@ -11,6 +9,7 @@ type Props = {
   plantedQuantity: number;
   survivedQuantity: number;
   datePlanted: string;
+  daysInSoil: string;
   picture: string;
   openConfirmationModal: () => void;
 };
@@ -19,7 +18,10 @@ const DetailsModal: React.FC<Props> = (props) => {
   return (
     <div className={styles.DetailsModal}>
       <header className={styles.DetailsModal_header}>
-        <button className={styles.DetailsModal_deleteButton} onClick={props.openConfirmationModal}>
+        <button
+          className={styles.DetailsModal_deleteButton}
+          onClick={props.openConfirmationModal}
+        >
           <i className={styles.DetailsModal_deleteButton___icon}></i>
         </button>
         <div className={styles.DetailsModal_title}>{props.species}</div>
@@ -40,7 +42,7 @@ const DetailsModal: React.FC<Props> = (props) => {
           Date planted: {props.datePlanted}
         </p>
         <p className={styles.DetailsModal_content_paragraph}>
-          Growing for: {parseDate(props.datePlanted)}
+          Growing for: {props.daysInSoil}
         </p>
       </div>
     </div>

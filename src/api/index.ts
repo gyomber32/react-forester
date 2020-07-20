@@ -28,6 +28,7 @@ export const getAllTrees = async () => {
                 plantedQuantity: tree.plantedQuantity,
                 survivedQuantity: tree.survivedQuantity,
                 datePlanted: tree.datePlanted,
+                daysInSoil: tree.daysInSoil,
                 picture: tree.pictureId
                     ? `http://localhost:3000/picture/${tree.pictureId}`
                     : NoPicture,
@@ -62,6 +63,7 @@ export const getOneTree = async (id: string) => {
             plantedQuantity: response.data.data.oneTree.plantedQuantity,
             survivedQuantity: response.data.data.oneTree.survivedQuantity,
             datePlanted: response.data.data.oneTree.datePlanted,
+            daysInSoil: response.data.data.oneTree.daysInSoil,
             picture: response.data.data.oneTree.pictureId
                 ? `http://localhost:3000/picture/${response.data.data.oneTree.pictureId}`
                 : NoPicture,

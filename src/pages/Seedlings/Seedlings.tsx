@@ -29,6 +29,7 @@ const SeedlingsPage: React.FC = () => {
     plantedQuantity: 0,
     survivedQuantity: 0,
     datePlanted: "",
+    daysInSoil: "",
     location: "",
   });
 
@@ -53,6 +54,7 @@ const SeedlingsPage: React.FC = () => {
           plantedQuantity
           survivedQuantity
           datePlanted
+          daysInSoil
           location
         }
       }`,
@@ -93,6 +95,7 @@ const SeedlingsPage: React.FC = () => {
       plantedQuantity: 0,
       survivedQuantity: 0,
       datePlanted: "",
+      daysInSoil: "",
       location: "",
     });
   };
@@ -124,6 +127,7 @@ const SeedlingsPage: React.FC = () => {
             plantedQuantity
             survivedQuantity
             datePlanted
+            daysInSoil
             location
             picture
           }
@@ -173,7 +177,6 @@ const SeedlingsPage: React.FC = () => {
                   key={item._id}
                   species={item.species}
                   picture={item.picture}
-                  plantedQuantity={item.plantedQuantity}
                   survivedQuantity={item.survivedQuantity}
                   click={() => openDetailsModal(item._id)}
                 />
@@ -191,6 +194,7 @@ const SeedlingsPage: React.FC = () => {
             plantedQuantity={selectedSeedling.plantedQuantity}
             survivedQuantity={selectedSeedling.survivedQuantity}
             datePlanted={selectedSeedling.datePlanted}
+            daysInSoil={selectedSeedling.daysInSoil}
             openConfirmationModal={openConfirmationModal}
           ></DetailsModal>
         )}

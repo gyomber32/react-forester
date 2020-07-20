@@ -1,8 +1,6 @@
 import React from "react";
 import Seed from "../../models/types/Seed";
 
-import parseDate from "../../utils/ParseDate";
-
 import styles from "./Table.module.scss";
 
 type Props = {
@@ -30,7 +28,7 @@ const Table: React.FC<Props> = (props) => {
               <th>{seed.seededQuantity}</th>
               <th>{seed.brairdedQuantity}</th>
               <th>{seed.dateSeeded}</th>
-              <th>{parseDate(seed.dateSeeded)}</th>
+              <th>{seed.daysInSoil}</th>
             </tr>
           );
         })}
