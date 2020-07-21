@@ -166,7 +166,7 @@ const TreesPage: React.FC = (props) => {
     value.survivedQuantity = value.plantedQuantity;
     try {
       const id = await createTree(value);
-      fetchOneTree(id);
+      await fetchOneTree(id);
       setPopup({ isOpen: true, message: "Tree created successfully" });
       setTimeout(() => {
         setPopup({ isOpen: false, message: "" });

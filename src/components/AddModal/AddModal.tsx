@@ -72,8 +72,15 @@ const seedlingsSchema = Yup.object().shape({
     .required("Required"),
   datePlanted: Yup.date().required("Required"),
   location: Yup.string().required("Required"),
-  picture: Yup.string().notRequired(),
-});
+  picture: Yup.object().shape({
+    lastModified: Yup.number(),
+    lastModifiedDate: Yup.date(),
+    name: Yup.string(),
+    path: Yup.string(),
+    size: Yup.number(),
+    type: Yup.string(),
+    webkitRelativePath: Yup.string(),
+  }).nullable()});
 
 const seedsSchema = Yup.object().shape({
   species: Yup.string()

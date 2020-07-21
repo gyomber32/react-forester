@@ -1,5 +1,3 @@
-import { LatLng } from "leaflet";
-
 type Seedling = {
     _id: string;
     species: string;
@@ -8,6 +6,7 @@ type Seedling = {
     datePlanted: string;
     daysInSoil: string;
     picture: string;
+    pictureId: string;
     location: string;
 };
 
