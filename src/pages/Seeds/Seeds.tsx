@@ -3,6 +3,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import Navigation from "../../components/Navigation/Navigation";
 import Table from "../../components/Table/Table";
 import AddModal from "../../components/AddModal/AddModal";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import AddButton from "../../components/AddButton/AddButton";
 import Popup from "../../components/Popup/Popup";
 import Backdrop from "../../components/Backdrop/Backdrop";
@@ -13,54 +14,65 @@ import NoData from "../../components/NoData/NoData";
 import Seed from "../../models/types/Seed";
 import PopUp from "../../models/types/PopUp";
 
-import axios from "axios";
+import { getOneSeed, getAllSeeds, removeSeed, createSeed } from "../../api";
 
 import styles from "./Seeds.module.scss";
 
 const SeedsPage: React.FC = () => {
   const [seeds, setSeeds] = useState<Seed[]>([]);
-
+  const [selectedSeed, setSelectedSeed] = useState<Seed>({
+    _id: "",
+    species: "",
+    seededQuantity: 0,
+    brairdedQuantity: 0,
+    dateSeeded: "",
+    daysInSoil: "",
+  });
   const [addModal, setAddModalState] = useState<boolean>(false);
-
   const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
-
   const [loading, setLoadingState] = useState<boolean>(false);
+  const [confirmationModal, setConfirmationModalState] = useState<boolean>(
+    false
+  );
 
-  const query = {
-    query: `
-    query {
-      seeds {
-          _id
-          species
-          seededQuantity
-          brairdedQuantity
-          dateSeeded
-          daysInSoil
-      }
-    }`,
+  const fetchOneSeed = async (id: string) => {
+    setLoadingState(true);
+    try {
+      const seed = await getOneSeed(id);
+      setSeeds([...seeds, seed]);
+    } catch (error) {
+      setPopup({
+        isOpen: true,
+        message: error.message,
+      });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+      console.log(error);
+    }
+    setLoadingState(false);
+  };
+
+  const fetchAllSeeds = async () => {
+    setLoadingState(true);
+    try {
+      const seeds = await getAllSeeds();
+      setSeeds(seeds);
+    } catch (error) {
+      setPopup({
+        isOpen: true,
+        message: error.message,
+      });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+      console.log(error);
+    }
+    setLoadingState(false);
   };
 
   useEffect(() => {
-    setLoadingState(true);
-    axios({
-      url: "http://localhost:3000/graphql",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-      method: "POST",
-      data: JSON.stringify(query),
-    })
-      .then((result) => {
-        setSeeds(result.data.data.seeds);
-        setLoadingState(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    return () => {
-      setPopup({ isOpen: false, message: "message" });
-    };
+    fetchAllSeeds();
   }, []);
 
   const openAddModal = () => {
@@ -71,44 +83,65 @@ const SeedsPage: React.FC = () => {
     setAddModalState(false);
   };
 
-  const onSubmit = (value: any) => {
-    value.brairdedQuantity = value.seededQuantity;
-    const mutation = {
-      query: `
-        mutation {
-          createSeed(seedInput: {species: "${value.species}", seededQuantity: ${value.seededQuantity}, brairdedQuantity: ${value.brairdedQuantity}, dateSeeded: "${value.dateSeeded.toDateString()}"}) {
-            _id
-            species
-            seededQuantity
-            brairdedQuantity
-            dateSeeded
-            daysInSoil
-          }
-        }`,
-    };
-    axios({
-      url: "http://localhost:3000/graphql",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-      method: "POST",
-      data: JSON.stringify(mutation),
-    })
-      .then(() => {
-        closeAddModal();
-        setPopup({ isOpen: true, message: "Successfully added to database" });
-        setTimeout(() => {
-          setPopup({ isOpen: false, message: "" });
-        }, 5500);
-      })
-      .catch((error) => {
-        setPopup({ isOpen: true, message: "Error during adding to database" });
-        setTimeout(() => {
-          setPopup({ isOpen: false, message: "" });
-        }, 5500);
-        console.log(error);
+  const openConfirmationModal = (seed: Seed) => {
+    setSelectedSeed(seed);
+    setConfirmationModalState(true);
+  };
+
+  const closeConfirmationModal = () => {
+    setSelectedSeed({
+      _id: "",
+      species: "",
+      seededQuantity: 0,
+      brairdedQuantity: 0,
+      dateSeeded: "",
+      daysInSoil: "",
+    });
+    setConfirmationModalState(false);
+  };
+
+  const deleteSeed = async () => {
+    setLoadingState(true);
+    closeConfirmationModal();
+    try {
+      const responseMessage = await removeSeed(selectedSeed);
+      await fetchAllSeeds();
+      setPopup({
+        isOpen: true,
+        message: responseMessage,
       });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+    } catch (error) {
+      setPopup({ isOpen: true, message: error.message });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+      console.log(error);
+    }
+    setLoadingState(false);
+  };
+
+  const onSubmit = async (value: any) => {
+    setLoadingState(true);
+    closeAddModal();
+    value.brairdedQuantity = value.seededQuantity;
+    try {
+      const id = await createSeed(value);
+      await fetchOneSeed(id);
+      setPopup({ isOpen: true, message: "Seed created successfully" });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+    } catch (error) {
+      setPopup({ isOpen: true, message: error.message });
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
+      console.log(error);
+    }
+    setLoadingState(false);
   };
 
   return (
@@ -122,15 +155,28 @@ const SeedsPage: React.FC = () => {
           </Fragment>
         )}
         {popup.isOpen && <Popup message={popup.message}></Popup>}
-          {!loading && seeds.length > 0 && (
-            <div className={styles.Seeds_seedsContainer}>
+        {!loading && seeds.length > 0 && (
+          <div className={styles.Seeds_seedsContainer}>
             <Fragment>
-              <Table seeds={seeds}></Table>
+              <Table
+                seeds={seeds}
+                onDelete={openConfirmationModal}
+                onUpdate={() => {}}
+              ></Table>
               <Chart length={seeds.length} data={seeds}></Chart>
             </Fragment>
-            </div>
-          )}
+          </div>
+        )}
         {!loading && seeds.length === 0 && <NoData>seeds</NoData>}
+        {confirmationModal && (
+          <Fragment>
+            <Backdrop click={closeConfirmationModal} zIndex={3}></Backdrop>
+            <ConfirmationModal
+              onYes={deleteSeed}
+              onCancel={closeConfirmationModal}
+            ></ConfirmationModal>
+          </Fragment>
+        )}
         {addModal && <Backdrop click={closeAddModal}></Backdrop>}
         {addModal && (
           <AddModal type="seeds" onSubmit={onSubmit} onCancel={closeAddModal}>

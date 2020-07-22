@@ -1,5 +1,6 @@
 import Tree from "../models/types/Tree";
 import Seedling from "../models/types/Seedling";
+import Seed from "../models/types/Seed";
 
 export const authQuery = (email: string, password: string) => {
     return JSON.stringify({
@@ -173,6 +174,65 @@ export const deleteSeedlingMutation = (id: string) => {
         query: `
             mutation {
               deleteSeedling(_id: "${id}"){
+                message
+              }
+            }`
+    });
+};
+
+export const getAllSeedsQuery = () => {
+    return JSON.stringify({
+        query: `
+            query {
+                seeds {
+                    _id
+                    species
+                    seededQuantity
+                    brairdedQuantity
+                    dateSeeded
+                    daysInSoil
+                }
+            }`
+    });
+};
+
+export const getOneSeedQuery = (id: string) => {
+    return JSON.stringify({
+        query: `
+            query {
+                oneSeed(_id: "${id}"){
+                    _id
+                    species
+                    seededQuantity
+                    brairdedQuantity
+                    dateSeeded
+                    daysInSoil
+                }
+            }`
+    });
+};
+
+export const createSeedMutation = (seed: Seed) => {
+    return JSON.stringify({
+        query: `
+            mutation {
+                createSeed(seedInput: {species: "${seed.species}", seededQuantity: ${seed.seededQuantity}, brairdedQuantity: ${seed.brairdedQuantity}, dateSeeded: "${seed.dateSeeded}"}) {
+                    _id
+                    species
+                    seededQuantity
+                    brairdedQuantity
+                    dateSeeded
+                    daysInSoil
+                }
+            }`
+    });
+};
+
+export const deleteSeedMutation = (id: string) => {
+    return JSON.stringify({
+        query: `
+            mutation {
+              deleteSeed(_id: "${id}"){
                 message
               }
             }`

@@ -1,11 +1,12 @@
 import axios from "axios"
 
-import { authQuery, getAllTreesQuery, getOneTreeQuery, createTreeMutation, deleteTreeMutation, getAllSeedlingsQuery, getOneSeedlingQuery, createSeedlingMutation, deleteSeedlingMutation } from "./queries";
+import { authQuery, getAllTreesQuery, getOneTreeQuery, createTreeMutation, deleteTreeMutation, getAllSeedlingsQuery, getOneSeedlingQuery, createSeedlingMutation, deleteSeedlingMutation, getAllSeedsQuery, getOneSeedQuery, createSeedMutation, deleteSeedMutation } from "./queries";
 
 import Tree from "../models/types/Tree";
 
 import NoPicture from "../assets/no-content.png";
 import Seedling from "../models/types/Seedling";
+import Seed from "../models/types/Seed";
 
 export const login = async (email: string, password: string) => {
     try {
@@ -214,7 +215,6 @@ export const getAllSeedlings = async () => {
     } catch (error) {
         throw new Error(error.message);
     }
-
 };
 
 export const getOneSeedling = async (id: string) => {
@@ -330,6 +330,106 @@ export const removeSeedling = async (seedling: Seedling) => {
             throw new Error("No response from the server");
         }
         return response.data.data.deleteSeedling.message as string;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+export const getAllSeeds = async () => {
+    try {
+        const response = await axios({
+            url: "http://localhost:3000/graphql",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `bearer ${localStorage.getItem("token")}`,
+            },
+            method: "POST",
+            data: getAllSeedsQuery()
+        });
+        if (!response) {
+            throw new Error("No response from the server");
+        };
+        const seeds: Seed[] = [];
+        response.data.data.seeds.forEach((seed: Seed) => {
+            const tempSeed: Seed = {
+                _id: seed._id,
+                species: seed.species,
+                seededQuantity: seed.seededQuantity,
+                brairdedQuantity: seed.brairdedQuantity,
+                dateSeeded: seed.dateSeeded,
+                daysInSoil: seed.daysInSoil
+            };
+            seeds.push(tempSeed);
+        });
+        return seeds;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+export const getOneSeed = async (id: string) => {
+    try {
+        const response = await axios({
+            url: "http://localhost:3000/graphql",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `bearer ${localStorage.getItem("token")}`,
+            },
+            method: "POST",
+            data: getOneSeedQuery(id),
+        });
+        if (!response) {
+            throw new Error("No response from the server");
+        }
+        const seed: Seed = {
+            _id: response.data.data.oneSeed._id,
+            species: response.data.data.oneSeed.species,
+            seededQuantity: response.data.data.oneSeed.seededQuantity,
+            brairdedQuantity: response.data.data.oneSeed.brairdedQuantity,
+            dateSeeded: response.data.data.oneSeed.dateSeeded,
+            daysInSoil: response.data.data.oneSeed.daysInSoil
+        };
+        return seed;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+export const createSeed = async (seed: Seed) => {
+    try {
+        const seedResponse = await axios({
+            url: "http://localhost:3000/graphql",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `bearer ${localStorage.getItem("token")}`,
+            },
+            method: "POST",
+            data: createSeedMutation(seed),
+        });
+        if (!seedResponse.data.data.createSeed._id) {
+            throw new Error("No response from the server");
+        }
+        return seedResponse.data.data.createSeed._id as string;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+export const removeSeed = async (seed: Seed) => {
+    try {
+        const response = await axios({
+            url: "http://localhost:3000/graphql",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `bearer ${localStorage.getItem("token")}`,
+            },
+            method: "POST",
+            data: deleteSeedMutation(seed._id),
+        });
+        if (!response.data.data.deleteSeed) {
+            throw new Error("No response from the server");
+        }
+        return response.data.data.deleteSeed.message as string;
     } catch (error) {
         throw new Error(error.message);
     }
