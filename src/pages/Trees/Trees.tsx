@@ -17,8 +17,9 @@ import PopUp from '../../models/types/PopUp';
 
 import { getAllTrees, getOneTree, removeTree, createTree } from '../../api/index';
 
+import { useFetchTree } from "../../hooks/fetchTree";
+
 import styles from './Trees.module.scss';
-import { useCreateTree } from '../../hooks/createTree';
 
 const TreesPage: React.FC = props => {
   const [trees, setTrees] = useState<Tree[]>([]);
@@ -28,6 +29,8 @@ const TreesPage: React.FC = props => {
   const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
   const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: '' });
   const [loading, setLoading] = useState<boolean>(false);
+
+  const { trees, isLoading, message, fetchTree } = useFetchTree();
 
   const fetchOneTree = useCallback(
     async (id: string) => {
@@ -51,6 +54,7 @@ const TreesPage: React.FC = props => {
   );
 
   const fetchAllTrees = useCallback(async () => {
+    fetchTree('GET_ALL', {} as Tree);
     setLoading(true);
     try {
       const trees = await getAllTrees();
