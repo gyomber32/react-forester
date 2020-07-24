@@ -42,4 +42,4 @@ const FileUpload: React.FC<Props> = (props) => {
   );
 };
 
-export default FileUpload;
+export default React.memo(FileUpload);

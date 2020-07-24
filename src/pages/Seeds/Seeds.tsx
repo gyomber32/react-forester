@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment, useEffect, useCallback } from "react";
 
 import Navigation from "../../components/Navigation/Navigation";
 import Table from "../../components/Table/Table";
@@ -100,7 +100,7 @@ const SeedsPage: React.FC = () => {
     setConfirmationModalState(false);
   };
 
-  const deleteSeed = async () => {
+  const deleteSeed = useCallback(async () => {
     setLoadingState(true);
     closeConfirmationModal();
     try {
@@ -121,14 +121,14 @@ const SeedsPage: React.FC = () => {
       console.log(error);
     }
     setLoadingState(false);
-  };
+  }, [selectedSeed]);
 
-  const onSubmit = async (value: any) => {
+  const onSubmit = async (seed: any) => {
     setLoadingState(true);
     closeAddModal();
-    value.brairdedQuantity = value.seededQuantity;
+    seed.brairdedQuantity = seed.seededQuantity;
     try {
-      const id = await createSeed(value);
+      const id = await createSeed(seed);
       await fetchOneSeed(id);
       setPopup({ isOpen: true, message: "Seed created successfully" });
       setTimeout(() => {
@@ -147,6 +147,7 @@ const SeedsPage: React.FC = () => {
   return (
     <Fragment>
       <Navigation />
+      {console.log("Seeds page rerender")}
       <div className={styles.Seeds}>
         {loading && (
           <Fragment>
@@ -177,11 +178,13 @@ const SeedsPage: React.FC = () => {
             ></ConfirmationModal>
           </Fragment>
         )}
-        {addModal && <Backdrop click={closeAddModal}></Backdrop>}
         {addModal && (
-          <AddModal type="seeds" onSubmit={onSubmit} onCancel={closeAddModal}>
-            seed
-          </AddModal>
+          <Fragment>
+            <Backdrop click={closeAddModal}></Backdrop>
+            <AddModal type="seeds" onSubmit={onSubmit} onCancel={closeAddModal}>
+              seed
+            </AddModal>
+          </Fragment>
         )}
         <AddButton click={openAddModal}></AddButton>
       </div>

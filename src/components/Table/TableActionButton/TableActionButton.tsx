@@ -14,6 +14,7 @@ type Props = {
 
 const TableActionButton: React.FC<Props> = (props) => (
   <Fragment>
+    {console.log("Table Action button rerender")}
     {props.type === ButtonTypes.Update && (
       <button className={styles.TableActionButton_deleteButton} onClick={props.click}>
         <i className={styles.TableActionButton_deleteButton___icon}></i>
@@ -27,4 +28,4 @@ const TableActionButton: React.FC<Props> = (props) => (
   </Fragment>
 );
 
-export default TableActionButton;
+export default React.memo(TableActionButton);

@@ -93,9 +93,9 @@ const map: React.FC<Props> = (props) => {
         />
         {marker}
       </Map>
-      )}
+      ){"}"}
     </Fragment>
   );
 };
 
-export default map;
+export default React.memo(map);

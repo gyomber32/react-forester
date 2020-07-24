@@ -36,7 +36,7 @@ export const resizeImage = (picture: File) => {
         const file: any = blob;
         file.lastModifiedDate = new Date();
         file.name = picture.name;
-        return <File>file;
+        return file as File;
     };
 
     return new Promise((resolve, reject) => {

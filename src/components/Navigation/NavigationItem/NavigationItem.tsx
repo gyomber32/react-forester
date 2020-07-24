@@ -23,4 +23,4 @@ const NavigationItem: React.FC<Props> = (props) => (
   </li>
 );
 
-export default NavigationItem;
+export default React.memo(NavigationItem);

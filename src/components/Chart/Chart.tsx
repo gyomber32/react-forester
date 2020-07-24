@@ -17,6 +17,7 @@ type Props = {
 const Chart: React.FC<Props> = (props) => {
   return (
     <div className={styles.Chart}>
+      {console.log("Chart rerender")}
       <Doughnut
         data={chartPropsTransform(props.data)}
         options={{
@@ -35,6 +36,6 @@ const Chart: React.FC<Props> = (props) => {
   );
 };
 
-export default React.memo(Chart, function (prevProps, nextProps) {
+export default React.memo(Chart, (prevProps, nextProps) => {
   return prevProps.length === nextProps.length;
 });

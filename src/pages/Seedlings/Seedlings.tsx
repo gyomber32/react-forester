@@ -177,6 +177,7 @@ const SeedlingsPage: React.FC = () => {
   return (
     <Fragment>
       <Navigation />
+      {console.log("Seedling page rerender")}
       <div className={styles.Seedlings}>
         {loading && (
           <Fragment>
@@ -188,13 +189,11 @@ const SeedlingsPage: React.FC = () => {
         {!loading && seedlings.length > 0 && (
           <Fragment>
             <div className={styles.Seedlings_cardsContainer}>
-              {seedlings.map((item: Seedling) => (
+              {seedlings.map((seedling: Seedling) => (
                 <Card
-                  key={item._id}
-                  species={item.species}
-                  picture={item.picture}
-                  survivedQuantity={item.survivedQuantity}
-                  click={() => openDetailsModal(item._id)}
+                  key={seedling._id}
+                  item={seedling}
+                  click={() => openDetailsModal(seedling._id)}
                 />
               ))}
             </div>
@@ -202,17 +201,19 @@ const SeedlingsPage: React.FC = () => {
           </Fragment>
         )}
         {!loading && seedlings.length === 0 && <NoData>seedlings</NoData>}
-        {detailsModal && <Backdrop click={closeDetailsModal}></Backdrop>}
         {detailsModal && (
-          <DetailsModal
-            species={selectedSeedling.species}
-            picture={selectedSeedling.picture}
-            plantedQuantity={selectedSeedling.plantedQuantity}
-            survivedQuantity={selectedSeedling.survivedQuantity}
-            datePlanted={selectedSeedling.datePlanted}
-            daysInSoil={selectedSeedling.daysInSoil}
-            openConfirmationModal={openConfirmationModal}
-          ></DetailsModal>
+          <Fragment>
+            <Backdrop click={closeDetailsModal}></Backdrop>
+            <DetailsModal
+              species={selectedSeedling.species}
+              picture={selectedSeedling.picture}
+              plantedQuantity={selectedSeedling.plantedQuantity}
+              survivedQuantity={selectedSeedling.survivedQuantity}
+              datePlanted={selectedSeedling.datePlanted}
+              daysInSoil={selectedSeedling.daysInSoil}
+              openConfirmationModal={openConfirmationModal}
+            ></DetailsModal>
+          </Fragment>
         )}
         {confirmationModal && (
           <Fragment>
@@ -223,15 +224,17 @@ const SeedlingsPage: React.FC = () => {
             ></ConfirmationModal>
           </Fragment>
         )}
-        {addModal && <Backdrop click={closeAddModal}></Backdrop>}
         {addModal && (
-          <AddModal
-            type="seedlings"
-            onSubmit={onSubmit}
-            onCancel={closeAddModal}
-          >
-            seedling
-          </AddModal>
+          <Fragment>
+            <Backdrop click={closeAddModal}></Backdrop>
+            <AddModal
+              type="seedlings"
+              onSubmit={onSubmit}
+              onCancel={closeAddModal}
+            >
+              seedling
+            </AddModal>
+          </Fragment>
         )}
         <AddButton click={openAddModal}></AddButton>
       </div>

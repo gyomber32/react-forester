@@ -87,4 +87,4 @@ const LocationField: React.FC<Props> = (props) => {
   );
 };
 
-export default LocationField;
+export default React.memo(LocationField);

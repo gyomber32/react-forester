@@ -10,6 +10,7 @@ type Props = {
 const ConfirmationModal: React.FC<Props> = (props) => {
   return (
     <div className={styles.ConfirmationModal}>
+      {console.log("Confirmation model rerender")}
       <div className={styles.ConfirmationModal_text}>
         Are you sure you want to delete?
       </div>
@@ -31,4 +32,4 @@ const ConfirmationModal: React.FC<Props> = (props) => {
   );
 };
 
-export default ConfirmationModal;
+export default React.memo(ConfirmationModal);

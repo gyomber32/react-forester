@@ -97,6 +97,7 @@ const seedsSchema = Yup.object().shape({
 const AddModal: React.FC<Props> = (props) => {
   return (
     <div className={styles.AddModal}>
+      {console.log("Add modal rerender")}
       <header className={styles.AddModal_title}>
         Add new {props.children}(s)
       </header>

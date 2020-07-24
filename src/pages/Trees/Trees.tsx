@@ -26,17 +26,7 @@ import styles from "./Trees.module.scss";
 
 const TreesPage: React.FC = (props) => {
   const [trees, setTrees] = useState<Tree[]>([]);
-  const [selectedTree, setSelectedTree] = useState<Tree>({
-    _id: "",
-    picture: "",
-    pictureId: "",
-    species: "",
-    plantedQuantity: 0,
-    survivedQuantity: 0,
-    datePlanted: "",
-    daysInSoil: "",
-    location: "",
-  });
+  const [selectedTree, setSelectedTree] = useState<Tree>({} as Tree);
   const [detailsModal, setDetailsModalState] = useState<boolean>(false);
   const [addModal, setAddModalState] = useState<boolean>(false);
   const [confirmationModal, setConfirmationModalState] = useState<boolean>(
@@ -105,17 +95,7 @@ const TreesPage: React.FC = (props) => {
 
   const closeDetailsModal = () => {
     setDetailsModalState(false);
-    setSelectedTree({
-      _id: "",
-      picture: "",
-      pictureId: "",
-      species: "",
-      plantedQuantity: 0,
-      survivedQuantity: 0,
-      datePlanted: "",
-      daysInSoil: "",
-      location: "",
-    });
+    setSelectedTree({} as Tree);
   };
 
   const openAddModal = () => {
@@ -184,6 +164,7 @@ const TreesPage: React.FC = (props) => {
   return (
     <Fragment>
       <Navigation />
+      {console.log("Tree page rerender")}
       <div className={styles.Trees}>
         {loading && (
           <Fragment>
@@ -195,13 +176,11 @@ const TreesPage: React.FC = (props) => {
         {!loading && trees.length > 0 && (
           <Fragment>
             <div className={styles.Trees_cardsContainer}>
-              {trees.map((item: Tree) => (
+              {trees.map((tree: Tree) => (
                 <Card
-                  key={item._id}
-                  species={item.species}
-                  picture={item.picture}
-                  survivedQuantity={item.survivedQuantity}
-                  click={() => openDetailsModal(item._id)}
+                  key={tree._id}
+                  item={tree}
+                  click={() => openDetailsModal(tree._id)}
                 />
               ))}
             </div>
@@ -209,17 +188,19 @@ const TreesPage: React.FC = (props) => {
           </Fragment>
         )}
         {!loading && trees.length === 0 && <NoData>trees</NoData>}
-        {detailsModal && <Backdrop click={closeDetailsModal}></Backdrop>}
         {detailsModal && (
-          <DetailsModal
-            species={selectedTree.species}
-            picture={selectedTree.picture}
-            plantedQuantity={selectedTree.plantedQuantity}
-            survivedQuantity={selectedTree.survivedQuantity}
-            datePlanted={selectedTree.datePlanted}
-            daysInSoil={selectedTree.daysInSoil}
-            openConfirmationModal={openConfirmationModal}
-          ></DetailsModal>
+          <Fragment>
+            <Backdrop click={closeDetailsModal}></Backdrop>
+            <DetailsModal
+              species={selectedTree.species}
+              picture={selectedTree.picture}
+              plantedQuantity={selectedTree.plantedQuantity}
+              survivedQuantity={selectedTree.survivedQuantity}
+              datePlanted={selectedTree.datePlanted}
+              daysInSoil={selectedTree.daysInSoil}
+              openConfirmationModal={openConfirmationModal}
+            ></DetailsModal>
+          </Fragment>
         )}
         {confirmationModal && (
           <Fragment>
@@ -230,11 +211,13 @@ const TreesPage: React.FC = (props) => {
             ></ConfirmationModal>
           </Fragment>
         )}
-        {addModal && <Backdrop click={closeAddModal}></Backdrop>}
         {addModal && (
-          <AddModal type="trees" onSubmit={onSubmit} onCancel={closeAddModal}>
-            tree
-          </AddModal>
+          <Fragment>
+            <Backdrop click={closeAddModal}></Backdrop>
+            <AddModal type="trees" onSubmit={onSubmit} onCancel={closeAddModal}>
+              tree
+            </AddModal>
+          </Fragment>
         )}
         <AddButton click={openAddModal}></AddButton>
       </div>

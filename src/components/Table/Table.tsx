@@ -16,7 +16,7 @@ type Props = {
   onUpdate: () => void;
 };
 
-const Table: React.FC<Props> = (props) => {
+const Table: React.FC<Props> = ({ seeds, onDelete, onUpdate }) => {
   const columns = [
     "Species",
     "Seeded quantity",
@@ -28,6 +28,7 @@ const Table: React.FC<Props> = (props) => {
 
   return (
     <table className={styles.Table}>
+      {console.log("Table rerender")}
       <thead>
         <tr>
           {columns.map((column, index) => {
@@ -36,7 +37,7 @@ const Table: React.FC<Props> = (props) => {
         </tr>
       </thead>
       <tbody>
-        {props.seeds.map((seed) => {
+        {seeds.map((seed) => {
           return (
             <tr key={seed._id}>
               <th>{seed.species}</th>
@@ -47,11 +48,11 @@ const Table: React.FC<Props> = (props) => {
               <th>
                 <TableActionButton
                   type={ButtonTypes.Update}
-                  click={() => props.onDelete(seed)}
+                  click={() => onDelete(seed)}
                 />
                 <TableActionButton
                   type={ButtonTypes.Delete}
-                  click={() => props.onUpdate}
+                  click={() => onUpdate}
                 />
               </th>
             </tr>
@@ -62,4 +63,6 @@ const Table: React.FC<Props> = (props) => {
   );
 };
 
-export default React.memo(Table);
+export default React.memo(Table, (prevProps, nextProps) => {
+  return prevProps.seeds.length === nextProps.seeds.length;
+});

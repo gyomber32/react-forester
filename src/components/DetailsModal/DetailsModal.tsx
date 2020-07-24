@@ -17,6 +17,7 @@ type Props = {
 const DetailsModal: React.FC<Props> = (props) => {
   return (
     <div className={styles.DetailsModal}>
+      {console.log("Details modal rerender")}
       <header className={styles.DetailsModal_header}>
         <button
           className={styles.DetailsModal_deleteButton}
@@ -49,4 +50,4 @@ const DetailsModal: React.FC<Props> = (props) => {
   );
 };
 
-export default DetailsModal;
+export default React.memo(DetailsModal);
