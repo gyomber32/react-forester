@@ -129,17 +129,14 @@ const SeedlingsPage: React.FC = () => {
           </Fragment>
         )}
         {!isLoading && seedlings.length === 0 && <NoData>seedlings</NoData>}
-        {detailsModal && <Backdrop click={closeDetailsModal}></Backdrop>}
         {detailsModal && (
-          <DetailsModal
-            species={selectedSeedling.species}
-            picture={selectedSeedling.picture}
-            plantedQuantity={selectedSeedling.plantedQuantity}
-            survivedQuantity={selectedSeedling.survivedQuantity}
-            datePlanted={selectedSeedling.datePlanted}
-            daysInSoil={selectedSeedling.daysInSoil}
-            openConfirmationModal={openConfirmationModal}
-          ></DetailsModal>
+          <Fragment>
+            <Backdrop click={closeDetailsModal}></Backdrop>
+            <DetailsModal
+              item={selectedSeedling}
+              openConfirmationModal={openConfirmationModal}
+            ></DetailsModal>
+          </Fragment>
         )}
         {confirmationModal && (
           <Fragment>
@@ -150,15 +147,17 @@ const SeedlingsPage: React.FC = () => {
             ></ConfirmationModal>
           </Fragment>
         )}
-        {addModal && <Backdrop click={closeAddModal}></Backdrop>}
         {addModal && (
-          <AddModal
-            type="seedlings"
-            onSubmit={createSeedling}
-            onCancel={closeAddModal}
-          >
-            seedling
-          </AddModal>
+          <Fragment>
+            <Backdrop click={closeAddModal}></Backdrop>
+            <AddModal
+              type="seedlings"
+              onSubmit={createSeedling}
+              onCancel={closeAddModal}
+            >
+              seedling
+            </AddModal>
+          </Fragment>
         )}
         <AddButton click={openAddModal}></AddButton>
       </div>

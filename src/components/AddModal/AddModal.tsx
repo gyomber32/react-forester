@@ -37,6 +37,7 @@ const initialSeedlingsValues = {
 const initialSeedsValues = {
   species: "",
   seededQuantity: 0,
+  brairdedQuantity: 0,
   dateSeeded: new Date(),
 };
 

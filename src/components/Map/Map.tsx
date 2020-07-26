@@ -22,6 +22,7 @@ const treeIcon = new Icon({
 type Props = {
   position: LatLngExpression | undefined;
   trees?: Tree[];
+  size: { height: number; width: number };
 };
 
 const map: React.FC<Props> = (props) => {
@@ -44,7 +45,16 @@ const map: React.FC<Props> = (props) => {
   const markers = props.trees
     ? props.trees.map((tree) => {
         return (
-          <Marker key={tree._id} position={new LatLng(+tree.location.split(',')[0],+tree.location.split(',')[1])} icon={treeIcon}>
+          <Marker
+            key={tree._id}
+            position={
+              new LatLng(
+                +tree.location.split(",")[0],
+                +tree.location.split(",")[1]
+              )
+            }
+            icon={treeIcon}
+          >
             <Popup>
               <span>
                 Species: <b>{tree.species}</b>
@@ -67,7 +77,7 @@ const map: React.FC<Props> = (props) => {
     <Fragment>
       <Map
         center={props.position}
-        style={{ height: "800px", width: "800px" }}
+        style={{ height: props.size.height, width: props.size.width }}
         // onclick={this.handleClick}
         zoomControl={markers ? true : false}
         scrollWheelZoom={markers ? true : false}
@@ -93,7 +103,7 @@ const map: React.FC<Props> = (props) => {
         />
         {marker}
       </Map>
-      )}
+      )
     </Fragment>
   );
 };

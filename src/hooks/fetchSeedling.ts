@@ -25,7 +25,7 @@ export const useFetchSeedling = () => {
                     setPopup({ isOpen: true, message: 'Seedling has been created successfully' });
                     break;
                 case 'DELETE':
-                    const message = await removeSeedling(seedling!);
+                    await removeSeedling(seedling!);
                     const responseSeedlings = await getAllSeedlings();
                     setSeedlings(responseSeedlings);
                     setPopup({ isOpen: true, message: 'Seedling has been deleted successfully' });

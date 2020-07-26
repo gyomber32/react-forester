@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment, useEffect, useCallback } from "react";
 
 import Navigation from "../../components/Navigation/Navigation";
 import Table from "../../components/Table/Table";
@@ -12,135 +12,73 @@ import Chart from "../../components/Chart/Chart";
 import NoData from "../../components/NoData/NoData";
 
 import Seed from "../../models/types/Seed";
-import PopUp from "../../models/types/PopUp";
 
-import { getOneSeed, getAllSeeds, removeSeed, createSeed } from "../../api";
+import { useFetchSeed } from "../../hooks";
 
 import styles from "./Seeds.module.scss";
 
 const SeedsPage: React.FC = () => {
-  const [seeds, setSeeds] = useState<Seed[]>([]);
   const [selectedSeed, setSelectedSeed] = useState<Seed>({} as Seed);
-  const [addModal, setAddModalState] = useState<boolean>(false);
-  const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
-  const [loading, setLoadingState] = useState<boolean>(false);
-  const [confirmationModal, setConfirmationModalState] = useState<boolean>(
-    false
-  );
+  const [addModal, setAddModal] = useState<boolean>(false);
+  const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
+  const { seeds, isLoading, popup, fetchSeed } = useFetchSeed();
 
-  const fetchOneSeed = async (id: string) => {
-    setLoadingState(true);
-    try {
-      const seed = await getOneSeed(id);
-      setSeeds([...seeds, seed]);
-    } catch (error) {
-      setPopup({
-        isOpen: true,
-        message: error.message,
-      });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-      console.log(error);
-    }
-    setLoadingState(false);
-  };
-
-  const fetchAllSeeds = async () => {
-    setLoadingState(true);
-    try {
-      const seeds = await getAllSeeds();
-      setSeeds(seeds);
-    } catch (error) {
-      setPopup({
-        isOpen: true,
-        message: error.message,
-      });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-      console.log(error);
-    }
-    setLoadingState(false);
-  };
-
-  useEffect(() => {
-    fetchAllSeeds();
+  const openAddModal = useCallback(() => {
+    setAddModal(true);
   }, []);
 
-  const openAddModal = () => {
-    setAddModalState(true);
-  };
+  const closeAddModal = useCallback(() => {
+    setAddModal(false);
+  }, []);
 
-  const closeAddModal = () => {
-    setAddModalState(false);
-  };
-
-  const openConfirmationModal = (seed: Seed) => {
+  const openConfirmationModal = useCallback((seed: Seed) => {
     setSelectedSeed(seed);
-    setConfirmationModalState(true);
-  };
+    setConfirmationModal(true);
+  }, []);
 
-  const closeConfirmationModal = () => {
-    setSelectedSeed({} as Seed);
-    setConfirmationModalState(false);
-  };
+  const closeConfirmationModal = useCallback(() => {
+    setConfirmationModal(false);
+  }, []);
 
-  const deleteSeed = async () => {
-    setLoadingState(true);
+  const deleteSeed = useCallback(async () => {
+    fetchSeed("DELETE", selectedSeed);
     closeConfirmationModal();
-    try {
-      const responseMessage = await removeSeed(selectedSeed);
-      await fetchAllSeeds();
-      setPopup({
-        isOpen: true,
-        message: responseMessage,
-      });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-    } catch (error) {
-      setPopup({ isOpen: true, message: error.message });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-      console.log(error);
-    }
-    setLoadingState(false);
-  };
+  }, [closeConfirmationModal, fetchSeed, selectedSeed]);
 
-  const onSubmit = async (seed: Seed) => {
-    setLoadingState(true);
-    closeAddModal();
-    try {
-      const id = await createSeed(seed);
-      await fetchOneSeed(id);
-      setPopup({ isOpen: true, message: "Seed created successfully" });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-    } catch (error) {
-      setPopup({ isOpen: true, message: error.message });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-      console.log(error);
-    }
-    setLoadingState(false);
-  };
+  const createSeed = useCallback(
+    async (seed: Seed) => {
+      fetchSeed("CREATE", seed);
+      closeAddModal();
+    },
+    [fetchSeed, closeAddModal]
+  );
+
+  const closeOnEscapeButton = useCallback(
+    (event?: any) => {
+      if (event.keyCode === 27) {
+        if (addModal) closeAddModal();
+        if (confirmationModal) closeConfirmationModal();
+      }
+    },
+    [addModal, confirmationModal, closeAddModal, closeConfirmationModal]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", closeOnEscapeButton, false);
+  }, [closeOnEscapeButton]);
 
   return (
     <Fragment>
       <Navigation />
       <div className={styles.Seeds}>
-        {loading && (
+        {isLoading && (
           <Fragment>
             <Backdrop></Backdrop>
             <Spinner></Spinner>
           </Fragment>
         )}
         {popup.isOpen && <Popup message={popup.message}></Popup>}
-        {!loading && seeds.length > 0 && (
+        {!isLoading && seeds.length > 0 && (
           <div className={styles.Seeds_seedsContainer}>
             <Fragment>
               <Table
@@ -152,7 +90,7 @@ const SeedsPage: React.FC = () => {
             </Fragment>
           </div>
         )}
-        {!loading && seeds.length === 0 && <NoData>seeds</NoData>}
+        {!isLoading && seeds.length === 0 && <NoData>seeds</NoData>}
         {confirmationModal && (
           <Fragment>
             <Backdrop click={closeConfirmationModal} zIndex={3}></Backdrop>
@@ -162,11 +100,17 @@ const SeedsPage: React.FC = () => {
             ></ConfirmationModal>
           </Fragment>
         )}
-        {addModal && <Backdrop click={closeAddModal}></Backdrop>}
         {addModal && (
-          <AddModal type="seeds" onSubmit={onSubmit} onCancel={closeAddModal}>
-            seed
-          </AddModal>
+          <Fragment>
+            <Backdrop click={closeAddModal}></Backdrop>
+            <AddModal
+              type="seeds"
+              onSubmit={createSeed}
+              onCancel={closeAddModal}
+            >
+              seed
+            </AddModal>
+          </Fragment>
         )}
         <AddButton click={openAddModal}></AddButton>
       </div>

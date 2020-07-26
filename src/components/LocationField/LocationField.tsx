@@ -22,7 +22,7 @@ type Props = {
 };
 
 const LocationField: React.FC<Props> = (props) => {
-  const { position, setPosition, error } = usePosition();
+  const { position, setPosition } = usePosition();
   const [mapPopup, setMapPopup] = useState<boolean>(false);
 
   const handleMapClick = (e: any) => {

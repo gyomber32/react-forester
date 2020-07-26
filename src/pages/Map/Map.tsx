@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 
 import Map from "../../components/Map/Map";
 import Navigation from "../../components/Navigation/Navigation";
@@ -13,12 +13,29 @@ import Popup from "../../components/Popup/Popup";
 
 const mapPage: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { position, error } = usePosition();
+  const { position } = usePosition();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { trees, isLoading, popup } = useFetchTree();
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [screenSize, setScreenSize] = useState({
+    height: (window.innerHeight * 2) / 3,
+    width: (window.innerWidth * 2) / 3,
+  });
+
+  (function () {
+    window.onresize = displayWindowSize;
+    window.onload = displayWindowSize;
+
+    function displayWindowSize() {
+      let myWidth = (window.innerWidth * 2) / 3;
+      let myHeight = (window.innerHeight * 2) / 3;
+      setScreenSize({ height: myHeight, width: myWidth });
+    }
+  })();
 
   return (
     <Fragment>
+      {console.log(screenSize)}
       <Navigation />
       <div className={styles.Map}>
         {isLoading && (
@@ -27,7 +44,18 @@ const mapPage: React.FC = () => {
             <Spinner></Spinner>
           </Fragment>
         )}
-        {!isLoading && <Map position={position!} trees={trees} />}
+        {popup.isOpen && <Popup message={popup.message}></Popup>}
+        {!isLoading && (
+          <div
+            style={{
+              margin: "55px auto",
+              height: screenSize.height,
+              width: screenSize.width
+            }}
+          >
+            <Map position={position!} trees={trees} size={screenSize} />
+          </div>
+        )}
       </div>
     </Fragment>
   );

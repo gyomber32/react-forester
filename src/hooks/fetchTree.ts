@@ -25,7 +25,7 @@ export const useFetchTree = () => {
           setPopup({ isOpen: true, message: 'Tree has been created successfully' });
           break;
         case 'DELETE':
-          const message = await removeTree(tree!);
+          await removeTree(tree!);
           const responseTrees = await getAllTrees();
           setTrees(responseTrees);
           setPopup({ isOpen: true, message: 'Tree has been deleted successfully' });
@@ -35,9 +35,9 @@ export const useFetchTree = () => {
       setPopup({ isOpen: true, message: error.message });
     } finally {
       setIsLoading(false);
-      setTimeout(() => {
+      /* setTimeout(() => {
         setPopup({ isOpen: false, message: "" });
-      }, 5500);
+      }, 5500); */
     }
   }, []);
 

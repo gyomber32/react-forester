@@ -2,47 +2,45 @@ import React from "react";
 
 import noContent from "../../assets/no-content.png";
 
+import Tree from "../../models/types/Tree";
+import Seedling from "../../models/types/Seedling";
+
 import styles from "./DetailsModal.module.scss";
 
 type Props = {
-  species: string;
-  plantedQuantity: number;
-  survivedQuantity: number;
-  datePlanted: string;
-  daysInSoil: string;
-  picture: string;
+  item: Tree | Seedling
   openConfirmationModal: () => void;
 };
 
-const DetailsModal: React.FC<Props> = (props) => {
+const DetailsModal: React.FC<Props> = ({item, openConfirmationModal}) => {
   return (
     <div className={styles.DetailsModal}>
       <header className={styles.DetailsModal_header}>
         <button
           className={styles.DetailsModal_deleteButton}
-          onClick={props.openConfirmationModal}
+          onClick={openConfirmationModal}
         >
           <i className={styles.DetailsModal_deleteButton___icon}></i>
         </button>
-        <div className={styles.DetailsModal_title}>{props.species}</div>
+        <div className={styles.DetailsModal_title}>{item.species}</div>
       </header>
-      {props.picture ? (
-        <img src={props.picture} alt="" className={styles.DetailsModal_img} />
+      {item.picture ? (
+        <img src={item.picture} alt="" className={styles.DetailsModal_img} />
       ) : (
         <img src={noContent} alt="" className={styles.DetailsModal_img} />
       )}
       <div className={styles.DetailsModal_content}>
         <p className={styles.DetailsModal_content_paragraph}>
-          Planted quantity: {props.plantedQuantity}
+          Planted quantity: {item.plantedQuantity}
         </p>
         <p className={styles.DetailsModal_content_paragraph}>
-          Survived quantity: {props.survivedQuantity}
+          Survived quantity: {item.survivedQuantity}
         </p>
         <p className={styles.DetailsModal_content_paragraph}>
-          Date planted: {props.datePlanted}
+          Date planted: {item.datePlanted}
         </p>
         <p className={styles.DetailsModal_content_paragraph}>
-          Growing for: {props.daysInSoil}
+          Growing for: {item.daysInSoil}
         </p>
       </div>
     </div>

@@ -126,12 +126,7 @@ const TreesPage: React.FC = () => {
           <Fragment>
             <Backdrop click={closeDetailsModal}></Backdrop>
             <DetailsModal
-              species={selectedTree.species}
-              picture={selectedTree.picture}
-              plantedQuantity={selectedTree.plantedQuantity}
-              survivedQuantity={selectedTree.survivedQuantity}
-              datePlanted={selectedTree.datePlanted}
-              daysInSoil={selectedTree.daysInSoil}
+              item={selectedTree}
               openConfirmationModal={openConfirmationModal}
             ></DetailsModal>
           </Fragment>
