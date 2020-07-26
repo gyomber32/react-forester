@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
-import Tree from '../models/types/Tree';
 import { getAllTrees, getOneTree, createTree, removeTree } from '../api';
+import Tree from '../models/types/Tree';
+import PopUp from "../models/types/PopUp";
 
 export const useFetchTree = () => {
+
   const [trees, setTrees] = useState<Tree[]>([]);
-  const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
 
   const fetchTree = useCallback(async (method: string, tree?: Tree) => {
     try {
@@ -14,33 +16,39 @@ export const useFetchTree = () => {
         case 'GET_ALL':
           const trees = await getAllTrees();
           setTrees(trees);
-          setMessage('Trees have been fetched successfully');
-        /*case 'GET_ONE':
-          const responseOneTree = await getOneTree(tree._id);
-          setMessage('Tree has been fetched successfully');
-          setTrees(trees => [...trees, responseOneTree]);*/
+          setPopup({ isOpen: true, message: 'Trees have been fetched successfully' });
+          break;
         case 'CREATE':
           const id = await createTree(tree!);
           const responseTree = await getOneTree(id);
-          setMessage('Tree has been created successfully');
           setTrees(trees => [...trees, responseTree]);
+          setPopup({ isOpen: true, message: 'Tree has been created successfully' });
+          break;
         case 'DELETE':
           const message = await removeTree(tree!);
           const responseTrees = await getAllTrees();
           setTrees(responseTrees);
-          setMessage('Tree has been deleted successfully');
+          setPopup({ isOpen: true, message: 'Tree has been deleted successfully' });
+          break;
       }
     } catch (error) {
-      setMessage(error.message);
+      setPopup({ isOpen: true, message: error.message });
     } finally {
       setIsLoading(false);
+      setTimeout(() => {
+        setPopup({ isOpen: false, message: "" });
+      }, 5500);
     }
   }, []);
+
+  useEffect(() => {
+    fetchTree('GET_ALL');
+  }, [fetchTree])
 
   return {
     trees,
     isLoading,
-    message,
+    popup,
     fetchTree
   };
 };

@@ -20,14 +20,7 @@ import styles from "./Seeds.module.scss";
 
 const SeedsPage: React.FC = () => {
   const [seeds, setSeeds] = useState<Seed[]>([]);
-  const [selectedSeed, setSelectedSeed] = useState<Seed>({
-    _id: "",
-    species: "",
-    seededQuantity: 0,
-    brairdedQuantity: 0,
-    dateSeeded: "",
-    daysInSoil: "",
-  });
+  const [selectedSeed, setSelectedSeed] = useState<Seed>({} as Seed);
   const [addModal, setAddModalState] = useState<boolean>(false);
   const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
   const [loading, setLoadingState] = useState<boolean>(false);
@@ -89,14 +82,7 @@ const SeedsPage: React.FC = () => {
   };
 
   const closeConfirmationModal = () => {
-    setSelectedSeed({
-      _id: "",
-      species: "",
-      seededQuantity: 0,
-      brairdedQuantity: 0,
-      dateSeeded: "",
-      daysInSoil: "",
-    });
+    setSelectedSeed({} as Seed);
     setConfirmationModalState(false);
   };
 
@@ -123,12 +109,11 @@ const SeedsPage: React.FC = () => {
     setLoadingState(false);
   };
 
-  const onSubmit = async (value: any) => {
+  const onSubmit = async (seed: Seed) => {
     setLoadingState(true);
     closeAddModal();
-    value.brairdedQuantity = value.seededQuantity;
     try {
-      const id = await createSeed(value);
+      const id = await createSeed(seed);
       await fetchOneSeed(id);
       setPopup({ isOpen: true, message: "Seed created successfully" });
       setTimeout(() => {
@@ -163,7 +148,7 @@ const SeedsPage: React.FC = () => {
                 onDelete={openConfirmationModal}
                 onUpdate={() => {}}
               ></Table>
-              <Chart length={seeds.length} data={seeds}></Chart>
+              <Chart data={seeds}></Chart>
             </Fragment>
           </div>
         )}

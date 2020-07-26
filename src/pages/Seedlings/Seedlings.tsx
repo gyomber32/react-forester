@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useCallback } from "react";
 
 import Card from "../../components/Card/Card";
 import DetailsModal from "../../components/DetailsModal/DetailsModal";
@@ -13,179 +13,106 @@ import Chart from "../../components/Chart/Chart";
 import NoData from "../../components/NoData/NoData";
 
 import Seedling from "../../models/types/Seedling";
-import PopUp from "../../models/types/PopUp";
 
-import {
-  getAllSeedlings,
-  getOneSeedling,
-  removeSeedling,
-  createSeedling,
-} from "../../api/index";
+import { useFetchSeedling } from "../../hooks";
 
 import styles from "./Seedlings.module.scss";
 
 const SeedlingsPage: React.FC = () => {
-  const [seedlings, setSeedlings] = useState<Seedling[]>([]);
+  const [selectedSeedling, setSelectedSeedling] = useState<Seedling>(
+    {} as Seedling
+  );
+  const [detailsModal, setDetailsModal] = useState<boolean>(false);
+  const [addModal, setAddModal] = useState<boolean>(false);
+  const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
+  const { seedlings, isLoading, popup, fetchSeedling } = useFetchSeedling();
 
-  const [selectedSeedling, setSelectedSeedling] = useState<Seedling>({
-    _id: "",
-    species: "",
-    plantedQuantity: 0,
-    survivedQuantity: 0,
-    datePlanted: "",
-    daysInSoil: "",
-    picture: "",
-    pictureId: "",
-    location: "",
-  });
-
-  const [detailsModal, setDetailsModalState] = useState<boolean>(false);
-
-  const [addModal, setAddModalState] = useState<boolean>(false);
-
-  const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
-
-  const [loading, setLoadingState] = useState<boolean>(false);
-
-  const [confirmationModal, setConfirmationModalState] = useState<boolean>(
-    false
+  const openDetailsModal = useCallback(
+    (id: string) => {
+      const seedling = seedlings.filter((seedling) => seedling._id === id)[0];
+      setSelectedSeedling(seedling);
+      setDetailsModal(true);
+    },
+    [setDetailsModal, seedlings]
   );
 
-  const fetchOneSeedling = async (id: string) => {
-    setLoadingState(true);
-    try {
-      const seedling = await getOneSeedling(id);
-      setSeedlings([...seedlings, seedling]);
-    } catch (error) {
-      setPopup({
-        isOpen: true,
-        message: error.message,
-      });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-      console.log(error);
-    }
-    setLoadingState(false);
-  };
+  const closeDetailsModal = useCallback(() => {
+    setDetailsModal(false);
+    setSelectedSeedling({} as Seedling);
+  }, [setDetailsModal]);
 
-  const fetchAllSeedlings = async () => {
-    setLoadingState(true);
-    try {
-      const trees = await getAllSeedlings();
-      setSeedlings(trees);
-    } catch (error) {
-      setPopup({
-        isOpen: true,
-        message: error.message,
-      });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-      console.log(error);
-    }
-    setLoadingState(false);
-  };
+  const openAddModal = useCallback(() => {
+    setAddModal(true);
+  }, [setAddModal]);
 
-  useEffect(() => {
-    fetchAllSeedlings();
-  }, []);
+  const closeAddModal = useCallback(() => {
+    setAddModal(false);
+  }, [setAddModal]);
 
-  const openDetailsModal = (id: string) => {
-    const seedling = seedlings.filter((seedling) => seedling._id === id);
-    setSelectedSeedling(seedling[0]);
-    setDetailsModalState(true);
-  };
+  const openConfirmationModal = useCallback(() => {
+    setConfirmationModal(true);
+  }, [setConfirmationModal]);
 
-  const closeDetailsModal = () => {
-    setDetailsModalState(false);
-    setSelectedSeedling({
-      _id: "",
-      species: "",
-      plantedQuantity: 0,
-      survivedQuantity: 0,
-      datePlanted: "",
-      daysInSoil: "",
-      picture: "",
-      pictureId: "",
-      location: "",
-    });
-  };
-
-  const openAddModal = () => {
-    setAddModalState(true);
-  };
-
-  const closeAddModal = () => {
-    setAddModalState(false);
-  };
-
-  const openConfirmationModal = () => {
-    setConfirmationModalState(true);
-  };
-
-  const closeConfirmationModal = () => {
-    setConfirmationModalState(false);
+  const closeConfirmationModal = useCallback(() => {
+    setConfirmationModal(false);
     if (detailsModal) {
       closeDetailsModal();
     }
-  };
+  }, [closeDetailsModal, detailsModal]);
 
-  const deleteSeedling = async () => {
-    setLoadingState(true);
+  const deleteSeedling = useCallback(async () => {
+    fetchSeedling("DELETE", selectedSeedling);
     closeConfirmationModal();
-    try {
-      const responseMessage = await removeSeedling(selectedSeedling);
-      await fetchAllSeedlings();
-      setPopup({
-        isOpen: true,
-        message: responseMessage,
-      });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-    } catch (error) {
-      setPopup({ isOpen: true, message: error.message });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-      console.log(error);
-    }
-    setLoadingState(false);
-  };
+    closeDetailsModal();
+  }, [
+    closeConfirmationModal,
+    closeDetailsModal,
+    fetchSeedling,
+    selectedSeedling,
+  ]);
 
-  const onSubmit = async (value: any) => {
-    setLoadingState(true);
-    value.survivedQuantity = value.plantedQuantity;
-    try {
-      const id = await createSeedling(value);
-      await fetchOneSeedling(id);
-      setPopup({ isOpen: true, message: "Seedling created successfully" });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-    } catch (error) {
-      setPopup({ isOpen: true, message: error.message });
-      setTimeout(() => {
-        setPopup({ isOpen: false, message: "" });
-      }, 5500);
-      console.log(error);
-    }
-    setLoadingState(false);
-  };
+  const createSeedling = useCallback(
+    async (seedling: Seedling) => {
+      fetchSeedling("CREATE", seedling);
+      closeAddModal();
+    },
+    [fetchSeedling, closeAddModal]
+  );
+
+  const closeOnEscapeButton = useCallback(
+    (event?: any) => {
+      if (event.keyCode === 27) {
+        if (detailsModal) closeDetailsModal();
+        if (addModal) closeAddModal();
+        if (confirmationModal) closeConfirmationModal();
+      }
+    },
+    [
+      addModal,
+      confirmationModal,
+      detailsModal,
+      closeAddModal,
+      closeConfirmationModal,
+      closeDetailsModal,
+    ]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", closeOnEscapeButton, false);
+  }, [closeOnEscapeButton]);
 
   return (
     <Fragment>
       <Navigation />
       <div className={styles.Seedlings}>
-        {loading && (
+        {isLoading && (
           <Fragment>
             <Backdrop></Backdrop>
             <Spinner></Spinner>
           </Fragment>
         )}
         {popup.isOpen && <Popup message={popup.message}></Popup>}
-        {!loading && seedlings.length > 0 && (
+        {!isLoading && seedlings.length > 0 && (
           <Fragment>
             <div className={styles.Seedlings_cardsContainer}>
               {seedlings.map((item: Seedling) => (
@@ -198,10 +125,10 @@ const SeedlingsPage: React.FC = () => {
                 />
               ))}
             </div>
-            <Chart length={seedlings.length} data={seedlings}></Chart>
+            <Chart data={seedlings}></Chart>
           </Fragment>
         )}
-        {!loading && seedlings.length === 0 && <NoData>seedlings</NoData>}
+        {!isLoading && seedlings.length === 0 && <NoData>seedlings</NoData>}
         {detailsModal && <Backdrop click={closeDetailsModal}></Backdrop>}
         {detailsModal && (
           <DetailsModal
@@ -227,7 +154,7 @@ const SeedlingsPage: React.FC = () => {
         {addModal && (
           <AddModal
             type="seedlings"
-            onSubmit={onSubmit}
+            onSubmit={createSeedling}
             onCancel={closeAddModal}
           >
             seedling
