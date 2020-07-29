@@ -34,6 +34,6 @@ const Chart: React.FC<Props> = (props) => {
   );
 };
 
-export default React.memo(Chart, function (prevProps, nextProps) {
+export default React.memo(Chart, (prevProps, nextProps) => {
   return prevProps.data.length === nextProps.data.length;
 });

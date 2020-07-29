@@ -14,7 +14,7 @@ import NoData from "../../components/NoData/NoData";
 
 import Seedling from "../../models/types/Seedling";
 
-import { useFetchSeedling } from "../../hooks";
+//import { useFetchSeedling } from "../../hooks";
 
 import styles from "./Seedlings.module.scss";
 
@@ -25,15 +25,15 @@ const SeedlingsPage: React.FC = () => {
   const [detailsModal, setDetailsModal] = useState<boolean>(false);
   const [addModal, setAddModal] = useState<boolean>(false);
   const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
-  const { seedlings, isLoading, popup, fetchSeedling } = useFetchSeedling();
+  //const { seedlings, isLoading, popup, fetchSeedling } = useFetchSeedling();
 
   const openDetailsModal = useCallback(
     (id: string) => {
-      const seedling = seedlings.filter((seedling) => seedling._id === id)[0];
-      setSelectedSeedling(seedling);
+      //const seedling = seedlings.filter((seedling) => seedling._id === id)[0];
+      //setSelectedSeedling(seedling);
       setDetailsModal(true);
     },
-    [setDetailsModal, seedlings]
+    [setDetailsModal]
   );
 
   const closeDetailsModal = useCallback(() => {
@@ -61,22 +61,17 @@ const SeedlingsPage: React.FC = () => {
   }, [closeDetailsModal, detailsModal]);
 
   const deleteSeedling = useCallback(async () => {
-    fetchSeedling("DELETE", selectedSeedling);
+    //fetchSeedling("DELETE", selectedSeedling);
     closeConfirmationModal();
     closeDetailsModal();
-  }, [
-    closeConfirmationModal,
-    closeDetailsModal,
-    fetchSeedling,
-    selectedSeedling,
-  ]);
+  }, [closeConfirmationModal, closeDetailsModal]);
 
   const createSeedling = useCallback(
     async (seedling: Seedling) => {
-      fetchSeedling("CREATE", seedling);
+      //fetchSeedling("CREATE", seedling);
       closeAddModal();
     },
-    [fetchSeedling, closeAddModal]
+    [closeAddModal]
   );
 
   const closeOnEscapeButton = useCallback(
@@ -105,7 +100,7 @@ const SeedlingsPage: React.FC = () => {
     <Fragment>
       <Navigation />
       <div className={styles.Seedlings}>
-        {isLoading && (
+        {/* {isLoading && (
           <Fragment>
             <Backdrop></Backdrop>
             <Spinner></Spinner>
@@ -128,7 +123,7 @@ const SeedlingsPage: React.FC = () => {
             <Chart data={seedlings}></Chart>
           </Fragment>
         )}
-        {!isLoading && seedlings.length === 0 && <NoData>seedlings</NoData>}
+        {!isLoading && seedlings.length === 0 && <NoData>seedlings</NoData>} */}
         {detailsModal && (
           <Fragment>
             <Backdrop click={closeDetailsModal}></Backdrop>

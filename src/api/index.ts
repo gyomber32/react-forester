@@ -123,7 +123,7 @@ export const createTree = async (tree: Tree) => {
             if (!treeResponse.data.data.createTree._id) {
                 throw new Error("No response from the server");
             }
-            return treeResponse.data.data.createTree._id as string;
+            return treeResponse.data.data.createTree as Tree;
         } catch (error) {
             throw new Error(error.message);
         }
@@ -141,14 +141,14 @@ export const createTree = async (tree: Tree) => {
             if (!treeResponse.data.data.createTree._id) {
                 throw new Error("No response from the server");
             }
-            return treeResponse.data.data.createTree._id as string;
+            return treeResponse.data.data.createTree as Tree;
         } catch (error) {
             throw new Error(error.message);
         }
     }
 };
 
-export const removeTree = async (tree: Tree) => {
+export const deleteTree = async (tree: Tree) => {
     try {
         if (tree.pictureId) {
             const pictureResponse = await axios({
@@ -171,10 +171,10 @@ export const removeTree = async (tree: Tree) => {
             method: "POST",
             data: deleteTreeMutation(tree._id),
         });
-        if (!response.data.data.deleteTree) {
+        if (!response.data.data.deleteTree._id) {
             throw new Error("No response from the server");
         }
-        return response.data.data.deleteTree.message as string;
+        return response.data.data.deleteTree._id as string;
     } catch (error) {
         throw new Error(error.message);
     }

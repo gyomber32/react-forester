@@ -13,7 +13,7 @@ import NoData from "../../components/NoData/NoData";
 
 import Seed from "../../models/types/Seed";
 
-import { useFetchSeed } from "../../hooks";
+//import { useFetchSeed } from "../../hooks";
 
 import styles from "./Seeds.module.scss";
 
@@ -21,7 +21,7 @@ const SeedsPage: React.FC = () => {
   const [selectedSeed, setSelectedSeed] = useState<Seed>({} as Seed);
   const [addModal, setAddModal] = useState<boolean>(false);
   const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
-  const { seeds, isLoading, popup, fetchSeed } = useFetchSeed();
+  //const { seeds, isLoading, popup, fetchSeed } = useFetchSeed();
 
   const openAddModal = useCallback(() => {
     setAddModal(true);
@@ -41,16 +41,16 @@ const SeedsPage: React.FC = () => {
   }, []);
 
   const deleteSeed = useCallback(async () => {
-    fetchSeed("DELETE", selectedSeed);
+    //fetchSeed("DELETE", selectedSeed);
     closeConfirmationModal();
-  }, [closeConfirmationModal, fetchSeed, selectedSeed]);
+  }, [closeConfirmationModal]);
 
   const createSeed = useCallback(
     async (seed: Seed) => {
-      fetchSeed("CREATE", seed);
+      //fetchSeed("CREATE", seed);
       closeAddModal();
     },
-    [fetchSeed, closeAddModal]
+    [closeAddModal]
   );
 
   const closeOnEscapeButton = useCallback(
@@ -71,14 +71,14 @@ const SeedsPage: React.FC = () => {
     <Fragment>
       <Navigation />
       <div className={styles.Seeds}>
-        {isLoading && (
+       {/*  {isLoading && (
           <Fragment>
             <Backdrop></Backdrop>
             <Spinner></Spinner>
           </Fragment>
         )}
-        {popup.isOpen && <Popup message={popup.message}></Popup>}
-        {!isLoading && seeds.length > 0 && (
+        {popup.isOpen && <Popup message={popup.message}></Popup>} */}
+       {/*  {!isLoading && seeds.length > 0 && (
           <div className={styles.Seeds_seedsContainer}>
             <Fragment>
               <Table
@@ -90,7 +90,7 @@ const SeedsPage: React.FC = () => {
             </Fragment>
           </div>
         )}
-        {!isLoading && seeds.length === 0 && <NoData>seeds</NoData>}
+        {!isLoading && seeds.length === 0 && <NoData>seeds</NoData>} */}
         {confirmationModal && (
           <Fragment>
             <Backdrop click={closeConfirmationModal} zIndex={3}></Backdrop>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useState, useEffect, useCallback } from "react";
 
 import Card from "../../components/Card/Card";
@@ -14,16 +15,27 @@ import NoData from "../../components/NoData/NoData";
 
 import Tree from "../../models/types/Tree";
 
-import { useFetchTree } from "../../hooks";
+import {
+  useFetchAllTrees,
+  useCreateTree,
+  useDeleteTree,
+} from "../../hooks/tree";
 
 import styles from "./Trees.module.scss";
+
+import { useTrees, useLoader, usePopup } from "../../hooks";
 
 const TreesPage: React.FC = () => {
   const [selectedTree, setSelectedTree] = useState<Tree>({} as Tree);
   const [detailsModal, setDetailsModal] = useState<boolean>(false);
   const [addModal, setAddModal] = useState<boolean>(false);
   const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
-  const { trees, isLoading, popup, fetchTree } = useFetchTree();
+  const fetchTrees = useFetchAllTrees();
+  const createTree = useCreateTree();
+  const deleteTree = useDeleteTree();
+  const trees = useTrees();
+  const isLoading = useLoader();
+  const popup = usePopup();
 
   const openDetailsModal = useCallback(
     (id: string) => {
@@ -31,7 +43,7 @@ const TreesPage: React.FC = () => {
       setSelectedTree(tree);
       setDetailsModal(true);
     },
-    [setDetailsModal, trees]
+    [setSelectedTree, setDetailsModal, trees]
   );
 
   const closeDetailsModal = useCallback(() => {
@@ -58,18 +70,18 @@ const TreesPage: React.FC = () => {
     }
   }, [closeDetailsModal, detailsModal]);
 
-  const deleteTree = useCallback(async () => {
-    fetchTree("DELETE", selectedTree);
+  const deleteTreeHandler = useCallback(async () => {
+    deleteTree(selectedTree);
     closeConfirmationModal();
     closeDetailsModal();
-  }, [closeConfirmationModal, closeDetailsModal, fetchTree, selectedTree]);
+  }, [closeConfirmationModal, closeDetailsModal, selectedTree]);
 
-  const createTree = useCallback(
-    async (tree: Tree) => {
-      fetchTree("CREATE", tree);
+  const createTreeHandler = useCallback(
+    (tree: Tree) => {
+      createTree(tree);
       closeAddModal();
     },
-    [fetchTree, closeAddModal]
+    [closeAddModal]
   );
 
   const closeOnEscapeButton = useCallback(
@@ -89,6 +101,10 @@ const TreesPage: React.FC = () => {
       closeDetailsModal,
     ]
   );
+
+  useEffect(() => {
+    fetchTrees();
+  }, [fetchTrees]);
 
   useEffect(() => {
     document.addEventListener("keydown", closeOnEscapeButton, false);
@@ -135,7 +151,7 @@ const TreesPage: React.FC = () => {
           <Fragment>
             <Backdrop click={closeConfirmationModal} zIndex={3}></Backdrop>
             <ConfirmationModal
-              onYes={deleteTree}
+              onYes={deleteTreeHandler}
               onCancel={closeConfirmationModal}
             ></ConfirmationModal>
           </Fragment>
@@ -145,7 +161,7 @@ const TreesPage: React.FC = () => {
             <Backdrop click={closeAddModal}></Backdrop>
             <AddModal
               type="trees"
-              onSubmit={createTree}
+              onSubmit={createTreeHandler}
               onCancel={closeAddModal}
             >
               tree

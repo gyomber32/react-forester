@@ -8,14 +8,18 @@ import styles from "./Map.module.scss";
 import Backdrop from "../../components/Backdrop/Backdrop";
 import Spinner from "../../components/Spinner/Spinner";
 
-import { useFetchTree, usePosition } from "../../hooks";
+import { usePosition } from "../../hooks";
 import Popup from "../../components/Popup/Popup";
+
+import { useTrees } from "../../hooks/store";
 
 const mapPage: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
+  const bme = useTrees();
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { position } = usePosition();
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { trees, isLoading, popup } = useFetchTree();
+  //const { isLoading, popup } = useFetchTree();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [screenSize, setScreenSize] = useState({
     height: (window.innerHeight * 2) / 3,
@@ -35,9 +39,8 @@ const mapPage: React.FC = () => {
 
   return (
     <Fragment>
-      {console.log(screenSize)}
       <Navigation />
-      <div className={styles.Map}>
+      {/* <div className={styles.Map}>
         {isLoading && (
           <Fragment>
             <Backdrop></Backdrop>
@@ -53,10 +56,10 @@ const mapPage: React.FC = () => {
               width: screenSize.width
             }}
           >
-            <Map position={position!} trees={trees} size={screenSize} />
+            <Map position={position!} trees={bme} size={screenSize} />
           </div>
         )}
-      </div>
+      </div> */}
     </Fragment>
   );
 };

@@ -91,7 +91,7 @@ export const deleteTreeMutation = (id: string) => {
         query: `
             mutation {
               deleteTree(_id: "${id}"){
-                message
+                _id
               }
             }`
     });
