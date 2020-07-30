@@ -167,6 +167,7 @@ const AddModal: React.FC<Props> = (props) => {
                 type="text"
                 placeholder="Location"
                 value={values.location}
+                locationOf={"seedling"}
                 onValueChange={(location: string) => {
                   setFieldValue("location", location);
                 }}
@@ -351,6 +352,7 @@ const AddModal: React.FC<Props> = (props) => {
                 type="text"
                 placeholder="Location"
                 value={values.location}
+                locationOf={"tree"}
                 onValueChange={(location: string) => {
                   setFieldValue("location", location);
                 }}

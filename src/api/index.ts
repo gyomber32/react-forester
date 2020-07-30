@@ -171,7 +171,7 @@ export const deleteTree = async (tree: Tree) => {
             method: "POST",
             data: deleteTreeMutation(tree._id),
         });
-        if (!response.data.data.deleteTree._id) {
+        if (!response.data.data.deleteTree) {
             throw new Error("No response from the server");
         }
         return response.data.data.deleteTree._id as string;
@@ -278,7 +278,7 @@ export const createSeedling = async (seedling: Seedling) => {
             if (!seedlingResponse.data.data.createSeedling._id) {
                 throw new Error("No response from the server");
             }
-            return seedlingResponse.data.data.createSeedling._id as string;
+            return seedlingResponse.data.data.createSeedling as Seedling;
         } catch (error) {
             throw new Error(error.message);
         }
@@ -296,14 +296,14 @@ export const createSeedling = async (seedling: Seedling) => {
             if (!treeResponse.data.data.createSeedling._id) {
                 throw new Error("No response from the server");
             }
-            return treeResponse.data.data.createSeedling._id as string;
+            return treeResponse.data.data.createSeedling as Seedling;
         } catch (error) {
             throw new Error(error.message);
         }
     }
 };
 
-export const removeSeedling = async (seedling: Seedling) => {
+export const deleteSeedling = async (seedling: Seedling) => {
     try {
         if (seedling.pictureId) {
             const pictureResponse = await axios({
@@ -329,7 +329,7 @@ export const removeSeedling = async (seedling: Seedling) => {
         if (!response.data.data.deleteSeedling) {
             throw new Error("No response from the server");
         }
-        return response.data.data.deleteSeedling.message as string;
+        return response.data.data.deleteSeedling._id as string;
     } catch (error) {
         throw new Error(error.message);
     }
@@ -409,13 +409,13 @@ export const createSeed = async (seed: Seed) => {
         if (!seedResponse.data.data.createSeed._id) {
             throw new Error("No response from the server");
         }
-        return seedResponse.data.data.createSeed._id as string;
+        return seedResponse.data.data.createSeed as Seed;
     } catch (error) {
         throw new Error(error.message);
     }
 };
 
-export const removeSeed = async (seed: Seed) => {
+export const deleteSeed = async (seed: Seed) => {
     try {
         const response = await axios({
             url: "http://localhost:3000/graphql",
@@ -429,7 +429,7 @@ export const removeSeed = async (seed: Seed) => {
         if (!response.data.data.deleteSeed) {
             throw new Error("No response from the server");
         }
-        return response.data.data.deleteSeed.message as string;
+        return response.data.data.deleteSeed._id as string;
     } catch (error) {
         throw new Error(error.message);
     }

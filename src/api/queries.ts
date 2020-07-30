@@ -174,7 +174,7 @@ export const deleteSeedlingMutation = (id: string) => {
         query: `
             mutation {
               deleteSeedling(_id: "${id}"){
-                message
+                _id
               }
             }`
     });
@@ -233,7 +233,7 @@ export const deleteSeedMutation = (id: string) => {
         query: `
             mutation {
               deleteSeed(_id: "${id}"){
-                message
+                _id
               }
             }`
     });

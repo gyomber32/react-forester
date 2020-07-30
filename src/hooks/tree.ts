@@ -11,7 +11,7 @@ export const useFetchAllTrees = () => {
     return useCallback(async () => {
         toggleLoader(true);
         const responseTrees = await getAllTrees();
-        if (responseTrees) {
+        if (responseTrees && responseTrees.length > 0) {
             setTrees(responseTrees);
             togglePopup({ isOpen: true, message: "Trees have been fetched successfully" });
             setTimeout(() => {

@@ -14,7 +14,12 @@ import NoData from "../../components/NoData/NoData";
 
 import Seedling from "../../models/types/Seedling";
 
-//import { useFetchSeedling } from "../../hooks";
+import {
+  useFetchAllSeedlings,
+  useCreateSeedling,
+  useDeleteSeedling,
+} from "../../hooks/seedling";
+import { useSeedlings, useLoader, usePopup } from "../../hooks";
 
 import styles from "./Seedlings.module.scss";
 
@@ -25,15 +30,20 @@ const SeedlingsPage: React.FC = () => {
   const [detailsModal, setDetailsModal] = useState<boolean>(false);
   const [addModal, setAddModal] = useState<boolean>(false);
   const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
-  //const { seedlings, isLoading, popup, fetchSeedling } = useFetchSeedling();
+  const fetchSeedlings = useFetchAllSeedlings();
+  const createSeedling = useCreateSeedling();
+  const deleteSeedling = useDeleteSeedling();
+  const seedlings = useSeedlings();
+  const isLoading = useLoader();
+  const popup = usePopup();
 
   const openDetailsModal = useCallback(
     (id: string) => {
-      //const seedling = seedlings.filter((seedling) => seedling._id === id)[0];
-      //setSelectedSeedling(seedling);
+      const seedling = seedlings.filter((seedling) => seedling._id === id)[0];
+      setSelectedSeedling(seedling);
       setDetailsModal(true);
     },
-    [setDetailsModal]
+    [setSelectedSeedling, setDetailsModal, seedlings]
   );
 
   const closeDetailsModal = useCallback(() => {
@@ -60,18 +70,23 @@ const SeedlingsPage: React.FC = () => {
     }
   }, [closeDetailsModal, detailsModal]);
 
-  const deleteSeedling = useCallback(async () => {
-    //fetchSeedling("DELETE", selectedSeedling);
+  const deleteSeedlingHandeler = useCallback(async () => {
+    deleteSeedling(selectedSeedling);
     closeConfirmationModal();
     closeDetailsModal();
-  }, [closeConfirmationModal, closeDetailsModal]);
+  }, [
+    closeConfirmationModal,
+    closeDetailsModal,
+    deleteSeedling,
+    selectedSeedling,
+  ]);
 
-  const createSeedling = useCallback(
+  const createSeedlingHandler = useCallback(
     async (seedling: Seedling) => {
-      //fetchSeedling("CREATE", seedling);
+      createSeedling(seedling);
       closeAddModal();
     },
-    [closeAddModal]
+    [closeAddModal, createSeedling]
   );
 
   const closeOnEscapeButton = useCallback(
@@ -93,6 +108,10 @@ const SeedlingsPage: React.FC = () => {
   );
 
   useEffect(() => {
+    fetchSeedlings();
+  }, [fetchSeedlings]);
+
+  useEffect(() => {
     document.addEventListener("keydown", closeOnEscapeButton, false);
   }, [closeOnEscapeButton]);
 
@@ -100,7 +119,7 @@ const SeedlingsPage: React.FC = () => {
     <Fragment>
       <Navigation />
       <div className={styles.Seedlings}>
-        {/* {isLoading && (
+        {isLoading && (
           <Fragment>
             <Backdrop></Backdrop>
             <Spinner></Spinner>
@@ -123,7 +142,7 @@ const SeedlingsPage: React.FC = () => {
             <Chart data={seedlings}></Chart>
           </Fragment>
         )}
-        {!isLoading && seedlings.length === 0 && <NoData>seedlings</NoData>} */}
+        {!isLoading && seedlings.length === 0 && <NoData>seedlings</NoData>}
         {detailsModal && (
           <Fragment>
             <Backdrop click={closeDetailsModal}></Backdrop>
@@ -137,7 +156,7 @@ const SeedlingsPage: React.FC = () => {
           <Fragment>
             <Backdrop click={closeConfirmationModal} zIndex={3}></Backdrop>
             <ConfirmationModal
-              onYes={deleteSeedling}
+              onYes={deleteSeedlingHandeler}
               onCancel={closeConfirmationModal}
             ></ConfirmationModal>
           </Fragment>
@@ -147,7 +166,7 @@ const SeedlingsPage: React.FC = () => {
             <Backdrop click={closeAddModal}></Backdrop>
             <AddModal
               type="seedlings"
-              onSubmit={createSeedling}
+              onSubmit={createSeedlingHandler}
               onCancel={closeAddModal}
             >
               seedling

@@ -6,8 +6,10 @@ import Tree from "../../models/types/Tree";
 
 import manSvg from "../../assets/icons/man.svg";
 import treeSvg from "../../assets/icons/tree.svg";
+import seedlingSvg from "../../assets/icons/seedling.svg"
 
 import "leaflet/dist/leaflet.css";
+import Seedling from "../../models/types/Seedling";
 
 const manIcon = new Icon({
   iconUrl: manSvg,
@@ -19,17 +21,24 @@ const treeIcon = new Icon({
   iconSize: [50, 50],
 });
 
+const seedlingIcon = new Icon({
+  iconUrl: seedlingSvg,
+  iconSize: [50, 50],
+});
+
 type Props = {
   position: LatLngExpression | undefined;
   trees?: Tree[];
+  seedlings?: Seedling[]
   size: { height: number; width: number };
 };
 
 const map: React.FC<Props> = (props) => {
+
   const marker = props.position ? (
     <Marker position={props.position} icon={manIcon}>
       <Popup>
-        {props.trees ? (
+        {props.trees?.length! > 0 ? (
           <span>You are here</span>
         ) : (
           <span>
@@ -42,7 +51,7 @@ const map: React.FC<Props> = (props) => {
     </Marker>
   ) : null;
 
-  const markers = props.trees
+  const treeMarkers = props.trees
     ? props.trees.map((tree) => {
         return (
           <Marker
@@ -72,6 +81,39 @@ const map: React.FC<Props> = (props) => {
         );
       })
     : null;
+
+    const seedlingMarkers = props.seedlings
+    ? props.seedlings.map((seedling) => {
+        return (
+          <Marker
+            key={seedling._id}
+            position={
+              new LatLng(
+                +seedling.location.split(",")[0],
+                +seedling.location.split(",")[1]
+              )
+            }
+            icon={seedlingIcon}
+          >
+            <Popup>
+              <span>
+                Species: <b>{seedling.species}</b>
+                <br></br>
+                Planted: <b>{seedling.plantedQuantity}</b>
+                <br></br>
+                Survived: <b>{seedling.survivedQuantity}</b>
+                <br></br>
+                Date planted: <b>{seedling.datePlanted}</b>
+                <br></br>
+                Growing for: <b>{seedling.daysInSoil}</b>
+              </span>
+            </Popup>
+          </Marker>
+        );
+      })
+    : null;
+
+    const markers = treeMarkers?.concat(seedlingMarkers!);
 
   return (
     <Fragment>

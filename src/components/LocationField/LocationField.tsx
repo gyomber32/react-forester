@@ -3,6 +3,7 @@ import { Icon } from "leaflet";
 import { Map, Marker, TileLayer } from "react-leaflet";
 
 import treeSvg from "../../assets/icons/tree.svg";
+import seedlingSvg from "../../assets/icons/seedling.svg";
 
 import styles from "./LocationField.module.scss";
 import { usePosition } from "../../hooks";
@@ -12,12 +13,18 @@ const treeIcon = new Icon({
   iconSize: [50, 50],
 });
 
+const seedlingIcon = new Icon({
+  iconUrl: seedlingSvg,
+  iconSize: [50, 50],
+});
+
 type Props = {
   className: string;
   name: string;
   type: string;
   placeholder: string;
   value: string;
+  locationOf: string
   onValueChange: any;
 };
 
@@ -68,7 +75,7 @@ const LocationField: React.FC<Props> = (props) => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               />
-              <Marker position={position!} icon={treeIcon}></Marker>
+              <Marker position={position!} icon={props.locationOf==='tree' ? treeIcon : seedlingIcon}></Marker>
             </Map>
           </div>
         </div>

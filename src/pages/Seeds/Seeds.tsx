@@ -11,9 +11,14 @@ import Spinner from "../../components/Spinner/Spinner";
 import Chart from "../../components/Chart/Chart";
 import NoData from "../../components/NoData/NoData";
 
-import Seed from "../../models/types/Seed";
+import {
+  useFetchAllSeeds,
+  useCreateSeed,
+  useDeleteSeed,
+} from "../../hooks/seed";
+import { useSeeds, useLoader, usePopup } from "../../hooks/store";
 
-//import { useFetchSeed } from "../../hooks";
+import Seed from "../../models/types/Seed";
 
 import styles from "./Seeds.module.scss";
 
@@ -21,7 +26,12 @@ const SeedsPage: React.FC = () => {
   const [selectedSeed, setSelectedSeed] = useState<Seed>({} as Seed);
   const [addModal, setAddModal] = useState<boolean>(false);
   const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
-  //const { seeds, isLoading, popup, fetchSeed } = useFetchSeed();
+  const fetchSeeds = useFetchAllSeeds();
+  const createSeed = useCreateSeed();
+  const deleteSeed = useDeleteSeed();
+  const seeds = useSeeds();
+  const isLoading = useLoader();
+  const popup = usePopup();
 
   const openAddModal = useCallback(() => {
     setAddModal(true);
@@ -40,17 +50,17 @@ const SeedsPage: React.FC = () => {
     setConfirmationModal(false);
   }, []);
 
-  const deleteSeed = useCallback(async () => {
-    //fetchSeed("DELETE", selectedSeed);
+  const deleteSeedHandler = useCallback(async () => {
+   deleteSeed(selectedSeed);
     closeConfirmationModal();
-  }, [closeConfirmationModal]);
+  }, [closeConfirmationModal, deleteSeed, selectedSeed]);
 
-  const createSeed = useCallback(
+  const createSeedHandler = useCallback(
     async (seed: Seed) => {
-      //fetchSeed("CREATE", seed);
+      createSeed(seed);
       closeAddModal();
     },
-    [closeAddModal]
+    [closeAddModal, createSeed]
   );
 
   const closeOnEscapeButton = useCallback(
@@ -64,6 +74,10 @@ const SeedsPage: React.FC = () => {
   );
 
   useEffect(() => {
+    fetchSeeds();
+  }, [fetchSeeds]);
+
+  useEffect(() => {
     document.addEventListener("keydown", closeOnEscapeButton, false);
   }, [closeOnEscapeButton]);
 
@@ -71,14 +85,14 @@ const SeedsPage: React.FC = () => {
     <Fragment>
       <Navigation />
       <div className={styles.Seeds}>
-       {/*  {isLoading && (
+        {isLoading && (
           <Fragment>
             <Backdrop></Backdrop>
             <Spinner></Spinner>
           </Fragment>
         )}
-        {popup.isOpen && <Popup message={popup.message}></Popup>} */}
-       {/*  {!isLoading && seeds.length > 0 && (
+        {popup.isOpen && <Popup message={popup.message}></Popup>}
+        {!isLoading && seeds.length > 0 && (
           <div className={styles.Seeds_seedsContainer}>
             <Fragment>
               <Table
@@ -90,12 +104,12 @@ const SeedsPage: React.FC = () => {
             </Fragment>
           </div>
         )}
-        {!isLoading && seeds.length === 0 && <NoData>seeds</NoData>} */}
+        {!isLoading && seeds.length === 0 && <NoData>seeds</NoData>}
         {confirmationModal && (
           <Fragment>
             <Backdrop click={closeConfirmationModal} zIndex={3}></Backdrop>
             <ConfirmationModal
-              onYes={deleteSeed}
+              onYes={deleteSeedHandler}
               onCancel={closeConfirmationModal}
             ></ConfirmationModal>
           </Fragment>
@@ -105,7 +119,7 @@ const SeedsPage: React.FC = () => {
             <Backdrop click={closeAddModal}></Backdrop>
             <AddModal
               type="seeds"
-              onSubmit={createSeed}
+              onSubmit={createSeedHandler}
               onCancel={closeAddModal}
             >
               seed

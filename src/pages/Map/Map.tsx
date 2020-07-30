@@ -1,26 +1,27 @@
-import React, { Fragment, useState } from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { Fragment, useState, useEffect } from "react";
 
 import Map from "../../components/Map/Map";
 import Navigation from "../../components/Navigation/Navigation";
-
-import styles from "./Map.module.scss";
-
+import Popup from "../../components/Popup/Popup";
 import Backdrop from "../../components/Backdrop/Backdrop";
 import Spinner from "../../components/Spinner/Spinner";
 
 import { usePosition } from "../../hooks";
-import Popup from "../../components/Popup/Popup";
+import { useTrees, useLoader, usePopup, useSeedlings } from "../../hooks/store";
+import { useFetchAllTrees } from "../../hooks/tree";
+import { useFetchAllSeedlings } from "../../hooks/seedling";
 
-import { useTrees } from "../../hooks/store";
+import styles from "./Map.module.scss";
 
 const mapPage: React.FC = () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const bme = useTrees();
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const fetchTrees = useFetchAllTrees();
+  const fecthSeedlings = useFetchAllSeedlings();
+  const trees = useTrees();
+  const seedlings = useSeedlings();
   const { position } = usePosition();
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  //const { isLoading, popup } = useFetchTree();
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const isLoading = useLoader();
+  const popup = usePopup();
   const [screenSize, setScreenSize] = useState({
     height: (window.innerHeight * 2) / 3,
     width: (window.innerWidth * 2) / 3,
@@ -37,10 +38,15 @@ const mapPage: React.FC = () => {
     }
   })();
 
+  useEffect(() => {
+    fetchTrees();
+    fecthSeedlings()
+  }, [fecthSeedlings, fetchTrees]);
+
   return (
     <Fragment>
       <Navigation />
-      {/* <div className={styles.Map}>
+      <div className={styles.Map}>
         {isLoading && (
           <Fragment>
             <Backdrop></Backdrop>
@@ -56,10 +62,10 @@ const mapPage: React.FC = () => {
               width: screenSize.width
             }}
           >
-            <Map position={position!} trees={bme} size={screenSize} />
+            <Map position={position!} trees={trees} seedlings={seedlings} size={screenSize} />
           </div>
         )}
-      </div> */}
+      </div>
     </Fragment>
   );
 };
