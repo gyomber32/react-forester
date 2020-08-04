@@ -1,0 +1,92 @@
+@import "../../assets/styles/animations";
+
+.Weather {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  border-radius: 10px;
+  width: 50%;
+  margin: 50px auto;
+  box-shadow: $item-shadow;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.Weather_Data {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.Weather_Data_Forecast {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 10px;
+}
+.Weather_Data_Forecast_Properties {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 130px;
+  border-radius: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  table > tbody > tr > th {
+    border: none;
+  }
+}
+
+.Weather_Data_SunState {
+  margin: 10px;
+  border-radius: 10px;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  text-align: center;
+  &_elem {
+    margin: 5px;
+  }
+}
+
+.Weather_Hourly {
+  margin: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  text-align: center;
+  justify-content: center;
+  &_elem {
+    margin-bottom: 10px;
+    flex: 1 1 7%;
+    padding: 5px;
+    div:first-child {
+      font-weight: bold;
+    }
+  }
+}
+
+.Weather_Daily {
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  &_Day {
+    text-align: center;
+    padding: 5px;
+    &_Name {
+      font-weight: bold;
+    }
+  }
+}

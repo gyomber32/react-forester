@@ -1,12 +1,12 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { LatLngExpression, Icon, LatLng } from "leaflet";
-import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import { Map, Marker, Popup, TileLayer, LayersControl } from "react-leaflet";
 
 import Tree from "../../models/types/Tree";
 
 import manSvg from "../../assets/icons/man.svg";
 import treeSvg from "../../assets/icons/tree.svg";
-import seedlingSvg from "../../assets/icons/seedling.svg"
+import seedlingSvg from "../../assets/icons/seedling.svg";
 
 import "leaflet/dist/leaflet.css";
 import Seedling from "../../models/types/Seedling";
@@ -29,12 +29,11 @@ const seedlingIcon = new Icon({
 type Props = {
   position: LatLngExpression | undefined;
   trees?: Tree[];
-  seedlings?: Seedling[]
+  seedlings?: Seedling[];
   size: { height: number; width: number };
 };
 
 const map: React.FC<Props> = (props) => {
-
   const marker = props.position ? (
     <Marker position={props.position} icon={manIcon}>
       <Popup>
@@ -82,7 +81,7 @@ const map: React.FC<Props> = (props) => {
       })
     : null;
 
-    const seedlingMarkers = props.seedlings
+  const seedlingMarkers = props.seedlings
     ? props.seedlings.map((seedling) => {
         return (
           <Marker
@@ -113,41 +112,69 @@ const map: React.FC<Props> = (props) => {
       })
     : null;
 
-    const markers = treeMarkers?.concat(seedlingMarkers!);
+  const markers = treeMarkers?.concat(seedlingMarkers!);
 
   return (
-    <Fragment>
-      <Map
-        center={props.position}
-        style={{ height: props.size.height, width: props.size.width }}
-        // onclick={this.handleClick}
-        zoomControl={markers ? true : false}
-        scrollWheelZoom={markers ? true : false}
-        doubleClickZoom={markers ? true : false}
-        dragging={markers ? true : false}
-        zoom={13}
-      >
-        {markers ? (
-          markers
-        ) : (
-          <TileLayer
-            url={
-              "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray.jpg"
-            }
-            opacity={0.9}
-            zIndex={1}
-          />
-        )}
+    <Map
+      center={props.position}
+      style={{ height: props.size.height, width: props.size.width }}
+      zoomControl={markers ? true : false}
+      scrollWheelZoom={markers ? true : false}
+      doubleClickZoom={markers ? true : false}
+      dragging={markers ? true : false}
+      zoom={5}
+      maxZoom={18}
+    >
+      {markers ? (
+        markers
+      ) : (
         <TileLayer
-          attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-          zIndex={0}
+          url={
+            "https://www.mandlpaints.com/wp-content/uploads/2018/09/Lead-Gray.jpg"
+          }
+          opacity={0.9}
+          zIndex={1}
         />
-        {marker}
-      </Map>
-      )
-    </Fragment>
+      )}
+      <LayersControl position="topright">
+        <LayersControl.Overlay name="Countries">
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+          />
+        </LayersControl.Overlay>
+        <LayersControl.Overlay name="Temperature">
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=dead7a611296ce5fbff383dee7cfa112"
+          />
+        </LayersControl.Overlay>
+        <LayersControl.Overlay name="Clouds">
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=dead7a611296ce5fbff383dee7cfa112"
+          />
+        </LayersControl.Overlay>
+        <LayersControl.Overlay name="Precipitation">
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=dead7a611296ce5fbff383dee7cfa112"
+          />
+        </LayersControl.Overlay>
+        <LayersControl.Overlay name="Wind">
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=dead7a611296ce5fbff383dee7cfa112"
+          />
+        </LayersControl.Overlay>
+      </LayersControl>
+      <TileLayer
+        attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png"
+      />
+      {marker}
+    </Map>
   );
 };
 
-export default map;
+export default React.memo(map);

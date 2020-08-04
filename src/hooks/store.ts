@@ -24,3 +24,4 @@ export const useSeedlings = () => useSelector(selectors.getSeedlings);
 export const useSeeds = () => useSelector(selectors.getSeeds);
 export const useLoader = () => useSelector(selectors.getLoader);
 export const usePopup = () => useSelector(selectors.getPopup);
+export const useWeather = () => useSelector(selectors.getWeather);

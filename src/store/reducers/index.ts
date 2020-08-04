@@ -5,13 +5,15 @@ import seedlings from "./seedlings";
 import seeds from "./seeds";
 import loader from "./loader";
 import popup from "./popup";
+import weather from './weather';
 
 const rootReducer = combineReducers({
     trees,
     seedlings,
     seeds,
     loader,
-    popup
+    popup,
+    weather
 });
 
 export default rootReducer;

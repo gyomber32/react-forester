@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Icon } from "leaflet";
+import { Icon, LatLng } from "leaflet";
 import { Map, Marker, TileLayer } from "react-leaflet";
 
 import treeSvg from "../../assets/icons/tree.svg";
@@ -24,7 +24,7 @@ type Props = {
   type: string;
   placeholder: string;
   value: string;
-  locationOf: string
+  locationOf: string;
   onValueChange: any;
 };
 
@@ -34,7 +34,7 @@ const LocationField: React.FC<Props> = (props) => {
 
   const handleMapClick = (e: any) => {
     if (e.latlng !== undefined) {
-      setPosition({ lat: e.latlng.lat, lng: e.latlng.lng });
+      setPosition(new LatLng(e.latlng.lat, e.latlng.lng));
       props.onValueChange(`${e.latlng.lat}, ${e.latlng.lng}`);
     }
   };
@@ -75,7 +75,10 @@ const LocationField: React.FC<Props> = (props) => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               />
-              <Marker position={position!} icon={props.locationOf==='tree' ? treeIcon : seedlingIcon}></Marker>
+              <Marker
+                position={position!}
+                icon={props.locationOf === "tree" ? treeIcon : seedlingIcon}
+              ></Marker>
             </Map>
           </div>
         </div>

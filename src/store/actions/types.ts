@@ -13,3 +13,4 @@ export const REMOVE_SEED = 'REMOVE_SEED';
 /* HELPER ACTIONS */
 export const TOGGLE_LOADER = 'TOGGLE_LOADER';
 export const TOGGLE_POPUP = 'TOGGLE_POPUP';
+export const SET_WEATHER = 'SET_WEATHER';
