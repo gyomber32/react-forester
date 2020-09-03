@@ -1,3 +1,39 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/animations";
+
 .SearchLocation {
-  margin: 55px auto;
+  z-index: 5;
+  overflow-y: auto;
+  width: 66%;
+  margin: 55px auto 5px auto;
+  &_Input {
+    background-color: $form-field-color;
+    border-radius: $form-field-border-radius;
+    border: none;
+    color: $text-color;
+  }
+  &___Label {
+    color: $text-color;
+    font-weight: bold;
+  }
+  &_SuggestionsList {
+    width: 60%;
+    margin-top: 5px;
+    background-color: $suggestions-list-color;
+    border-radius: 10px;
+    > ul {
+      margin: 0px;
+      padding: 10px 20px;
+      list-style-type: none;
+    }
+    &_ListItem {
+      padding: 5px 0px;
+    }
+  }
+}
+
+.SearchLocation_SuggestionsList_ListItem:hover {
+  padding: 5px;
+  color: $suggestions-list-item-hover-color;
 }

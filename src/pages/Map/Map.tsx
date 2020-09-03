@@ -31,10 +31,18 @@ const mapPage: React.FC = () => {
   const fetchWeather = useFetchWeather();
   const trees = useTrees();
   const seedlings = useSeedlings();
-  const { position, address, fetchPositionAndCity, fetchCity, cityName, suggestionsList } = usePosition();
+  const {
+    position,
+    address,
+    fetchPositionAndCity,
+    fetchCity,
+    cityName,
+    suggestionsList,
+  } = usePosition();
   const isLoading = useLoader();
   const popup = usePopup();
   const weather = useWeather();
+  const [isSuggestionListOpen, setIsSuggestionIsOpen] = useState(false);
 
   const [screenSize, setScreenSize] = useState({
     height: (window.innerHeight * 2) / 3,
@@ -52,9 +60,21 @@ const mapPage: React.FC = () => {
     }
   })();
 
-  const searchLocation = useCallback((location: LatLng) => {
-    fetchPositionAndCity(location);
-  },[fetchPositionAndCity]);
+  const searchLocation = useCallback(
+    (location: LatLng) => {
+      fetchPositionAndCity(location);
+      setIsSuggestionIsOpen(false);
+    },
+    [fetchPositionAndCity, setIsSuggestionIsOpen]
+  );
+
+  const searchCity = useCallback(
+    (cityName: string) => {
+      fetchCity(cityName);
+      setIsSuggestionIsOpen(true);
+    },
+    [fetchCity, setIsSuggestionIsOpen]
+  );
 
   useEffect(() => {
     fetchTrees();
@@ -78,7 +98,8 @@ const mapPage: React.FC = () => {
             <SearchLocation
               city={cityName}
               suggestionsList={suggestionsList}
-              onFetchCity={fetchCity}
+              isOpen={isSuggestionListOpen}
+              onFetchCity={searchCity}
               onSearchLocation={searchLocation}
             />
             <div

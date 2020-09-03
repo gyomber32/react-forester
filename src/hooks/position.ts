@@ -55,20 +55,22 @@ export const usePosition = (settings = defaultSettings) => {
     const fetchCity = useCallback(async (cityName: string) => {
         setCityName(cityName);
         if (cityName === "") {
+            if (timeout.current) clearTimeout(timeout.current);
             fetchPositionAndCity();
+            setSuggestionsList([]);
         } else {
             try {
                 if (timeout.current) clearTimeout(timeout.current);
                 timeout.current = setTimeout(async () => {
                     const res = await getLocationByCityName(cityName);
                     setSuggestionsList(res.map((item: any) => { return { name: item.display_name, location: new LatLng(item.lat, item.lon) } }))
-                }, 500);
+                }, 200);
             } catch (error) {
                 if (timeout.current) clearTimeout(timeout.current);
                 throw error;
             }
         }
-    }, [fetchPositionAndCity]);
+    }, [fetchPositionAndCity, setCityName, setSuggestionsList]);
 
     useEffect(() => {
         try {

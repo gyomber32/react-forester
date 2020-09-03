@@ -6,6 +6,7 @@ import { LatLng } from "leaflet";
 type Props = {
   city: string;
   suggestionsList: string[];
+  isOpen: boolean,
   onFetchCity: (cityName: string) => void;
   onSearchLocation: (location: LatLng) => void;
 };
@@ -13,6 +14,7 @@ type Props = {
 const SearchLocation: React.FC<Props> = ({
   city,
   suggestionsList,
+  isOpen,
   onFetchCity,
   onSearchLocation,
 }) => {
@@ -20,24 +22,29 @@ const SearchLocation: React.FC<Props> = ({
 
   return (
     <div className={styles.SearchLocation}>
-      <label>
+      <label className={styles.SearchLocation___Label}>
         Search for city:
         <input
+        className={styles.SearchLocation_Input}
           type="text"
           value={city}
           ref={input}
           onChange={() => onFetchCity(input.current.value)}
         />
-        <ul>
-          {suggestionsList.map((suggestion: any, index: number) => (
-            <li
-              key={index}
-              onClick={() => onSearchLocation(suggestion.location)}
-            >
-              {suggestion.name}
-            </li>
-          ))}
-        </ul>
+        {isOpen && suggestionsList.length > 0 && (
+          <div className={styles.SearchLocation_SuggestionsList}>
+            <ul>
+              {suggestionsList.map((suggestion: any, index: number) => (
+                <li className={styles.SearchLocation_SuggestionsList_ListItem}
+                  key={index}
+                  onClick={() => onSearchLocation(suggestion.location)}
+                >
+                  {suggestion.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </label>
     </div>
   );

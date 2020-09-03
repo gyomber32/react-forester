@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const geocodingAPI = 'https://nominatim.openstreetmap.org/search?q=';
+const geocodingAPI = 'https://nominatim.openstreetmap.org/search?city=';
 
 export const getLocationByCityName = async (cityName: string) => {
     try {
