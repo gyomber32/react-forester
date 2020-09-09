@@ -1,14 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { Fragment, useState, useEffect, useCallback } from "react";
-
 import Map from "../../components/Map/Map";
 import Navigation from "../../components/Navigation/Navigation";
 import Popup from "../../components/Popup/Popup";
 import Backdrop from "../../components/Backdrop/Backdrop";
 import Spinner from "../../components/Spinner/Spinner";
-
+import Forecast from "../../components/Forecast/Forecast";
+import SearchLocation from "../../components/SearchLocation/SearchLocation";
 import { usePosition } from "../../hooks";
-
 import {
   useTrees,
   useLoader,
@@ -19,11 +18,8 @@ import {
 import { useFetchAllTrees } from "../../hooks/tree";
 import { useFetchAllSeedlings } from "../../hooks/seedling";
 import { useFetchWeather } from "../../hooks/weather";
-
-import styles from "./Map.module.scss";
-import Forecast from "../../components/Forecast/Forecast";
-import SearchLocation from "../../components/SearchLocation/SearchLocation";
 import { LatLng } from "leaflet";
+import styles from "./Map.module.scss";
 
 const mapPage: React.FC = () => {
   const fetchTrees = useFetchAllTrees();

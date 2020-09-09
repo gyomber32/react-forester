@@ -1,22 +1,21 @@
 import React from "react";
+import ActionButtons from "../ActionButtons/ActionButtons";
 import Seed from "../../models/types/Seed";
-
-import TableActionButton from "./TableActionButton/TableActionButton";
-
 import styles from "./Table.module.scss";
-
-enum ButtonTypes {
-  Update,
-  Delete,
-}
 
 type Props = {
   seeds: Seed[];
-  onDelete: (seed: Seed) => void;
-  onUpdate: () => void;
+  handleMigrate: () => void;
+  handleUpdate: () => void;
+  handleDelete: (seed: Seed) => void;
 };
 
-const Table: React.FC<Props> = (props) => {
+const Table: React.FC<Props> = ({
+  seeds,
+  handleMigrate,
+  handleUpdate,
+  handleDelete,
+}) => {
   const columns = [
     "Species",
     "Seeded quantity",
@@ -36,7 +35,7 @@ const Table: React.FC<Props> = (props) => {
         </tr>
       </thead>
       <tbody>
-        {props.seeds.map((seed) => {
+        {seeds.map((seed) => {
           return (
             <tr key={seed._id}>
               <th>{seed.species}</th>
@@ -45,14 +44,11 @@ const Table: React.FC<Props> = (props) => {
               <th>{seed.dateSeeded}</th>
               <th>{seed.daysInSoil}</th>
               <th>
-                <TableActionButton
-                  type={ButtonTypes.Update}
-                  click={() => props.onDelete(seed)}
-                />
-                <TableActionButton
-                  type={ButtonTypes.Delete}
-                  click={() => props.onUpdate}
-                />
+                <ActionButtons
+                  onDelete={() => handleDelete(seed)}
+                  onMigrate={handleMigrate}
+                  onUpdate={handleUpdate}
+                ></ActionButtons>
               </th>
             </tr>
           );

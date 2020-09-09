@@ -29,7 +29,7 @@ const TreesPage: React.FC = () => {
   const [selectedTree, setSelectedTree] = useState<Tree>({} as Tree);
   const [detailsModal, setDetailsModal] = useState<boolean>(false);
   const [addModal, setAddModal] = useState<boolean>(false);
-  const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const fetchTrees = useFetchAllTrees();
   const createTree = useCreateTree();
   const deleteTree = useDeleteTree();
@@ -38,8 +38,7 @@ const TreesPage: React.FC = () => {
   const popup = usePopup();
 
   const openDetailsModal = useCallback(
-    (id: string) => {
-      const tree = trees.filter((tree) => tree._id === id)[0];
+    (tree: Tree) => {
       setSelectedTree(tree);
       setDetailsModal(true);
     },
@@ -59,12 +58,14 @@ const TreesPage: React.FC = () => {
     setAddModal(false);
   }, [setAddModal]);
 
-  const openConfirmationModal = useCallback(() => {
-    setConfirmationModal(true);
-  }, [setConfirmationModal]);
+  const openMigrateModal = useCallback(() => {}, []);
 
-  const closeConfirmationModal = useCallback(() => {
-    setConfirmationModal(false);
+  const openDeleteModal = useCallback(() => {
+    setDeleteModal(true);
+  }, [setDeleteModal]);
+
+  const closeDeleteModal = useCallback(() => {
+    setDeleteModal(false);
     if (detailsModal) {
       closeDetailsModal();
     }
@@ -72,9 +73,9 @@ const TreesPage: React.FC = () => {
 
   const deleteTreeHandler = useCallback(async () => {
     deleteTree(selectedTree);
-    closeConfirmationModal();
+    closeDeleteModal();
     closeDetailsModal();
-  }, [closeConfirmationModal, closeDetailsModal, selectedTree]);
+  }, [closeDeleteModal, closeDetailsModal, selectedTree]);
 
   const createTreeHandler = useCallback(
     (tree: Tree) => {
@@ -89,15 +90,15 @@ const TreesPage: React.FC = () => {
       if (event.keyCode === 27) {
         if (detailsModal) closeDetailsModal();
         if (addModal) closeAddModal();
-        if (confirmationModal) closeConfirmationModal();
+        if (deleteModal) closeDeleteModal();
       }
     },
     [
       addModal,
-      confirmationModal,
+      deleteModal,
       detailsModal,
       closeAddModal,
-      closeConfirmationModal,
+      closeDeleteModal,
       closeDetailsModal,
     ]
   );
@@ -124,13 +125,13 @@ const TreesPage: React.FC = () => {
         {!isLoading && trees.length > 0 && (
           <Fragment>
             <div className={styles.Trees_cardsContainer}>
-              {trees.map((item: Tree) => (
+              {trees.map((tree: Tree) => (
                 <Card
-                  key={item._id}
-                  species={item.species}
-                  picture={item.picture}
-                  survivedQuantity={item.survivedQuantity}
-                  click={() => openDetailsModal(item._id)}
+                  key={tree._id}
+                  species={tree.species}
+                  picture={tree.picture}
+                  survivedQuantity={tree.survivedQuantity}
+                  click={() => openDetailsModal(tree)}
                 />
               ))}
             </div>
@@ -143,16 +144,18 @@ const TreesPage: React.FC = () => {
             <Backdrop click={closeDetailsModal}></Backdrop>
             <DetailsModal
               item={selectedTree}
-              openConfirmationModal={openConfirmationModal}
+              handleDelete={openDeleteModal}
+              handleUpdate={() => {}}
+              handleMigrate={() => {}}
             ></DetailsModal>
           </Fragment>
         )}
-        {confirmationModal && (
+        {deleteModal && (
           <Fragment>
-            <Backdrop click={closeConfirmationModal} zIndex={3}></Backdrop>
+            <Backdrop click={closeDeleteModal} zIndex={3}></Backdrop>
             <ConfirmationModal
               onYes={deleteTreeHandler}
-              onCancel={closeConfirmationModal}
+              onCancel={closeDeleteModal}
             ></ConfirmationModal>
           </Fragment>
         )}

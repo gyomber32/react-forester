@@ -27,6 +27,12 @@
   justify-content: flex-start;
   padding: 10px;
 }
+
+.Weather_Data_Forecast___Details {
+  color: white;
+  text-shadow: $text-shadow-black;
+}
+
 .Weather_Data_Forecast_Properties {
   display: flex;
   flex-direction: row;
@@ -53,6 +59,10 @@
   &_elem {
     margin: 5px;
   }
+  &_Text {
+    color: white;
+    text-shadow: $text-shadow-black;
+  }
 }
 
 .Weather_Hourly {
@@ -73,6 +83,10 @@
       font-weight: bold;
     }
   }
+  &_Text {
+    color: white;
+    text-shadow: $text-shadow-black;
+  }
 }
 
 .Weather_Daily {
@@ -88,6 +102,18 @@
     padding: 5px;
     &_Name {
       font-weight: bold;
+      color: white;
+      text-shadow: $text-shadow-black;
+    }
+    &_Text{
+      color: white;
+      text-shadow: $text-shadow-black;
     }
   }
+}
+
+table > th,
+tr {
+  color: white;
+  text-shadow: $text-shadow-black;
 }

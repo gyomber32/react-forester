@@ -73,18 +73,18 @@ const Forecast: React.FC<Props> = ({ weather, address }) => {
     >
       <div className={styles.Weather_Data}>
         <div className={styles.Weather_Data_Forecast}>
-          <h1>{address.city}</h1>
-          <h2>{weather.current.weather[0].main}</h2>
-          <h3>{weather.current.weather[0].description}</h3>
+          <h1 className={styles.Weather_Data_Forecast___Details}>{address.city}</h1>
+          <h2 className={styles.Weather_Data_Forecast___Details}>{weather.current.weather[0].main}</h2>
+          <h3 className={styles.Weather_Data_Forecast___Details}>{weather.current.weather[0].description}</h3>
         </div>
         <div className={styles.Weather_Data_SunState}>
           <div className={styles.Weather_Data_SunState_elem}>
             <img alt="" width="50px" height="50px" src={sunriseIcon}></img>
-            <div>{formatDate(weather.current.sunrise)}</div>
+            <div className={styles.Weather_Data_SunState_Text}>{formatDate(weather.current.sunrise)}</div>
           </div>
           <div className={styles.Weather_Data_SunState_elem}>
             <img alt="" width="50px" height="50px" src={sunsetIcon}></img>
-            <div>{formatDate(weather.current.sunset)}</div>
+            <div className={styles.Weather_Data_SunState_Text}>{formatDate(weather.current.sunset)}</div>
           </div>
         </div>
       </div>
@@ -122,14 +122,14 @@ const Forecast: React.FC<Props> = ({ weather, address }) => {
         {weather.hourly.map((hourly: any, index: number) =>
           index > 0 && index <= 24 ? (
             <div key={hourly.dt} className={styles.Weather_Hourly_elem}>
-              <div>{new Date(hourly.dt * 1000).getHours() + ":00"}</div>
+              <div className={styles.Weather_Hourly_Text}>{new Date(hourly.dt * 1000).getHours() + ":00"}</div>
               <img
                 alt=""
                 width="30px"
                 height="30px"
                 src={`http://openweathermap.org/img/wn/${hourly.weather[0].icon}@2x.png`}
               ></img>
-              <div>{Math.round(hourly.temp)}°</div>
+              <div className={styles.Weather_Hourly_Text}>{Math.round(hourly.temp)}°</div>
             </div>
           ) : null
         )}
@@ -141,7 +141,7 @@ const Forecast: React.FC<Props> = ({ weather, address }) => {
               <div className={styles.Weather_Daily_Day_Name}>
                 {dayName(daily.dt)}
               </div>
-              <div>{daily.weather[0].description}</div>
+              <div className={styles.Weather_Daily_Day_Text}>{daily.weather[0].description}</div>
               <img
                 alt=""
                 width="50px"
@@ -149,10 +149,10 @@ const Forecast: React.FC<Props> = ({ weather, address }) => {
                 src={`http://openweathermap.org/img/wn/${daily.weather[0].icon}@2x.png`}
               ></img>
               <div>
-                <div>day: {daily.temp.day} °C</div>
-                <div>night: {daily.temp.night} °C</div>
-                <div>wind: {daily.wind_speed} m/s</div>
-                <div>wind: {daily.humidity} %</div>
+                <div className={styles.Weather_Daily_Day_Text}>day: {daily.temp.day} °C</div>
+                <div className={styles.Weather_Daily_Day_Text}>night: {daily.temp.night} °C</div>
+                <div className={styles.Weather_Daily_Day_Text}>wind: {daily.wind_speed} m/s</div>
+                <div className={styles.Weather_Daily_Day_Text}>wind: {daily.humidity} %</div>
               </div>
             </div>
           ) : null

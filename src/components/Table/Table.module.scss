@@ -3,7 +3,7 @@
 @import "../../assets/styles/animations";
 
 .Table {
-  width: 800px;
+  width: 60%;
   box-shadow: $item-shadow;
   background-color: $background-color;
   border-radius: $component-border-radius;
@@ -20,6 +20,7 @@ th {
 thead > tr > th {
   color: $text-color;
   font-size: $header-text-size;
+  padding: 0 20px;
 }
 
 tbody > tr > th {
@@ -41,4 +42,12 @@ td:last-child {
 
 tbody > tr:last-child > th {
   border-bottom: 0;
+}
+
+.ActionButtons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
 }
