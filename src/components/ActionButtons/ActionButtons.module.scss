@@ -1,0 +1,50 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/proportions";
+@import "../../assets/styles/animations";
+@import "../../assets/styles/icons";
+
+.ActionButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.Button {
+  margin: 5px 5px 0px 0px;
+  border: none;
+  border-radius: $component-border-radius;
+  background-color: transparent;
+
+  &___Icon {
+    filter: invert(100%);
+    width: 20px;
+    height: 20px;
+    &_Delete {
+      content: $delete-icon;
+    }
+    &_Update {
+      content: $update-icon;
+    }
+    &_Migrate {
+      content: $migrate-icon;
+    }
+  }
+
+  &_DeleteButton:hover {
+    box-shadow: $item-shadow-hover;
+    transform: $scale-hover;
+    background-color: $red-button-color;
+  }
+
+  &_UpdateButton:hover {
+    box-shadow: $item-shadow-hover;
+    transform: $scale-hover;
+  }
+
+  &_MigrateButton:hover {
+    box-shadow: $item-shadow-hover;
+    transform: $scale-hover;
+  }
+}

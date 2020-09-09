@@ -25,7 +25,7 @@ import styles from "./Seeds.module.scss";
 const SeedsPage: React.FC = () => {
   const [selectedSeed, setSelectedSeed] = useState<Seed>({} as Seed);
   const [addModal, setAddModal] = useState<boolean>(false);
-  const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const fetchSeeds = useFetchAllSeeds();
   const createSeed = useCreateSeed();
   const deleteSeed = useDeleteSeed();
@@ -41,19 +41,19 @@ const SeedsPage: React.FC = () => {
     setAddModal(false);
   }, []);
 
-  const openConfirmationModal = useCallback((seed: Seed) => {
+  const openDeleteModal = useCallback((seed: Seed) => {
     setSelectedSeed(seed);
-    setConfirmationModal(true);
+    setDeleteModal(true);
   }, []);
 
-  const closeConfirmationModal = useCallback(() => {
-    setConfirmationModal(false);
+  const closeDeleteModal = useCallback(() => {
+    setDeleteModal(false);
   }, []);
 
   const deleteSeedHandler = useCallback(async () => {
-   deleteSeed(selectedSeed);
-    closeConfirmationModal();
-  }, [closeConfirmationModal, deleteSeed, selectedSeed]);
+    deleteSeed(selectedSeed);
+    closeDeleteModal();
+  }, [closeDeleteModal, deleteSeed, selectedSeed]);
 
   const createSeedHandler = useCallback(
     async (seed: Seed) => {
@@ -67,10 +67,10 @@ const SeedsPage: React.FC = () => {
     (event?: any) => {
       if (event.keyCode === 27) {
         if (addModal) closeAddModal();
-        if (confirmationModal) closeConfirmationModal();
+        if (deleteModal) closeDeleteModal();
       }
     },
-    [addModal, confirmationModal, closeAddModal, closeConfirmationModal]
+    [addModal, deleteModal, closeAddModal, closeDeleteModal]
   );
 
   useEffect(() => {
@@ -97,20 +97,21 @@ const SeedsPage: React.FC = () => {
             <Fragment>
               <Table
                 seeds={seeds}
-                onDelete={openConfirmationModal}
-                onUpdate={() => {}}
+                handleDelete={openDeleteModal}
+                handleUpdate={() => {}}
+                handleMigrate={() => {}}
               ></Table>
               <Chart data={seeds}></Chart>
             </Fragment>
           </div>
         )}
         {!isLoading && seeds.length === 0 && <NoData>seeds</NoData>}
-        {confirmationModal && (
+        {deleteModal && (
           <Fragment>
-            <Backdrop click={closeConfirmationModal} zIndex={3}></Backdrop>
+            <Backdrop click={closeDeleteModal} zIndex={3}></Backdrop>
             <ConfirmationModal
               onYes={deleteSeedHandler}
-              onCancel={closeConfirmationModal}
+              onCancel={closeDeleteModal}
             ></ConfirmationModal>
           </Fragment>
         )}

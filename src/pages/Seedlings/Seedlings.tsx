@@ -29,7 +29,7 @@ const SeedlingsPage: React.FC = () => {
   );
   const [detailsModal, setDetailsModal] = useState<boolean>(false);
   const [addModal, setAddModal] = useState<boolean>(false);
-  const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const fetchSeedlings = useFetchAllSeedlings();
   const createSeedling = useCreateSeedling();
   const deleteSeedling = useDeleteSeedling();
@@ -38,12 +38,11 @@ const SeedlingsPage: React.FC = () => {
   const popup = usePopup();
 
   const openDetailsModal = useCallback(
-    (id: string) => {
-      const seedling = seedlings.filter((seedling) => seedling._id === id)[0];
+    (seedling: Seedling) => {
       setSelectedSeedling(seedling);
       setDetailsModal(true);
     },
-    [setSelectedSeedling, setDetailsModal, seedlings]
+    [setSelectedSeedling, setDetailsModal]
   );
 
   const closeDetailsModal = useCallback(() => {
@@ -59,12 +58,15 @@ const SeedlingsPage: React.FC = () => {
     setAddModal(false);
   }, [setAddModal]);
 
-  const openConfirmationModal = useCallback(() => {
-    setConfirmationModal(true);
-  }, [setConfirmationModal]);
+  const openMigrateModal = useCallback(() => {}, []);
 
-  const closeConfirmationModal = useCallback(() => {
-    setConfirmationModal(false);
+  const openDeleteModal = useCallback(() => {
+    console.log(1);
+    setDeleteModal(true);
+  }, [setDeleteModal]);
+
+  const closeDeleteModal = useCallback(() => {
+    setDeleteModal(false);
     if (detailsModal) {
       closeDetailsModal();
     }
@@ -72,14 +74,9 @@ const SeedlingsPage: React.FC = () => {
 
   const deleteSeedlingHandeler = useCallback(async () => {
     deleteSeedling(selectedSeedling);
-    closeConfirmationModal();
+    closeDeleteModal();
     closeDetailsModal();
-  }, [
-    closeConfirmationModal,
-    closeDetailsModal,
-    deleteSeedling,
-    selectedSeedling,
-  ]);
+  }, [closeDeleteModal, closeDetailsModal, deleteSeedling, selectedSeedling]);
 
   const createSeedlingHandler = useCallback(
     async (seedling: Seedling) => {
@@ -94,15 +91,15 @@ const SeedlingsPage: React.FC = () => {
       if (event.keyCode === 27) {
         if (detailsModal) closeDetailsModal();
         if (addModal) closeAddModal();
-        if (confirmationModal) closeConfirmationModal();
+        if (deleteModal) closeDeleteModal();
       }
     },
     [
       addModal,
-      confirmationModal,
+      deleteModal,
       detailsModal,
       closeAddModal,
-      closeConfirmationModal,
+      closeDeleteModal,
       closeDetailsModal,
     ]
   );
@@ -129,13 +126,13 @@ const SeedlingsPage: React.FC = () => {
         {!isLoading && seedlings.length > 0 && (
           <Fragment>
             <div className={styles.Seedlings_cardsContainer}>
-              {seedlings.map((item: Seedling) => (
+              {seedlings.map((seedling: Seedling) => (
                 <Card
-                  key={item._id}
-                  species={item.species}
-                  picture={item.picture}
-                  survivedQuantity={item.survivedQuantity}
-                  click={() => openDetailsModal(item._id)}
+                  key={seedling._id}
+                  species={seedling.species}
+                  picture={seedling.picture}
+                  survivedQuantity={seedling.survivedQuantity}
+                  click={() => openDetailsModal(seedling)}
                 />
               ))}
             </div>
@@ -148,16 +145,18 @@ const SeedlingsPage: React.FC = () => {
             <Backdrop click={closeDetailsModal}></Backdrop>
             <DetailsModal
               item={selectedSeedling}
-              openConfirmationModal={openConfirmationModal}
+              handleDelete={openDeleteModal}
+              handleUpdate={() => {}}
+              handleMigrate={() => {}}
             ></DetailsModal>
           </Fragment>
         )}
-        {confirmationModal && (
+        {deleteModal && (
           <Fragment>
-            <Backdrop click={closeConfirmationModal} zIndex={3}></Backdrop>
+            <Backdrop click={closeDeleteModal} zIndex={3}></Backdrop>
             <ConfirmationModal
               onYes={deleteSeedlingHandeler}
-              onCancel={closeConfirmationModal}
+              onCancel={closeDeleteModal}
             ></ConfirmationModal>
           </Fragment>
         )}
