@@ -7,8 +7,7 @@ export const authQuery = (email: string, password: string) => {
         query: `
             query {
                 login(userInput: {email: "${email}", password: "${password}"}) {
-                token
-                tokenExpiration
+                    message
                 }
             }`
     });

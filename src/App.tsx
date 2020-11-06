@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import AuthPage from "./pages/Authentication/Auth";
 import TreesPage from "./pages/Trees/Trees";
@@ -7,8 +7,6 @@ import SeedlingsPage from "./pages/Seedlings/Seedlings";
 import SeedsPage from "./pages/Seeds/Seeds";
 import MapPage from "./pages/Map/Map";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
-
-import IsAuthenticated from "./utils/IsAuthenticated";
 
 import styles from "./App.module.scss";
 
@@ -18,57 +16,13 @@ const App = () => {
       <BrowserRouter>
         <React.Fragment>
           <Switch>
-            <Route
-              exact={true}
-              path="/"
-              render={() =>
-                IsAuthenticated() ? (
-                  <Redirect to="/trees" />
-                ) : (
-                  <Route to="/auth" component={AuthPage} />
-                )
-              }
-            />
-            <Route
-              path="/auth"
-              render={() =>
-                IsAuthenticated() ? (
-                  <Redirect to="/trees" />
-                ) : (
-                  <Route to="/auth" component={AuthPage} />
-                )
-              }
-            />
-            <Route
-              path="/trees"
-              render={() =>
-                IsAuthenticated() ? <TreesPage /> : <Redirect to="/auth" />
-              }
-            />
-            <Route
-              path="/seedlings"
-              render={() =>
-                IsAuthenticated() ? <SeedlingsPage /> : <Redirect to="/auth" />
-              }
-            />
-            <Route
-              path="/seeds"
-              render={() =>
-                IsAuthenticated() ? <SeedsPage /> : <Redirect to="/auth" />
-              }
-            />
-            <Route
-              path="/map"
-              render={() =>
-                IsAuthenticated() ? <MapPage /> : <Redirect to="/auth" />
-              }
-            />
-            <Route
-              path="*"
-              render={() =>
-                IsAuthenticated() ? <PageNotFound /> : <Redirect to="/auth" />
-              }
-            />
+            <Route exact={true} path="/" component={TreesPage} />
+            <Route path="/auth" component={AuthPage} />
+            <Route path="/trees" component={TreesPage} />
+            <Route path="/seedlings" component={SeedlingsPage} />
+            <Route path="/seeds" component={SeedsPage} />
+            <Route path="/map" component={MapPage} />
+            <Route path="*" component={PageNotFound} />
           </Switch>
         </React.Fragment>
       </BrowserRouter>

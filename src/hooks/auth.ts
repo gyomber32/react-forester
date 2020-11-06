@@ -7,9 +7,7 @@ export const useAuth = () => {
 
   const auth = useCallback(async (email: string, password: string) => {
     try {
-      const response = await login(email, password);
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('tokenExpiration', response.tokenExpiration);
+      await login(email, password);
       history.push('trees');
     } catch (error) {
       console.log(error);

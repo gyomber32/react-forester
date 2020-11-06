@@ -1,5 +1,5 @@
-import axios from "axios"
 
+import { axiosGraphQL, axiosCreatePicture, axiosDeletePicture } from "./axios/index";
 import { authQuery, getAllTreesQuery, getOneTreeQuery, createTreeMutation, deleteTreeMutation, getAllSeedlingsQuery, getOneSeedlingQuery, createSeedlingMutation, deleteSeedlingMutation, getAllSeedsQuery, getOneSeedQuery, createSeedMutation, deleteSeedMutation } from "./queries";
 
 import Tree from "../models/types/Tree";
@@ -10,10 +10,7 @@ import Seed from "../models/types/Seed";
 
 export const login = async (email: string, password: string) => {
     try {
-        const response = await axios({
-            url: "http://localhost:3000/graphql",
-            headers: { "Content-Type": "application/json" },
-            method: "POST",
+        const response = await axiosGraphQL({
             data: authQuery(email, password),
         });
         if (response.data.hasOwnProperty("errors")) {
@@ -27,14 +24,8 @@ export const login = async (email: string, password: string) => {
 
 export const getAllTrees = async () => {
     try {
-        const response = await axios({
-            url: "http://localhost:3000/graphql",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `bearer ${localStorage.getItem("token")}`,
-            },
-            method: "POST",
-            data: getAllTreesQuery(),
+        const response = await axiosGraphQL({
+            data: getAllTreesQuery()
         });
         if (!response) {
             throw new Error("No response from the server");
@@ -64,14 +55,8 @@ export const getAllTrees = async () => {
 
 export const getOneTree = async (id: string) => {
     try {
-        const response = await axios({
-            url: "http://localhost:3000/graphql",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `bearer ${localStorage.getItem("token")}`,
-            },
-            method: "POST",
-            data: getOneTreeQuery(id),
+        const response = await axiosGraphQL({
+            data: getOneTreeQuery(id)
         });
         if (!response) {
             throw new Error("No response from the server");
@@ -100,24 +85,13 @@ export const createTree = async (tree: Tree) => {
         let bodyFormData = new FormData();
         bodyFormData.append("picture", tree.picture);
         try {
-            const pictureResponse = await axios({
-                method: "post",
-                url: "http://localhost:3000/picture",
+            const pictureResponse = await axiosCreatePicture({
                 data: bodyFormData,
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
             });
             if (!pictureResponse.data.id) {
                 throw new Error("No response from the server");
             }
-            const treeResponse = await axios({
-                url: "http://localhost:3000/graphql",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `bearer ${localStorage.getItem("token")}`,
-                },
-                method: "POST",
+            const treeResponse = await axiosGraphQL({
                 data: createTreeMutation(tree, pictureResponse.data.id),
             });
             if (!treeResponse.data.data.createTree._id) {
@@ -129,13 +103,7 @@ export const createTree = async (tree: Tree) => {
         }
     } else {
         try {
-            const treeResponse = await axios({
-                url: "http://localhost:3000/graphql",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `bearer ${localStorage.getItem("token")}`,
-                },
-                method: "POST",
+            const treeResponse = await axiosGraphQL({
                 data: createTreeMutation(tree),
             });
             if (!treeResponse.data.data.createTree._id) {
@@ -151,24 +119,14 @@ export const createTree = async (tree: Tree) => {
 export const deleteTree = async (tree: Tree) => {
     try {
         if (tree.pictureId) {
-            const pictureResponse = await axios({
-                method: "delete",
-                url: `http://localhost:3000/picture/${tree.pictureId}`,
-                headers: {
-                    "Content-Type": "application/json",
-                },
+            const pictureResponse = await axiosDeletePicture({
+                url: `${tree.pictureId}`,
             });
             if (!pictureResponse) {
                 throw new Error("No response from the server");
             }
         }
-        const response = await axios({
-            url: "http://localhost:3000/graphql",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `bearer ${localStorage.getItem("token")}`,
-            },
-            method: "POST",
+        const response = await axiosGraphQL({
             data: deleteTreeMutation(tree._id),
         });
         if (!response.data.data.deleteTree) {
@@ -182,13 +140,7 @@ export const deleteTree = async (tree: Tree) => {
 
 export const getAllSeedlings = async () => {
     try {
-        const response = await axios({
-            url: "http://localhost:3000/graphql",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `bearer ${localStorage.getItem("token")}`,
-            },
-            method: "POST",
+        const response = await axiosGraphQL({
             data: getAllSeedlingsQuery()
         });
         if (!response) {
@@ -219,14 +171,8 @@ export const getAllSeedlings = async () => {
 
 export const getOneSeedling = async (id: string) => {
     try {
-        const response = await axios({
-            url: "http://localhost:3000/graphql",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `bearer ${localStorage.getItem("token")}`,
-            },
-            method: "POST",
-            data: getOneSeedlingQuery(id),
+        const response = await axiosGraphQL({
+            data: getOneSeedlingQuery(id)
         });
         if (!response) {
             throw new Error("No response from the server");
@@ -255,25 +201,14 @@ export const createSeedling = async (seedling: Seedling) => {
         let bodyFormData = new FormData();
         bodyFormData.append("picture", seedling.picture);
         try {
-            const pictureResponse = await axios({
-                method: "post",
-                url: "http://localhost:3000/picture",
-                data: bodyFormData,
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+            const pictureResponse = await axiosCreatePicture({
+                data: bodyFormData
             });
             if (!pictureResponse.data.id) {
                 throw new Error("No response from the server");
             }
-            const seedlingResponse = await axios({
-                url: "http://localhost:3000/graphql",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `bearer ${localStorage.getItem("token")}`,
-                },
-                method: "POST",
-                data: createSeedlingMutation(seedling, pictureResponse.data.id),
+            const seedlingResponse = await axiosGraphQL({
+                data: createSeedlingMutation(seedling, pictureResponse.data.id)
             });
             if (!seedlingResponse.data.data.createSeedling._id) {
                 throw new Error("No response from the server");
@@ -284,14 +219,8 @@ export const createSeedling = async (seedling: Seedling) => {
         }
     } else {
         try {
-            const treeResponse = await axios({
-                url: "http://localhost:3000/graphql",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `bearer ${localStorage.getItem("token")}`,
-                },
-                method: "POST",
-                data: createSeedlingMutation(seedling),
+            const treeResponse = await axiosGraphQL({
+                data: createSeedlingMutation(seedling)
             });
             if (!treeResponse.data.data.createSeedling._id) {
                 throw new Error("No response from the server");
@@ -306,25 +235,15 @@ export const createSeedling = async (seedling: Seedling) => {
 export const deleteSeedling = async (seedling: Seedling) => {
     try {
         if (seedling.pictureId) {
-            const pictureResponse = await axios({
-                method: "delete",
-                url: `http://localhost:3000/picture/${seedling.pictureId}`,
-                headers: {
-                    "Content-Type": "application/json",
-                },
+            const pictureResponse = await axiosDeletePicture({
+                url: `${seedling.pictureId}`
             });
             if (!pictureResponse) {
                 throw new Error("No response from the server");
             }
         }
-        const response = await axios({
-            url: "http://localhost:3000/graphql",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `bearer ${localStorage.getItem("token")}`,
-            },
-            method: "POST",
-            data: deleteSeedlingMutation(seedling._id),
+        const response = await axiosGraphQL({
+            data: deleteSeedlingMutation(seedling._id)
         });
         if (!response.data.data.deleteSeedling) {
             throw new Error("No response from the server");
@@ -337,13 +256,7 @@ export const deleteSeedling = async (seedling: Seedling) => {
 
 export const getAllSeeds = async () => {
     try {
-        const response = await axios({
-            url: "http://localhost:3000/graphql",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `bearer ${localStorage.getItem("token")}`,
-            },
-            method: "POST",
+        const response = await axiosGraphQL({
             data: getAllSeedsQuery()
         });
         if (!response) {
@@ -369,14 +282,8 @@ export const getAllSeeds = async () => {
 
 export const getOneSeed = async (id: string) => {
     try {
-        const response = await axios({
-            url: "http://localhost:3000/graphql",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `bearer ${localStorage.getItem("token")}`,
-            },
-            method: "POST",
-            data: getOneSeedQuery(id),
+        const response = await axiosGraphQL({
+            data: getOneSeedQuery(id)
         });
         if (!response) {
             throw new Error("No response from the server");
@@ -397,14 +304,8 @@ export const getOneSeed = async (id: string) => {
 
 export const createSeed = async (seed: Seed) => {
     try {
-        const seedResponse = await axios({
-            url: "http://localhost:3000/graphql",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `bearer ${localStorage.getItem("token")}`,
-            },
-            method: "POST",
-            data: createSeedMutation(seed),
+        const seedResponse = await axiosGraphQL({
+            data: createSeedMutation(seed)
         });
         if (!seedResponse.data.data.createSeed._id) {
             throw new Error("No response from the server");
@@ -417,14 +318,8 @@ export const createSeed = async (seed: Seed) => {
 
 export const deleteSeed = async (seed: Seed) => {
     try {
-        const response = await axios({
-            url: "http://localhost:3000/graphql",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `bearer ${localStorage.getItem("token")}`,
-            },
-            method: "POST",
-            data: deleteSeedMutation(seed._id),
+        const response = await axiosGraphQL({
+            data: deleteSeedMutation(seed._id)
         });
         if (!response.data.data.deleteSeed) {
             throw new Error("No response from the server");
