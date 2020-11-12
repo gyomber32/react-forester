@@ -1,18 +1,54 @@
 import { useCallback } from 'react';
-import { login } from '../api/index';
+import { login, logout, authorization } from '../api/index';
 import { useHistory } from 'react-router-dom';
+import { useActions } from './store';
 
-export const useAuth = () => {
+export const useLogin = () => {
+  const { setAuth } = useActions();
   const history = useHistory();
 
-  const auth = useCallback(async (email: string, password: string) => {
+  const loginCallback = useCallback(async (email: string, password: string) => {
     try {
-      await login(email, password);
+      const loggedIn = await login(email, password);
+      setAuth(loggedIn);
       history.push('trees');
     } catch (error) {
       console.log(error);
     }
-  }, [history]);
+  }, [history, setAuth]);
 
-  return auth;
+  return loginCallback;
+};
+
+export const useLogout = () => {
+  const { setAuth } = useActions();
+  const history = useHistory();
+
+  const logoutCallback = useCallback(async () => {
+    try {
+      const loggedIn = await logout();
+      setAuth(loggedIn);
+      history.push('login');
+    } catch (error) {
+      console.log(error);
+    }
+  }, [history, setAuth]);
+
+  return logoutCallback;
+};
+
+export const useAuthorization = () => {
+  const { setAuth } = useActions();
+
+  const authorizationCallback = useCallback(async () => {
+    try {
+      const loggedIn = await authorization();
+      setAuth(loggedIn);
+    } catch (error) {
+      setAuth(false);
+      console.log(error);
+    }
+  }, [setAuth])
+
+  return authorizationCallback;
 };

@@ -6,6 +6,7 @@ import seeds from "./seeds";
 import loader from "./loader";
 import popup from "./popup";
 import weather from './weather';
+import auth from './auth';
 
 const rootReducer = combineReducers({
     trees,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     seeds,
     loader,
     popup,
-    weather
+    weather,
+    auth
 });
 
 export default rootReducer;

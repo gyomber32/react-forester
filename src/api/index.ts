@@ -1,6 +1,6 @@
 
 import { axiosGraphQL, axiosCreatePicture, axiosDeletePicture } from "./axios/index";
-import { authQuery, getAllTreesQuery, getOneTreeQuery, createTreeMutation, deleteTreeMutation, getAllSeedlingsQuery, getOneSeedlingQuery, createSeedlingMutation, deleteSeedlingMutation, getAllSeedsQuery, getOneSeedQuery, createSeedMutation, deleteSeedMutation } from "./queries";
+import { authorizationQuery, loginQuery, logoutQuery, getAllTreesQuery, getOneTreeQuery, createTreeMutation, deleteTreeMutation, getAllSeedlingsQuery, getOneSeedlingQuery, createSeedlingMutation, deleteSeedlingMutation, getAllSeedsQuery, getOneSeedQuery, createSeedMutation, deleteSeedMutation } from "./queries";
 
 import Tree from "../models/types/Tree";
 
@@ -11,14 +11,42 @@ import Seed from "../models/types/Seed";
 export const login = async (email: string, password: string) => {
     try {
         const response = await axiosGraphQL({
-            data: authQuery(email, password),
+            data: loginQuery(email, password),
         });
-        if (response.data.hasOwnProperty("errors")) {
+        if (response.data.errors) {
             throw new Error(response.data.errors[0].message);
         }
-        return response.data.data.login;
+        return response.data.data.login.loggedIn as boolean;
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
+    }
+}
+
+export const logout = async () => {
+    try {
+        const response = await axiosGraphQL({
+            data: logoutQuery(),
+        });
+        if (response.data.errors) {
+            throw new Error(response.data.errors[0].message);
+        }
+        return response.data.data.logout.loggedIn as boolean;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const authorization = async () => {
+    try {
+        const response = await axiosGraphQL({
+            data: authorizationQuery()
+        });
+        if (response.data.errors) {
+            throw new Error(response.data.errors[0].message);
+        }
+        return response.data.data.authorization.loggedIn as boolean;
+    } catch (error) {
+        throw error;
     }
 }
 
@@ -30,6 +58,9 @@ export const getAllTrees = async () => {
         if (!response) {
             throw new Error("No response from the server");
         };
+        if (response.data.errors) {
+            throw new Error(response.data.errors[0].message);
+        }
         let trees: Tree[] = [];
         response.data.data.trees.forEach((tree: Tree) => {
             const tempTree: Tree = {
@@ -49,7 +80,7 @@ export const getAllTrees = async () => {
         });
         return trees;
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 };
 
@@ -60,6 +91,9 @@ export const getOneTree = async (id: string) => {
         });
         if (!response) {
             throw new Error("No response from the server");
+        }
+        if (response.data.errors) {
+            throw new Error(response.data.errors[0].message);
         }
         const tree: Tree = {
             _id: response.data.data.oneTree._id,
@@ -76,7 +110,7 @@ export const getOneTree = async (id: string) => {
         };
         return tree;
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 };
 
@@ -97,9 +131,12 @@ export const createTree = async (tree: Tree) => {
             if (!treeResponse.data.data.createTree._id) {
                 throw new Error("No response from the server");
             }
+            if (treeResponse.data.errors) {
+                throw new Error(treeResponse.data.errors[0].message);
+            }
             return treeResponse.data.data.createTree as Tree;
         } catch (error) {
-            throw new Error(error.message);
+            throw error;
         }
     } else {
         try {
@@ -109,9 +146,12 @@ export const createTree = async (tree: Tree) => {
             if (!treeResponse.data.data.createTree._id) {
                 throw new Error("No response from the server");
             }
+            if (treeResponse.data.errors) {
+                throw new Error(treeResponse.data.errors[0].message);
+            }
             return treeResponse.data.data.createTree as Tree;
         } catch (error) {
-            throw new Error(error.message);
+            throw error;
         }
     }
 };
@@ -126,15 +166,18 @@ export const deleteTree = async (tree: Tree) => {
                 throw new Error("No response from the server");
             }
         }
-        const response = await axiosGraphQL({
+        const treeResponse = await axiosGraphQL({
             data: deleteTreeMutation(tree._id),
         });
-        if (!response.data.data.deleteTree) {
+        if (!treeResponse.data.data.deleteTree) {
             throw new Error("No response from the server");
         }
-        return response.data.data.deleteTree._id as string;
+        if (treeResponse.data.errors) {
+            throw new Error(treeResponse.data.errors[0].message);
+        }
+        return treeResponse.data.data.deleteTree._id as string;
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 };
 
@@ -146,6 +189,9 @@ export const getAllSeedlings = async () => {
         if (!response) {
             throw new Error("No response from the server");
         };
+        if (response.data.errors) {
+            throw new Error(response.data.errors[0].message);
+        }
         const seedlings: Seedling[] = [];
         response.data.data.seedlings.forEach((seedling: Seedling) => {
             const tempSeedling: Seedling = {
@@ -165,7 +211,7 @@ export const getAllSeedlings = async () => {
         });
         return seedlings;
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 };
 
@@ -176,6 +222,9 @@ export const getOneSeedling = async (id: string) => {
         });
         if (!response) {
             throw new Error("No response from the server");
+        }
+        if (response.data.errors) {
+            throw new Error(response.data.errors[0].message);
         }
         const seedling: Tree = {
             _id: response.data.data.oneSeedling._id,
@@ -192,7 +241,7 @@ export const getOneSeedling = async (id: string) => {
         };
         return seedling;
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 };
 
@@ -213,21 +262,27 @@ export const createSeedling = async (seedling: Seedling) => {
             if (!seedlingResponse.data.data.createSeedling._id) {
                 throw new Error("No response from the server");
             }
+            if (seedlingResponse.data.errors) {
+                throw new Error(seedlingResponse.data.errors[0].message);
+            }
             return seedlingResponse.data.data.createSeedling as Seedling;
         } catch (error) {
-            throw new Error(error.message);
+            throw error;
         }
     } else {
         try {
-            const treeResponse = await axiosGraphQL({
+            const seedlingResponse = await axiosGraphQL({
                 data: createSeedlingMutation(seedling)
             });
-            if (!treeResponse.data.data.createSeedling._id) {
+            if (!seedlingResponse.data.data.createSeedling._id) {
                 throw new Error("No response from the server");
             }
-            return treeResponse.data.data.createSeedling as Seedling;
+            if (seedlingResponse.data.errors) {
+                throw new Error(seedlingResponse.data.errors[0].message);
+            }
+            return seedlingResponse.data.data.createSeedling as Seedling;
         } catch (error) {
-            throw new Error(error.message);
+            throw error;
         }
     }
 };
@@ -242,15 +297,18 @@ export const deleteSeedling = async (seedling: Seedling) => {
                 throw new Error("No response from the server");
             }
         }
-        const response = await axiosGraphQL({
+        const seedlingResponse = await axiosGraphQL({
             data: deleteSeedlingMutation(seedling._id)
         });
-        if (!response.data.data.deleteSeedling) {
+        if (!seedlingResponse.data.data.deleteSeedling) {
             throw new Error("No response from the server");
         }
-        return response.data.data.deleteSeedling._id as string;
+        if (seedlingResponse.data.errors) {
+            throw new Error(seedlingResponse.data.errors[0].message);
+        }
+        return seedlingResponse.data.data.deleteSeedling._id as string;
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 };
 
@@ -262,6 +320,9 @@ export const getAllSeeds = async () => {
         if (!response) {
             throw new Error("No response from the server");
         };
+        if (response.data.errors) {
+            throw new Error(response.data.errors[0].message);
+        }
         const seeds: Seed[] = [];
         response.data.data.seeds.forEach((seed: Seed) => {
             const tempSeed: Seed = {
@@ -276,7 +337,7 @@ export const getAllSeeds = async () => {
         });
         return seeds;
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 };
 
@@ -288,6 +349,9 @@ export const getOneSeed = async (id: string) => {
         if (!response) {
             throw new Error("No response from the server");
         }
+        if (response.data.errors) {
+            throw new Error(response.data.errors[0].message);
+        }
         const seed: Seed = {
             _id: response.data.data.oneSeed._id,
             species: response.data.data.oneSeed.species,
@@ -298,7 +362,7 @@ export const getOneSeed = async (id: string) => {
         };
         return seed;
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 };
 
@@ -310,9 +374,12 @@ export const createSeed = async (seed: Seed) => {
         if (!seedResponse.data.data.createSeed._id) {
             throw new Error("No response from the server");
         }
+        if (seedResponse.data.errors) {
+            throw new Error(seedResponse.data.errors[0].message);
+        }
         return seedResponse.data.data.createSeed as Seed;
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 };
 
@@ -324,9 +391,12 @@ export const deleteSeed = async (seed: Seed) => {
         if (!response.data.data.deleteSeed) {
             throw new Error("No response from the server");
         }
+        if (response.data.errors) {
+            throw new Error(response.data.errors[0].message);
+        }
         return response.data.data.deleteSeed._id as string;
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 };
 

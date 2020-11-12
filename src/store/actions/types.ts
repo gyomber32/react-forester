@@ -14,3 +14,5 @@ export const REMOVE_SEED = 'REMOVE_SEED';
 export const TOGGLE_LOADER = 'TOGGLE_LOADER';
 export const TOGGLE_POPUP = 'TOGGLE_POPUP';
 export const SET_WEATHER = 'SET_WEATHER';
+/* AUTHENTICATION */
+export const SET_AUTH_STATUS = 'SET_AUTH_STATUS';

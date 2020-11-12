@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Popup from "../../components/Popup/Popup";
 
-import { useAuth } from "../../hooks";
+import { useLogin } from "../../hooks";
 
 import PopUp from "../../models/types/PopUp";
 
@@ -11,11 +11,11 @@ import AuthForm from "../../components/AuthForm/AuthForm";
 
 const AuthPage: React.FC = () => {
   const [popup, setPopup] = useState<PopUp>({ isOpen: false, message: "" });
-  const auth = useAuth();
+  const login = useLogin();
 
   const handleLogin = async (email: string, password: string) => {
     try {
-      auth(email, password);
+      login(email, password);
     } catch (error) {
       setPopup({ isOpen: true, message: error.message });
       setTimeout(() => {

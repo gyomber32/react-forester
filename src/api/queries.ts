@@ -2,11 +2,36 @@ import Tree from "../models/types/Tree";
 import Seedling from "../models/types/Seedling";
 import Seed from "../models/types/Seed";
 
-export const authQuery = (email: string, password: string) => {
+export const authorizationQuery = () => {
+    return JSON.stringify({
+        query: `
+            query {
+                authorization {
+                    loggedIn
+                    message
+                }
+            }`
+    });
+};
+
+export const loginQuery = (email: string, password: string) => {
     return JSON.stringify({
         query: `
             query {
                 login(userInput: {email: "${email}", password: "${password}"}) {
+                    loggedIn
+                    message
+                }
+            }`
+    });
+};
+
+export const logoutQuery = () => {
+    return JSON.stringify({
+        query: `
+            query {
+                logout {
+                    loggedIn
                     message
                 }
             }`

@@ -21,3 +21,5 @@ export const removeSeed = (seedId: string) => createAction(ActionTypes.REMOVE_SE
 export const toggleLoader = (value: boolean) => createAction(ActionTypes.TOGGLE_LOADER, value);
 export const togglePopup = (popup: { isOpen: boolean, message: string }) => createAction(ActionTypes.TOGGLE_POPUP, popup);
 export const setWeather = (value: any) => createAction(ActionTypes.SET_WEATHER, value);
+
+export const setAuth = (loggedIn: boolean) => createAction(ActionTypes.SET_AUTH_STATUS, loggedIn);
