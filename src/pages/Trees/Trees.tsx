@@ -58,8 +58,6 @@ const TreesPage: React.FC = () => {
     setAddModal(false);
   }, [setAddModal]);
 
-  const openMigrateModal = useCallback(() => {}, []);
-
   const openDeleteModal = useCallback(() => {
     setDeleteModal(true);
   }, [setDeleteModal]);
@@ -143,6 +141,7 @@ const TreesPage: React.FC = () => {
           <Fragment>
             <Backdrop click={closeDetailsModal}></Backdrop>
             <DetailsModal
+              type='tree'
               item={selectedTree}
               handleDelete={openDeleteModal}
               handleUpdate={() => {}}
@@ -154,6 +153,8 @@ const TreesPage: React.FC = () => {
           <Fragment>
             <Backdrop click={closeDeleteModal} zIndex={3}></Backdrop>
             <ConfirmationModal
+              actionType="delete"
+              itemType="tree"
               onYes={deleteTreeHandler}
               onCancel={closeDeleteModal}
             ></ConfirmationModal>

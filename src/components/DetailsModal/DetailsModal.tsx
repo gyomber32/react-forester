@@ -8,6 +8,7 @@ import Seedling from "../../models/types/Seedling";
 import styles from "./DetailsModal.module.scss";
 
 type Props = {
+  type: string;
   item: Tree | Seedling;
   handleMigrate: () => void;
   handleDelete: () => void;
@@ -15,6 +16,7 @@ type Props = {
 };
 
 const DetailsModal: React.FC<Props> = ({
+  type,
   item,
   handleMigrate,
   handleDelete,
@@ -24,11 +26,12 @@ const DetailsModal: React.FC<Props> = ({
     <div className={styles.DetailsModal}>
       <header className={styles.DetailsModal_Header}>
         <div className={styles.DetailsModal_ActionButtons}>
-          <ActionButtons
-            onDelete={handleDelete}
-            onMigrate={handleMigrate}
-            onUpdate={handleUpdate}
-          ></ActionButtons>
+            <ActionButtons
+              type={type}
+              onDelete={handleDelete}
+              onMigrate={handleMigrate}
+              onUpdate={handleUpdate}
+            ></ActionButtons>
         </div>
 
         <div className={styles.DetailsModal_Title}>{item.species}</div>

@@ -45,6 +45,7 @@ const Table: React.FC<Props> = ({
               <th>{seed.daysInSoil}</th>
               <th>
                 <ActionButtons
+                  type='seed'
                   onDelete={() => handleDelete(seed)}
                   onMigrate={handleMigrate}
                   onUpdate={handleUpdate}

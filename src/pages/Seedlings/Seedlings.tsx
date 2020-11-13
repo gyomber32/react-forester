@@ -30,6 +30,7 @@ const SeedlingsPage: React.FC = () => {
   const [detailsModal, setDetailsModal] = useState<boolean>(false);
   const [addModal, setAddModal] = useState<boolean>(false);
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [migrateModal, setMigrateModal] = useState<boolean>(false);
   const fetchSeedlings = useFetchAllSeedlings();
   const createSeedling = useCreateSeedling();
   const deleteSeedling = useDeleteSeedling();
@@ -144,6 +145,7 @@ const SeedlingsPage: React.FC = () => {
           <Fragment>
             <Backdrop click={closeDetailsModal}></Backdrop>
             <DetailsModal
+              type='seedling'
               item={selectedSeedling}
               handleDelete={openDeleteModal}
               handleUpdate={() => {}}
@@ -155,6 +157,8 @@ const SeedlingsPage: React.FC = () => {
           <Fragment>
             <Backdrop click={closeDeleteModal} zIndex={3}></Backdrop>
             <ConfirmationModal
+              actionType="delete"
+              itemType="seedling"
               onYes={deleteSeedlingHandeler}
               onCancel={closeDeleteModal}
             ></ConfirmationModal>

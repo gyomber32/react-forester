@@ -26,6 +26,7 @@ const SeedsPage: React.FC = () => {
   const [selectedSeed, setSelectedSeed] = useState<Seed>({} as Seed);
   const [addModal, setAddModal] = useState<boolean>(false);
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [migrateModal, setMigrateModal] = useState<boolean>(false);
   const fetchSeeds = useFetchAllSeeds();
   const createSeed = useCreateSeed();
   const deleteSeed = useDeleteSeed();
@@ -40,6 +41,18 @@ const SeedsPage: React.FC = () => {
   const closeAddModal = useCallback(() => {
     setAddModal(false);
   }, []);
+
+  const openMigrateModal = useCallback(() => {
+    setMigrateModal(true);
+  }, []);
+
+  const closeMigrateModal = useCallback(() => {
+    setMigrateModal(false);
+  }, []);
+
+  const migrateSeedHandler = useCallback(() => {
+
+  },[])
 
   const openDeleteModal = useCallback((seed: Seed) => {
     setSelectedSeed(seed);
@@ -68,9 +81,10 @@ const SeedsPage: React.FC = () => {
       if (event.keyCode === 27) {
         if (addModal) closeAddModal();
         if (deleteModal) closeDeleteModal();
+        if (migrateModal) closeMigrateModal();
       }
     },
-    [addModal, deleteModal, closeAddModal, closeDeleteModal]
+    [addModal, closeAddModal, deleteModal, closeDeleteModal, migrateModal, closeMigrateModal]
   );
 
   useEffect(() => {
@@ -99,7 +113,7 @@ const SeedsPage: React.FC = () => {
                 seeds={seeds}
                 handleDelete={openDeleteModal}
                 handleUpdate={() => {}}
-                handleMigrate={() => {}}
+                handleMigrate={openMigrateModal}
               ></Table>
               <Chart data={seeds}></Chart>
             </Fragment>
@@ -110,8 +124,21 @@ const SeedsPage: React.FC = () => {
           <Fragment>
             <Backdrop click={closeDeleteModal} zIndex={3}></Backdrop>
             <ConfirmationModal
+              actionType="delete"
+              itemType="seed"
               onYes={deleteSeedHandler}
               onCancel={closeDeleteModal}
+            ></ConfirmationModal>
+          </Fragment>
+        )}
+        {migrateModal && (
+          <Fragment>
+            <Backdrop click={closeMigrateModal} zIndex={3}></Backdrop>
+            <ConfirmationModal
+              actionType="migrate"
+              itemType="seed"
+              onYes={migrateSeedHandler}
+              onCancel={closeMigrateModal}
             ></ConfirmationModal>
           </Fragment>
         )}
