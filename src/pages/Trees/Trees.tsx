@@ -58,6 +58,8 @@ const TreesPage: React.FC = () => {
     setAddModal(false);
   }, [setAddModal]);
 
+  const openMigrateModal = useCallback(() => {}, []);
+
   const openDeleteModal = useCallback(() => {
     setDeleteModal(true);
   }, [setDeleteModal]);
